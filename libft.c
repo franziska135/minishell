@@ -111,7 +111,7 @@ char	*ft_strdup(const char *s)
 	p_newstr[i] = '\0';
 	return (p_newstr);
 }
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_strncmp(char *s1, char *s2, size_t n)
 {
 	unsigned int	i;
 

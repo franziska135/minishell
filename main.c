@@ -20,6 +20,6 @@ int	main(int argc, char *argv[], char *envp[])
 	m.path = NULL;
 	m.index_path = 0;
 	m.envp = envp;
-	builtins(&m, argc, argv;
+	builtins(&m, argc, argv);
 	cleanup(&m, EXIT);
 }

@@ -12,18 +12,18 @@
 
 #include "minishell.h"
 
-void	builtins(t_list *m, int argc, char *argv)
+void	builtins(t_list *m, int argc, char **argv)
 {
 	if (argv[1])
 	{
 		if (ft_strncmp(argv[1], "pwd\0", 4) == 0)
-			ft_pwd(&m);
+			ft_pwd(m);
 		else if (ft_strncmp(argv[1], "env\0", 4) == 0)
-			ft_env(&m);
+			ft_env(m);
 		else if (ft_strncmp(argv[1], "unset\0", 7) == 0)
 		{
 			if (argv[2])
-				ft_unset(&m, argv[2]);
+				ft_unset(m, argv[2]);
 			else
 				ft_write_error(NOT_ENOUGH_ARGUMENTS, argv[1]);
 		}

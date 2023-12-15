@@ -43,7 +43,10 @@ ttyname
 ttyslot
 ioctl
 getenv
-tcsetattr, tcgetattr, tgetent, tgetflag,
+tcsetattr
+tcgetattr
+tgetent
+tgetflag
 tgetnum
 tgetstr
 tgoto

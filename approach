@@ -20,5 +20,5 @@
     3. ctrl-\
 
 Questions?
-How do we want to pass parameters around in the program
-  - linked lists?
+How is person 1 packaging the parameters read from the command line?
+    - linked lists?

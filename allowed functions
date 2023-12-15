@@ -1,4 +1,4 @@
-readline
+readline - has leaks
 rl_clear_history
 rl_on_new_line
 rl_replace_line
@@ -22,7 +22,7 @@ sigaction
 sigemptyset
 sigaddset
 kill
-exit,
+exit
 getcwd
 chdir
 stat

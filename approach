@@ -1,0 +1,24 @@
+1. read input from command line
+    1. ' '
+    2. " "
+    3. not interpret unclosed quotes or special chars (\ and ;)
+2. env path and execv
+    1. pipes
+    2. env variables ($xyz)
+    3. redirections < > >> <<
+3. builtin functions
+    1. echo && echo -n
+    2. cd (absolute and relative path)
+    3. pwd
+    4. export
+    5. unset
+    6. env
+    7. exit
+4. signal
+    1. ctrl-C
+    2. ctrl-D
+    3. ctrl-\
+
+Questions?
+How do we want to pass parameters around in the program
+  - linked lists?

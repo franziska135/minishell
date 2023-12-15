@@ -12,22 +12,37 @@
 
 #include "minishell.h"
 
-int	find_envp_path(t_list *m, char *str)
-{
-	int	i;
-	int	length;
 
-	i = 0;
-	length = ft_strlen(str);
-	while (m->envp[i])
+void	cleanup(t_list *m, int status)
+{
+	if (m)
 	{
-		if (ft_strncmp(m->envp[i], str, length) == 0)
-		{
-			m->index_path = i;
-			return (1);
-		}
-		i++;
+		if (m->path)
+			(free(m->path), m->path = NULL);
 	}
-	//error if the env variable does not exist
-	return (0);
+	if (status == EXIT)
+		exit (EXIT_FAILURE);
+}
+
+void	ft_write_error(int status, char *str)
+{
+	
+	if (status == CANT_OPEN)
+	{
+		write(2, "minishell: ", 11);
+		write(2, "no such file or directory: ", 28);
+		write(2, str, ft_strlen(str));
+	}
+	else if (status == NOT_ENOUGH_ARGUMENTS)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, ": not enough arguments", 22);
+	}
+	else if (status == CMD_NOT_FOUND)
+	{
+		write(2, "minishell: ", 11);
+		write(2, "command not found: ", 19);
+		write(2, str, ft_strlen(str));
+	}
+	write(2, "\n", 1);
 }

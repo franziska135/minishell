@@ -44,8 +44,8 @@ char	*ft_strtrim(char *s1, char const *set)
 		size = 1;
 	result = (ft_substr(s1, start, (size), 0));
 	if (!result)
-		return (free(s1), NULL);
-	free(s1);
+		return (NULL);
+	//free(s1);
 	return (result);
 }
 

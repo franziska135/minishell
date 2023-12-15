@@ -18,6 +18,8 @@ int	main(int argc, char *argv[], char *envp[])
 
 	m.envp = NULL;
 	m.path = NULL;
+	m.index_path = 0;
 	m.envp = envp;
-	ft_pwd(&m)
+	builtins(&m, argc, argv;
+	cleanup(&m, EXIT);
 }

@@ -1,6 +1,6 @@
 1. read input from command line [major task]
     1. ' '
-    2. " "
+    2. "		"
     3. not interpret unclosed quotes or special chars (\ and ;)
 2. env path and execv
     1. pipes

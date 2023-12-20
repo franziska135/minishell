@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Created: 2023/09/05 13:25:06 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/09/05 13:25:08 by mzolfagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	find_envp_path(t_list *m, char *str)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	int	i;
-	int	length;
+	unsigned int	i;
 
 	i = 0;
-	length = ft_strlen(str);
-	while (m->envp[i])
+	while (i < n && (s1[i] != '\0' || s2[i] != '\0'))
 	{
-		if (ft_strncmp(m->envp[i], str, length) == 0)
-		{
-			m->index_path = i;
-			return (1);
-		}
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		i++;
 	}
-	//error if the env variable does not exist
 	return (0);
 }

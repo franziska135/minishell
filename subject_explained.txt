@@ -33,7 +33,8 @@ The shell should:
 >>	Search and launch the right executable (based on the PATH variable)
 	--------
 	(very intuitive through pipex)
-	absolute "/.../.../cat" and relative paths (cat)shall work
+	absolute "/.../.../cat" and relative paths (Makefile || ./Makefile || ../Makefile)shall work
+	attention: "cat" is alias and not relative path
 	--------
 	task:
 		-	find and arrange/split the path variable
@@ -50,7 +51,7 @@ The shell should:
 	to indivate the reception of the signal.
 	signal handler:	function that handles signals received by the system.
 	signal:			event (like a hook for minilibx)
-	default action: each singal has such a thing, if the program doesn not handle the signal
+	default action: each singal has such a thing, if the program does not handle the signal
 					e.g. default action for SIGINT (Ctrl+C) is to terminate the program
 	custom action: 	calling the signal handler function opon receiving the signal allowd
 					to chose a custom response
@@ -58,7 +59,7 @@ The shell should:
 	-> the rest of the program should periodically check the value of this
 	global variable (loop). Take appropriate action once the signal is received
 	--------
-	task: get to know signals, implemet a loop that runs indefinitel/until commands
+	task: get to know signals, implemet a loop that runs indefinitely/until commands
 	are processed or thats interrupted upon the signal
 	--------
 	questions:

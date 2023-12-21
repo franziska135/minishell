@@ -31,6 +31,9 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <libgen.h>
+# include <signal.h>
+# include <spawn.h>
+# include <sys/ioctl.h>
 
 typedef struct s_path
 {

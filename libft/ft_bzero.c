@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Created: 2023/09/05 12:49:36 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/09/05 12:49:42 by mzolfagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	ft_bzero(void *s, size_t n)
 {
-	t_list	m;
+	unsigned int		i;
+	char				*ptr;
 
-	m.envp = NULL;
-	m.path = NULL;
-	m.index_path = 0;
-	m.envp = envp;
-	builtins(&m, argc, argv);
-	cleanup(&m, EXIT);
+	ptr = s;
+	i = 0;
+	while (i < n)
+	{
+		ptr[i] = 0;
+		i++;
+	}
 }

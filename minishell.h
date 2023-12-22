@@ -34,6 +34,9 @@
 # include <signal.h>
 # include <spawn.h>
 # include <sys/ioctl.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
 
 typedef struct s_path
 {

@@ -38,6 +38,22 @@
 # include <readline/history.h>
 
 
+typedef struct s_simple_command
+{
+	char	**command;
+	char	**arguments;
+
+}	t_simple;
+
+typedef struct s_compound_command
+{
+	t_simple	**cmd;
+	char		*infile;
+	char		*outfile;
+
+}	t_compound;
+
+
 typedef struct s_path
 {
 	char	**paths_split;

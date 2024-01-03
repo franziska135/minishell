@@ -51,7 +51,9 @@ typedef struct s_compound_command
 	t_simple	**cmd;
 	char		*infile;
 	char		*outfile;
-
+	char		*append;
+	char		*hd_delimiter;
+	
 }	t_compound;
 
 

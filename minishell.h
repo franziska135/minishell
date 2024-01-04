@@ -37,6 +37,26 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+//command table
+typedef struct s_simple_command
+{
+	char	**command;
+	char	*outfile;
+	char	*infile;
+	char	*append;
+	char	**hd_delimiter;
+
+}	t_simple;
+
+//global struct
+typedef struct s_compound_command
+{
+	t_simple	**cmd;
+	char	*cmd_line;
+	
+
+}	t_compound;
+
 
 typedef struct s_path
 {
@@ -46,10 +66,5 @@ typedef struct s_path
 	char	**envp;
 	int		path_amt;
 }	t_path;
-
-
-
-
-
 
 #endif

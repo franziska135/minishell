@@ -13,25 +13,24 @@
 #include "minishell.h"
 #include "execute.h"
 
-void	cleanup(t_path *binarypath, t_compound *compound)
+void	cleanup(t_list *execute, t_compound *compound)
 {
-	if (binarypath)
+	if (execute)
 	{
-		if (binarypath->paths)
-			free_double_ptr(binarypath->paths);
+		if (execute->binary_paths)
+			free_double_ptr(execute->binary_paths);
 	}
 	if (compound)
 	{
-		if (compound->infile)
-			(free(compound->infile), compound->infile = NULL);
-		if (compound->outfile)
-			(free(compound->outfile), compound->outfile = NULL);
 		if (compound->cmd)
 			free_list(compound->cmd);
+		if (compound->cmd_line)
+			(free(compound->cmd_line), compound->cmd_line = NULL);
 	}
 	//no exit
 }
 
+//may need adjustments if struct changes
 void	free_list(t_simple **cmd)
 {
 	int	i;
@@ -45,8 +44,15 @@ void	free_list(t_simple **cmd)
 		z = 0;
 		if (cmd[i]->command)
 			free_double_ptr(cmd[i]->command);
-		if (cmd[i]->arguments)
-			free_double_ptr(cmd[i]->arguments);
+		if (cmd[i]->hd_delimiter)
+			free_double_ptr(cmd[i]->hd_delimiter);
+		if (cmd[i]->outfile)
+			(free(cmd[i]->outfile), cmd[i]->outfile = NULL);
+		if (cmd[i]->infile)
+			(free(cmd[i]->infile), cmd[i]->infile = NULL);
+		if (cmd[i]->append)
+			(free(cmd[i]->append), cmd[i]->append = NULL);
+
 		i++;
 	}
 }

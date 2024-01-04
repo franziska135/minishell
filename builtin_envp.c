@@ -13,37 +13,39 @@
 #include "minishell.h"
 #include "execute.h"
 
-// void	init_path_struct(t_path *binarypaths)
-// {
-// 	binarypaths->paths = NULL;
-// 	binarypaths->paths_str = NULL;
-// }
+void	init_path_struct(t_list *execute)
+{
+	execute->binary_paths = NULL;
+	execute->amt_children = 0;
+	execute->amt_pipes = 0;
+}
 
-void	split_binary_paths(t_path *binarypaths, t_compound *compound)
+void	split_binary_paths(t_list *execute, t_compound *compound)
 {
 	char	*path_str;
 
-	binarypaths->paths = NULL;
+	
 	path_str = getenv("PATH");
 	if (path_str != NULL)
 	{
-		binarypaths->paths = ft_split(path_str, ':');
-		if (!binarypaths->paths)
-			cleanup(binarypaths, compound);
-		print_paths(binarypaths);
-		free(path_str);
+		execute->binary_paths = ft_split(path_str, ':');
+		if (!execute->binary_paths)
+			cleanup(execute, compound);
+		print_paths(execute);
+		//no free of pathstr because it's a pointer to the env
 		path_str = NULL;
 	}
 }
+
 //can be taken out later
-void	print_paths(t_path *binarypaths)
+void	print_paths(t_list *execute)
 {
 	int	i;
 
 	i = 0;
-	while (binarypaths->paths[i] != NULL)
+	while (execute->binary_paths[i] != NULL)
 	{
-		printf("%s\n", binarypaths->paths[i]);
+		printf("%s\n", execute->binary_paths[i]);
 		i++;
 	}
 }

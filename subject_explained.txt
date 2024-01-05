@@ -1,0 +1,162 @@
+The shell should:
+
+>>	Display a prompt when waiting for a new command.
+	--------
+	explanation: message indicating that the shell is awaiting a command.
+	Usually it includes information such as current directory, username
+	When a user sees this promt, they can start typing a cmd.
+	example: user@hostname:/current/directory$
+	--------
+	task: design/implement a promt, it should be displaed every time 
+	the shell waits for a command -> the command should then be exec.
+	##############################################################################
+>>	Have a working history
+	--------
+	ability of the shell to maintain a history of previously executed
+	cmds and retreive them
+	--------
+	task: 
+		- 	find out which commands are not stored in the history
+				1. successfully executed
+				2. those that were not found
+				3. those that waited for a promt and user terminated ctrl+c (cat and ctrl+c)
+				4. however, not those that were not finished writing (unclosed brackets...)
+		-	history storage (in a file or memory buffer); 
+			decide on how much history shall be kept
+		- 	user should be able to navigate with the arrow keys 
+			(usually by index) 
+		
+	--------
+	pro move: navigate through previous command with shortcuts (end, start,
+	'!n' = may refer to the nth command in history)
+	##############################################################################
+>>	Search and launch the right executable (based on the PATH variable)
+	--------
+	(very intuitive through pipex)
+	absolute "/.../.../cat" and relative paths (Makefile || ./Makefile || ../Makefile)shall work
+	attention: "cat" is alias and not relative path
+	--------
+	task:
+		-	find and arrange/split the path variable
+		-	relative path: locate executable
+			both variants: check access
+		-	store path and executable + options in buffer and pass it 
+			to fork/execv
+	##############################################################################
+>>	Only one global variable to indicate a received signal.
+	--------
+	signals: upon receiving a signal, the normal flow of exec. is interrupted,
+	signal handler is invoked to handle the signal.
+	When a signal is caught, the handler should set the global variable
+	to indivate the reception of the signal.
+	signal handler:	function that handles signals received by the system.
+	signal:			event (like a hook for minilibx)
+	default action: each singal has such a thing, if the program does not handle the signal
+					e.g. default action for SIGINT (Ctrl+C) is to terminate the program
+	custom action: 	calling the signal handler function opon receiving the signal allowd
+					to chose a custom response
+	signum:			signal number; unique
+	-> the rest of the program should periodically check the value of this
+	global variable (loop). Take appropriate action once the signal is received
+	--------
+	task: get to know signals, implemet a loop that runs indefinitely/until commands
+	are processed or thats interrupted upon the signal
+	--------
+	questions:
+	should receiving a signal exit the minishell or terminate the running process?
+	ctrl+c works whenever we execute a program. since we don't want minishell to be terminated(?),
+	should we somehow call a handler and redefine what should happen (stop of the process)?
+	idea:
+	loop keeping process running (while 1); upon signal, 1 is changed to 0 -> loop exit
+	--------
+	good to know:
+	sigaction is the newer version of sigaction, allows for more liberty
+	Ctrl+C automatically sends SIGINT signal to the running process
+	##############################################################################
+>>	Not interpret unclosed quotes or special characters which are not required by the
+	subject such as \ (backslash) or ; (semicolon)
+	--------
+	unclosed quotes:	if quotes (" and ') are not closed, the cmd shall not be interpreted
+						instead: the shell shall continue to promt ("quote>") to allow further typing
+						
+						interesting bash behavior:
+						c3r9p5% 'hello      
+						quote> '
+						zsh: command not found: hello\n
+
+						vs.
+
+						c3r9p5% 'hello'     
+						zsh: command not found: hello
+
+	special chars:		idk if they mean we shall not interpret all ";" or just not if they are	
+						not necessary for the command syntax. (here they are neces. :cmd1; cmd2);
+	##############################################################################
+>>	Handle ’ (single quotes)
+	--------
+	'': 	interpret the content within the quotes as literal string
+	eg:		echo $PATH
+			/nfs/homes/fmarggra/.local/funcheck/host:/nfs/homes/fmarggra/bin:.....
+			echo '$PATH'
+			$PATH
+	task:
+		-	identify and parse '' strings
+		-	treak chars like literals
+	##############################################################################
+>>	Handle " (double quote)
+	--------
+	treat the contents enclosed in "" as a literal strng, but with exception:
+	-> $(sth) should still be interpreted
+	example:	$ variable="world"
+				$ echo "Hello, $variable!"
+				Hello, world!
+	
+	task:
+		-	identify and parse double quotes strings
+		-	preserve literal value
+		-	expand the variables
+
+	example:
+	variable="lots of character"; echo 'A literal string with "\$variable"'
+	A literal string with "\$variable"
+
+	variable="lots of character"; echo 'A literal string with \$variable'
+	A literal string with \$variable
+
+	variable="lots of character"; echo A literal string with "\$variable"
+	A literal string with $variable
+
+	variable="lots of character"; echo A literal string with \$variable
+	A literal string with $variable
+
+	variable="lots of character"; echo A literal string with $variable
+	 literal string with lots of character
+
+	variable="lots of character"; echo 'A literal string with "$variable"'
+	A literal string with "$variable"
+
+	variable="lots of character"; echo A literal string with "$variable"
+	A literal string with lots of character
+
+	variable="lots of character"; echo A literal string with "\$variable"
+	A literal string with $variable
+	##############################################################################
+>>	Implement Redirections
+
+	task:
+		-	<: open the file for reading and set it as standard input for the cmd
+		-	>: open/create the file for writing (rights!) and set it as stdout
+		-	<<: here doc; read input from user until a line with specifie delimiter
+				is found; content is treated as standard input
+		-	>>: open the file for writing in append mode, set it as the standard output
+				for the command
+	##############################################################################
+>>	Implement Pipes
+	multiple
+	##############################################################################
+>>	Hanldee environment variables
+	$(sth) shall expand to their value
+
+	example:
+	$PATH
+	/nfs/homes/fmarggra/.local/funcheck/host:/nfs/homes/fmarggra/bin:....

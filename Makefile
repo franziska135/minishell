@@ -1,40 +1,36 @@
-NAME	=	minishell
-#NAME2	=	minishell_bonus
-INC		= 	minishell.h
-CC		=	cc
-CFLAGS	=	-g
-# CFLAGS	=	-Wall -Wextra -Werror -g
-AR		=	ar rc
-RM		=	rm -f
 
-SRC		=	builtins.c envp.c main.c libft.c cleanup.c
+NAME = minishell
 
-# SRC2	=	builtins.c envp.c main.c libft.c cleanup.c
+SRCS =  $(wildcard *.c)
 
-OBJS	=	$(SRC:.c=.o)
-# OBJS2	=	$(SRC2:.c=.o)
+BONUS = 
 
-.PHONY:		all clean fclean re
+OBJS = ${SRCS:.c=.o}
+BONUS_OBJS = ${BONUS:.c=.o}
 
-all:		$(NAME)
 
-all2:		$(NAME2)
+CC = cc
+CFLAGS = -g
+RM	=	rm -rf
 
-$(NAME): 	$(OBJS)
-			$(CC) $(OBJS) -o $(NAME)
+all: ${NAME}
 
-$(NAME2):	$(OBJS2)
-			$(CC) $(OBJS2) -o $(NAME2)
+${NAME}: ${OBJS}
+	make --no-print-directory -C ./libft
+	${CC} ${CFLAGS} -o ${NAME} $^ ./libft/libft.a
 
-%.o: %.c 	$(INC)
-			$(CC) $(CFLAGS) -c $< -o $@
+bonus: ${BONUS_OBJS}
+	make --no-print-directory -C ./libft
+	${CC} ${CFLAGS} -o ${NAME} $^ ./libft/libft.a
 
-clean:
-			$(RM) $(OBJS) $(OBJS2)
+clean: 
+	make --no-print-directory -C ./libft fclean
+	${RM} ${OBJS} ${BONUS_OBJS}
 
-fclean: 	clean
-			$(RM) $(NAME) $(NAME2)
 
-re:			clean all
+fclean: clean
+	${RM} ${NAME} ${CHECK}
 
-# bonus:		clean all2
+re: fclean all
+
+.PHONY: all bonus clean fclean re

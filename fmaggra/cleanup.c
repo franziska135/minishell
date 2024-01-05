@@ -10,50 +10,39 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# define EXIT 1
-# define CANT_OPEN 1
-# define NOT_ENOUGH_ARGUMENTS 2
-# define CMD_NOT_FOUND 3
-# define TRUE 1
-# define FALSE 0
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <string.h>
-# include <limits.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <errno.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <dirent.h>
-# include <libgen.h>
-# include <signal.h>
-# include <spawn.h>
-# include <sys/ioctl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-//command table
-typedef struct s_simple_command
+void	cleanup(t_list *m, int status)
 {
-	char	**command;
-	char	**hd_delimiter;
-	int		in_fd;
-	int		out_fd;
-	int		builtin; //a 0/1 flag for execution
-}	t_simple;
+	if (m)
+	{
+		if (m->path)
+			(free(m->path), m->path = NULL);
+	}
+	if (status == EXIT)
+		exit (EXIT_FAILURE);
+}
 
-//global struct
-typedef struct s_compound_command
+void	ft_write_error(int status, char *str)
 {
-	t_simple	**cmd;
-	char		ms_path[200];
-	int			amt_simple_cmds;
-}	t_compound;
-#endif
+	
+	if (status == CANT_OPEN)
+	{
+		write(2, "minishell: ", 11);
+		write(2, "no such file or directory: ", 28);
+		write(2, str, ft_strlen(str));
+	}
+	else if (status == NOT_ENOUGH_ARGUMENTS)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, ": not enough arguments", 22);
+	}
+	else if (status == CMD_NOT_FOUND)
+	{
+		write(2, "minishell: ", 11);
+		write(2, "command not found: ", 19);
+		write(2, str, ft_strlen(str));
+	}
+	write(2, "\n", 1);
+}

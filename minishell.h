@@ -41,10 +41,9 @@
 typedef struct s_simple_command
 {
 	char	**command;
-	char	*outfile;
 	char	*infile;
-	char	*append;
 	char	**hd_delimiter;
+	int		out_fd;
 
 }	t_simple;
 
@@ -53,7 +52,6 @@ typedef struct s_compound_command
 {
 	t_simple	**cmd;
 	char	*cmd_line;
-	
 
 }	t_compound;
 

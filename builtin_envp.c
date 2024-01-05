@@ -48,4 +48,5 @@ void	print_paths(t_list *execute)
 		printf("%s\n", execute->binary_paths[i]);
 		i++;
 	}
+	write (1, "\n", 1);
 }

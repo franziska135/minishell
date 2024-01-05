@@ -43,10 +43,9 @@
 typedef struct s_simple_command
 {
 	char	**command;
-	char	*outfile;
-	char	*infile;
-	char	*append;
 	char	**hd_delimiter;
+	int		in_fd;
+	int		out_fd;
 	int		builtin; //a 0/1 flag for execution
 }	t_simple;
 
@@ -54,8 +53,7 @@ typedef struct s_simple_command
 typedef struct s_compound_command
 {
 	t_simple	**cmd;
-	//necessary? if history is generated at the beginning
-	char		*cmd_line;
+	char		ms_path[200];
 	int			amt_simple_cmds;
 }	t_compound;
 #endif

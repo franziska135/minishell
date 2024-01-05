@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "execute.h"
 
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	if (argv[1])
 	{
@@ -27,33 +27,46 @@ int	main(int argc, char *argv[])
 		simple2.command = malloc(sizeof(char *));
 		simple1.command[0] = malloc(100 + 1);
 		simple1.command[1] = malloc(100 + 1);
+		simple1.command[2] = malloc(100 + 1);
+		simple1.command[3] = malloc(100 + 1);
 		simple2.command[0] = malloc(100 + 1);
 		strcpy(simple1.command[0], argv[1]);
+		
 		if (argv[2])
 			strcpy(simple1.command[1], argv[2]);
 		else 
 			simple1.command[1] = NULL;
+		if (argv[3])
+			strcpy(simple1.command[2], argv[3]);
+		else 
+			simple1.command[2] = NULL;
+		if (argv[4])
+			strcpy(simple1.command[3], argv[4]);
+		else 
+			simple1.command[3] = NULL;
 		strcpy(simple2.command[0], "cat");
 		compound.cmd = malloc(sizeof(t_simple *));
 		compound.cmd[0] = &simple1;
 		compound.cmd[1] = &simple2;
+	compound.envp = envp;
 	init_path_struct(&execute);
 	//splits the path if one exists, otherwise does nothing, error message later
 	split_binary_paths(&execute, &compound);
+	//print_paths(&execute);
 	// printf("check");
 	tweak_simple_commands(&execute, &compound);
 	process_commands(&execute, &compound);
-	printf("children:%d\n", execute.amt_children);
-	printf("pipes:%d\n", execute.amt_pipes);
+	// printf("children:%d\n", execute.amt_children);
+	// printf("pipes:%d\n", execute.amt_pipes);
 	// builtins(&m, argc, argv;
-//	cleanup(&execute, &compound);
+	// cleanup(&execute, &compound);
 	}
 }
 //determines what process shall be used, one parent/one child/pipex
 void	process_commands(t_list *execute, t_compound *compound)
 {
 	if (execute->amt_children == 0)
-		execute_builtin(compound->cmd[0]);
+		execute_builtin(compound, compound->cmd[0]);
 	// else if (execute->amt_children == 1)
 	// 	//execute_one_child()
 	// else
@@ -68,27 +81,25 @@ void	tweak_simple_commands(t_list *execute, t_compound *compound)
 	{
 		execute->amt_children = compound->amt_simple_cmds;
 		execute->amt_pipes = compound->amt_simple_cmds - 1;
-		int i = 0;
-		printf("\n");
-		while (i < compound->amt_simple_cmds)
-		{
-		printf("command %d: \t%s\n", i, compound->cmd[i]->command[0]);
-		printf("builtin: \t%d\n", compound->cmd[i]->builtin);
-		i++;
-		}
+		// int i = 0;
+		// printf("\n");
+		// while (i < compound->amt_simple_cmds)
+		// {
+		// printf("command %d: \t%s\n", i, compound->cmd[i]->command[0]);
+		// printf("builtin: \t%d\n", compound->cmd[i]->builtin);
+		// i++;
+		// }
 	}
-	else
-		printf("only one command: %s\n", compound->cmd[0]->command[0]);
-		//else: the default value of amt children and amt pipes is set to 0
+	//else
+	//printf("only one command: %s\n", compound->cmd[0]->command[0]);
+	//else: the default value of amt children and amt pipes is set to 0
 }
 
-void	execute_builtin(t_simple *simple_command)
+void	execute_builtin(t_compound *compound, t_simple *simple_command)
 {
 	if (simple_command->builtin == ECHO)
-		printf("echo\n");
-		//builtin_echo();
+		builtin_echo(simple_command);
 	else if (simple_command->builtin == CD)
-		// printf("cd\n");
 		builtin_cd(simple_command);
 	else if (simple_command->builtin == PWD)
 		builtin_pwd();
@@ -99,8 +110,7 @@ void	execute_builtin(t_simple *simple_command)
 		printf("unset\n");
 		//builtin_unset();
 	else if (simple_command->builtin == ENV)
-		printf("env\n");
-		//builtin_env();
+		builtin_envp(compound);
 	else if (simple_command->builtin == B_EXIT)
 		printf("exit\n");
 		//builtin_exit();

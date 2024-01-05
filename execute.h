@@ -48,11 +48,15 @@ void		print_paths(t_list *execute);
 void		tweak_simple_commands(t_list *execute, t_compound *compound);
 void		flag_builtins(t_simple **cmd);
 void		process_commands(t_list *execute, t_compound *compound);
-void		execute_builtin(t_simple *simple_command);
+void		execute_builtin(t_compound *compound, t_simple *simple_command);
 
 //builtins
 void		builtin_pwd(void);
 void		builtin_cd(t_simple *simple_command);
+void		builtin_envp(t_compound *compound);
+void		builtin_echo(t_simple *s_cmd);
+int			check_for_n(t_simple *s_cmd);
+int			check_for_only_n(char *str);
 
 //cleaning up at error
 void		cleanup(t_list *execute, t_compound *compound);

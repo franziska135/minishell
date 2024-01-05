@@ -55,5 +55,6 @@ typedef struct s_compound_command
 	t_simple	**cmd;
 	char		ms_path[200];
 	int			amt_simple_cmds;
+	char		**envp;
 }	t_compound;
 #endif

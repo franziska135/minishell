@@ -31,7 +31,6 @@ void	split_binary_paths(t_list *execute, t_compound *compound)
 		execute->binary_paths = ft_split(path_str, ':');
 		if (!execute->binary_paths)
 			cleanup(execute, compound);
-		print_paths(execute);
 		//no free of pathstr because it's a pointer to the env
 		path_str = NULL;
 	}

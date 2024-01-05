@@ -20,42 +20,42 @@ void	cleanup(t_list *execute, t_compound *compound)
 		if (execute->binary_paths)
 			free_double_ptr(execute->binary_paths);
 	}
-	if (compound)
-	{
-		if (compound->cmd)
-			free_list(compound->cmd);
-		if (compound->cmd_line)
-			(free(compound->cmd_line), compound->cmd_line = NULL);
-	}
+	// if (compound)
+	// {
+	// 	if (compound->cmd)
+	// 		free_list(compound->cmd);
+	// 	if (compound->cmd_line)
+	// 		(free(compound->cmd_line), compound->cmd_line = NULL);
+	// }
 	//no exit
 }
 
 //may need adjustments if struct changes
-void	free_list(t_simple **cmd)
-{
-	int	i;
-	int	j;
-	int	z;
+// void	free_list(t_simple **cmd)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	z;
 
-	i = 0;
-	while (cmd[i])
-	{
-		j = 0;
-		z = 0;
-		if (cmd[i]->command)
-			free_double_ptr(cmd[i]->command);
-		if (cmd[i]->hd_delimiter)
-			free_double_ptr(cmd[i]->hd_delimiter);
-		if (cmd[i]->outfile)
-			(free(cmd[i]->outfile), cmd[i]->outfile = NULL);
-		if (cmd[i]->infile)
-			(free(cmd[i]->infile), cmd[i]->infile = NULL);
-		if (cmd[i]->append)
-			(free(cmd[i]->append), cmd[i]->append = NULL);
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		j = 0;
+// 		z = 0;
+// 		if (cmd[i]->command)
+// 			free_double_ptr(cmd[i]->command);
+// 		if (cmd[i]->hd_delimiter)
+// 			free_double_ptr(cmd[i]->hd_delimiter);
+// 		if (cmd[i]->outfile)
+// 			(free(cmd[i]->outfile), cmd[i]->outfile = NULL);
+// 		if (cmd[i]->infile)
+// 			(free(cmd[i]->infile), cmd[i]->infile = NULL);
+// 		if (cmd[i]->append)
+// 			(free(cmd[i]->append), cmd[i]->append = NULL);
 
-		i++;
-	}
-}
+// 		i++;
+// 	}
+// }
 
 void	free_double_ptr(char **double_ptr)
 {

@@ -31,25 +31,25 @@ void	builtin_pwd(void)
 //-1 on failure, what's ther
 void	builtin_cd(t_simple *s_cmd)
 {
-	char	*path_str;
-
 	if (!s_cmd->command[1])
 	{
-		path_str = getenv("HOME");
-		chdir(path_str);
-		//-1 on failure, what's the error if chanign directories didn't work?
+		if (getenv("HOME") != NULL)
+			chdir(getenv("HOME"));//what's the error if chanign directories didn't work?
+		else
+			print_error("bash: ", "cd: ", NULL, "HOME not set");
 	}
+	else if (s_cmd->command[2])
+		print_error("bash: ", "cd: ", NULL, "too many arguments");
 	else if (ft_strncmp(s_cmd->command[1], "..", 2) == 0)
-	{
 		chdir("..");
 		//print_error("bash: ", "cd: ", s_cmd->command[1], strerror(errno));
 		//-1 on failure, what's the error if chanign directories didn't work?
-	}
 	else if (ft_strncmp(s_cmd->command[1], "-", 1) == 0)
 	{
-		path_str = getenv("OLDPWD");
-		chdir(path_str);
-		//-1 on failure, what's the error if chanign directories didn't work?
+		if (getenv("OLDPWD") != NULL)
+			chdir("OLDPWD");//-1 on failure, what's the error if chanign directories didn't work?
+		else
+			print_error("bash: ", "cd: ", NULL, "OLDPWD not set");
 	}
 	else
 	{
@@ -58,6 +58,82 @@ void	builtin_cd(t_simple *s_cmd)
 	}
 	//can be removed later:
 	builtin_pwd();
+}
+
+void	builtin_envp(t_compound *compound)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	write (2, "-------ENV START-------------\n", 30);
+	while (compound->envp[i])
+	{
+		write(1, compound->envp[i], ft_strlen(compound->envp[i]));
+		write(1, "\n", 1);
+		i++;
+	}
+	write (2, "-------ENV END-------------\n", 28);
+	//newline at the end?
+}
+
+void	builtin_echo(t_simple *s_cmd)
+{
+	int	i;
+	int	start;
+
+	i = 0;
+	if (s_cmd->command[1])
+	{
+		//returns the index to the last occurence of -n...
+		start = check_for_n(s_cmd);
+		printf("start: %d\n", start);
+		if (ft_strncmp(s_cmd->command[start], "-n", 2) == 0)
+		{
+			if (s_cmd->command[start + 1])
+				write (1, s_cmd->command[start + 1], ft_strlen(s_cmd->command[start + 1]));
+		}
+		else
+		{
+			write (1, s_cmd->command[1], ft_strlen(s_cmd->command[1]));
+			write (1, "\n", 1);
+		}
+	}
+	else
+		write (1, "\n", 1);
+}
+
+int	check_for_n(t_simple *s_cmd)
+{
+	int		i;
+	int		index_last_only_n;
+
+	i = 1;
+	index_last_only_n = 1;
+	while (s_cmd->command[i] && check_for_only_n(s_cmd->command[i]) == TRUE)
+	{
+		index_last_only_n = i;
+		i++;
+	}
+	return (index_last_only_n);
+}
+
+int		check_for_only_n(char *str)
+{
+	int	i;
+	
+	i = 0;
+	if (str[i] == '-' && str[i + 1])
+	{
+		i++;
+		while (str[i] == 'n')
+			i++;
+	}
+	if (str[i] == '\0')
+		return (TRUE);
+	else
+		return (FALSE);
 }
 
 void	print_error(char *str1, char *str2, char *str3, char *str4)
@@ -75,61 +151,7 @@ void	print_error(char *str1, char *str2, char *str3, char *str4)
 		write (2, str4, ft_strlen(str4));
 	write (2, "\n", 1);
 }
+void	builtin_export(t_compound *compound)
+{
 
-//unset needs a parameter to be passed with it-> error check
-// void	ft_unset(t_list *m, char *str)
-// {
-// 	int	i;
-// 	char *tmp;
-
-// 	tmp = NULL;
-// 	if (find_envp_path(m, str) == 1)
-// 	{
-// 		i = m->index_path;
-// 		free(m->envp[m->index_path]);
-// 		m->envp[m->index_path] = NULL;
-// 		while (m->envp[i + 1])
-// 		{
-// 			tmp = ft_strdup(m->envp[i + 1]);
-// 			if (!tmp)
-// 				cleanup(m, EXIT);
-// 			free(m->envp[i]);
-// 			m->envp[i] = tmp; 
-// 			i++;
-// 		}
-// 		if (tmp)
-// 			(free(tmp), tmp = NULL);
-// 		// if (m->envp[i])
-// 		// 	free(m->envp[i]);
-// 	}
-// }
-
-// // void	ft_echo(t_list *m)
-// // {
-
-// // }
-
-// // void	ft_cd(t_list *m)
-// // {
-
-// // }
-
-// // void	ft_export(t_list *m)
-// // {
-	
-// // }
-// void	ft_env(t_list *m)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (m->envp[i])
-// 	{
-// 		printf("%s\n", m->envp[i]);
-// 		i++;
-// 	}
-// }
-// // void	ft_exit(t_list *m)
-// // {
-	
-// // }
+}

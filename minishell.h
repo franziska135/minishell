@@ -38,6 +38,7 @@
 # include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "./libft/libft.h"
 
 //command table
 typedef struct s_simple_command
@@ -52,7 +53,7 @@ typedef struct s_simple_command
 //global struct
 typedef struct s_compound_command
 {
-	t_simple	**cmd;
+	t_simple	*cmd;
 	char		ms_path[200];
 	int			amt_simple_cmds;
 }	t_compound;

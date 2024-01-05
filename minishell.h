@@ -17,6 +17,8 @@
 # define CANT_OPEN 1
 # define NOT_ENOUGH_ARGUMENTS 2
 # define CMD_NOT_FOUND 3
+# define TRUE 1
+# define FALSE 0
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -43,26 +45,15 @@ typedef struct s_simple_command
 	char	**command;
 	char	*infile;
 	char	**hd_delimiter;
-	int		out_fd;
-
+	int		builtin; //a 0/1 flag for execution
 }	t_simple;
 
 //global struct
 typedef struct s_compound_command
 {
 	t_simple	**cmd;
-	char	*cmd_line;
-
+	//necessary? if history is generated at the beginning
+	char		*cmd_line;
+	int			amt_simple_cmds;
 }	t_compound;
-
-
-typedef struct s_path
-{
-	char	**paths_split;
-	char	*path;
-	int		index_path;
-	char	**envp;
-	int		path_amt;
-}	t_path;
-
 #endif

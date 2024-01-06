@@ -43,8 +43,7 @@
 //command table
 typedef struct s_simple_command
 {
-	char	**command;
-	char	**hd_delimiter;
+	char	**cmd;
 	int		in_fd;
 	int		out_fd;
 	int		builtin; //a 0/1 flag for execution
@@ -53,8 +52,23 @@ typedef struct s_simple_command
 //global struct
 typedef struct s_compound_command
 {
-	t_simple	*cmd;
+	t_simple	*scmd;
 	char		ms_path[200];
-	int			amt_simple_cmds;
+	size_t			nbr_scmd;
 }	t_compound;
+
+void	struct_free(t_compound cmds);
+void	dpointer_free(char **str);
+
+void	print_struct(t_compound compound);
+void	print_dpointer(char **str);
+
+t_compound	parser(char *str);
+int	is_metachar(char c);
+void	err_handler(char *str);
+int	in_quot(char *str, size_t n);
+
+
+
+
 #endif

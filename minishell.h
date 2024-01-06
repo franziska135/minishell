@@ -57,6 +57,8 @@ typedef struct s_compound_command
 	size_t		nbr_scmd;
 }	t_compound;
 
+
+
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 

@@ -23,8 +23,9 @@ int	main(int argc, char *argv[], char *envp[])
 	t_simple	simple2;
 
 		compound.amt_simple_cmds = 1;
-		simple1.command = malloc(sizeof(char *));
-		simple2.command = malloc(sizeof(char *));
+		compound.cmd = malloc(sizeof(t_simple) * 2);
+		simple1.command = malloc(sizeof(char *) * 10);
+		simple2.command = malloc(sizeof(char *) * 10);
 		simple1.command[0] = malloc(100 + 1);
 		simple1.command[1] = malloc(100 + 1);
 		simple1.command[2] = malloc(100 + 1);
@@ -45,17 +46,16 @@ int	main(int argc, char *argv[], char *envp[])
 		else 
 			simple1.command[3] = NULL;
 		strcpy(simple2.command[0], "cat");
-		compound.cmd = malloc(sizeof(t_simple *));
-		compound.cmd[0] = &simple1;
-		compound.cmd[1] = &simple2;
+		compound.cmd[0] = simple1;
+		compound.cmd[1] = simple2;
 	compound.envp = envp;
 	init_path_struct(&execute);
 	//splits the path if one exists, otherwise does nothing, error message later
 	split_binary_paths(&execute, &compound);
 	//print_paths(&execute);
 	// printf("check");
-	tweak_simple_commands(&execute, &compound);
-	process_commands(&execute, &compound);
+	// tweak_simple_commands(&execute, &compound);
+	// process_commands(&execute, &compound);
 	// printf("children:%d\n", execute.amt_children);
 	// printf("pipes:%d\n", execute.amt_pipes);
 	// builtins(&m, argc, argv;
@@ -66,7 +66,7 @@ int	main(int argc, char *argv[], char *envp[])
 void	process_commands(t_list *execute, t_compound *compound)
 {
 	if (execute->amt_children == 0)
-		execute_builtin(compound, compound->cmd[0]);
+		execute_builtin(compound, &compound->cmd[0]);
 	// else if (execute->amt_children == 1)
 	// 	//execute_one_child()
 	// else
@@ -75,9 +75,9 @@ void	process_commands(t_list *execute, t_compound *compound)
 
 void	tweak_simple_commands(t_list *execute, t_compound *compound)
 {
-	flag_builtins(compound->cmd);
+	flag_builtins(&compound->cmd);
 	//is it correct to assume that there is at least one command?
-	if (compound->amt_simple_cmds > 1 || compound->cmd[0]->builtin == FALSE)
+	if (compound->amt_simple_cmds > 1 || compound->cmd[0].builtin == FALSE)
 	{
 		execute->amt_children = compound->amt_simple_cmds;
 		execute->amt_pipes = compound->amt_simple_cmds - 1;

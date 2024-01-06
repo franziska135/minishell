@@ -1,27 +1,27 @@
 #include "minishell.h"
 
-t_compound struct_init()
-{
-	t_compound	compound;
-	t_simple	*s_cmd;
+// t_compound struct_init()
+// {
+// 	t_compound	cmds;
+// 	t_simple	*scmd;
 
-	s_cmd = malloc(sizeof(t_simple) * 2);
-	s_cmd[0].cmd = ft_split("Hello World!", ' ');
-	s_cmd[0].in_fd = 0;
-	s_cmd[0].out_fd = 1;
+// 	scmd = malloc(sizeof(t_simple) * 2);
+// 	scmd[0].cmd = ft_split("Hello World!", ' ');
+// 	scmd[0].in_fd = 0;
+// 	scmd[0].out_fd = 1;
 
-	s_cmd[1].cmd = ft_split("goodbye HELL", ' ');
-	s_cmd[1].in_fd = 3;
-	s_cmd[1].out_fd = 4;
+// 	scmd[1].cmd = ft_split("goodbye HELL", ' ');
+// 	scmd[1].in_fd = 3;
+// 	scmd[1].out_fd = 4;
 	
-	compound.nbr_scmd = 2;
-	compound.scmd = s_cmd;
+// 	cmds.nbr_scmd = 2;
+// 	cmds.scmd = scmd;
 
 
 
 
-	return(compound);
-}
+// 	return(cmds);
+// }
 
 int main()
 {

@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-t_compound	parser(char *str);
-
 void	dpointer_free(char **str)
 {
 	int		i;

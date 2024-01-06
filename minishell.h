@@ -54,7 +54,7 @@ typedef struct s_compound_command
 {
 	t_simple	*scmd;
 	char		ms_path[200];
-	size_t			nbr_scmd;
+	size_t		nbr_scmd;
 }	t_compound;
 
 void	struct_free(t_compound cmds);
@@ -67,6 +67,8 @@ t_compound	parser(char *str);
 int	is_metachar(char c);
 void	err_handler(char *str);
 int	in_quot(char *str, size_t n);
+t_compound	struct_init(char *str);
+void	struct_nullifier(t_compound *cmds);
 
 
 

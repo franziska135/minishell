@@ -31,20 +31,20 @@ void	builtin_pwd(void)
 //-1 on failure, what's ther
 void	builtin_cd(t_simple *s_cmd)
 {
-	if (!s_cmd->command[1])
+	if (!s_cmd->cmd[1])
 	{
 		if (getenv("HOME") != NULL)
 			chdir(getenv("HOME"));//what's the error if chanign directories didn't work?
 		else
 			print_error("bash: ", "cd: ", NULL, "HOME not set");
 	}
-	else if (s_cmd->command[2])
+	else if (s_cmd->cmd[2])
 		print_error("bash: ", "cd: ", NULL, "too many arguments");
-	else if (ft_strncmp(s_cmd->command[1], "..", 2) == 0)
+	else if (ft_strncmp(s_cmd->cmd[1], "..", 2) == 0)
 		chdir("..");
-		//print_error("bash: ", "cd: ", s_cmd->command[1], strerror(errno));
+		//print_error("bash: ", "cd: ", s_cmd->cmd[1], strerror(errno));
 		//-1 on failure, what's the error if chanign directories didn't work?
-	else if (ft_strncmp(s_cmd->command[1], "-", 1) == 0)
+	else if (ft_strncmp(s_cmd->cmd[1], "-", 1) == 0)
 	{
 		if (getenv("OLDPWD") != NULL)
 			chdir("OLDPWD");//-1 on failure, what's the error if chanign directories didn't work?
@@ -53,8 +53,8 @@ void	builtin_cd(t_simple *s_cmd)
 	}
 	else
 	{
-		if (chdir(s_cmd->command[1]) == -1)
-			print_error("bash: ", "cd: ", s_cmd->command[1], strerror(errno));
+		if (chdir(s_cmd->cmd[1]) == -1)
+			print_error("bash: ", "cd: ", s_cmd->cmd[1], strerror(errno));
 	}
 	//can be removed later:
 	builtin_pwd();
@@ -84,24 +84,34 @@ void	builtin_echo(t_simple *s_cmd)
 	int	start;
 
 	i = 0;
-	if (s_cmd->command[1])
+	if (s_cmd->cmd[1])
 	{
 		//returns the index to the last occurence of -n...
-		start = check_for_n(s_cmd);
-		printf("start: %d\n", start);
-		if (ft_strncmp(s_cmd->command[start], "-n", 2) == 0)
-		{
-			if (s_cmd->command[start + 1])
-				write (1, s_cmd->command[start + 1], ft_strlen(s_cmd->command[start + 1]));
-		}
+		i = check_for_n(s_cmd);
+		if (check_for_only_n(s_cmd->cmd[i]) == TRUE)
+			builtin_echo_write(s_cmd, i);
 		else
 		{
-			write (1, s_cmd->command[1], ft_strlen(s_cmd->command[1]));
+			builtin_echo_write(s_cmd, 0);
 			write (1, "\n", 1);
 		}
 	}
 	else
 		write (1, "\n", 1);
+}
+
+void	builtin_echo_write(t_simple *s_cmd, int i)
+{
+	int	start;
+
+	start = i;
+	if (s_cmd->cmd[i + 1])
+		write (1, s_cmd->cmd[i + 1], ft_strlen(s_cmd->cmd[i + 1]));
+	while (s_cmd->cmd[++i + 1])
+	{
+		write (1, " ", 1);
+		write (1, s_cmd->cmd[i + 1], ft_strlen(s_cmd->cmd[i + 1]));
+	}
 }
 
 int	check_for_n(t_simple *s_cmd)
@@ -111,7 +121,7 @@ int	check_for_n(t_simple *s_cmd)
 
 	i = 1;
 	index_last_only_n = 1;
-	while (s_cmd->command[i] && check_for_only_n(s_cmd->command[i]) == TRUE)
+	while (s_cmd->cmd[i] && check_for_only_n(s_cmd->cmd[i]) == TRUE)
 	{
 		index_last_only_n = i;
 		i++;

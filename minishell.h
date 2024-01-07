@@ -38,7 +38,7 @@
 # include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "libft.libft.h"
+# include "libft/libft.h"
 
 //command table
 typedef struct s_simple_command
@@ -56,6 +56,14 @@ typedef struct s_compound_command
 	t_simple	*scmd;
 	char		ms_path[200];
 	size_t		nbr_scmd;
-	char		**envp;
+	char		**envp;\
+	t_env		env_ll;
 }	t_compound;
+
+typedef struct s_env
+{
+	char	*str;
+	t_env	next;
+}	t_env
+
 #endif

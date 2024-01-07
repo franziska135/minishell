@@ -1,12 +1,9 @@
 #include "minishell.h"
 
-int	is_metachar(char c)
+int	is_delimiter(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == ' ' || c == '\t'
-			|| c == '\'' || c == '\"' || c == '$')
-	{
+	if (c == '|' || c == '<' || c == '>' || c == ' ' || c == '\t')
 		return (TRUE);
-	}
 	return(FALSE);
 }
 

@@ -10,7 +10,7 @@ BONUS_OBJS = ${BONUS:.c=.o}
 
 
 CC = cc
-CFLAGS = -g -lreadline
+CFLAGS = -g
 RM	=	rm -rf
 
 all: ${NAME}

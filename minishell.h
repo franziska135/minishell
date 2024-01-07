@@ -67,20 +67,29 @@ typedef struct s_compound_command
 }	t_compound;
 
 
+// SYNTAX
+int	syntax(char *str);
+int	syntax_pipe(char *str);
+// int	syntax_redir(char *str);
+
+// LEXIS
+
+
+// PARSER
+
+// PARSER UTILS
+int	is_delimiter(char c);
+int	in_quot(char *str, size_t n);
+
+
+// UTILS
+void	err_handler(char *str);
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 
-void	print_struct(t_compound compound);
+// utils to be deleted
+void	print_struct(t_compound ccmd);
 void	print_dpointer(char **str);
-
-t_compound	parser(char *str);
-int	is_metachar(char c);
-void	err_handler(char *str);
-int	in_quot(char *str, size_t n);
-t_compound	struct_init(char *str);
-void	struct_nullifier(t_compound *cmds);
-
-
 
 
 

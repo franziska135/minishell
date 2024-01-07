@@ -46,7 +46,7 @@ void		print_paths(t_list *execute);
 
 //check amt of commands and pipes, children
 void		tweak_simple_commands(t_list *execute, t_compound *compound);
-void		flag_builtins(t_simple **cmd);
+void		flag_builtins(t_compound *cmds);
 void		process_commands(t_list *execute, t_compound *compound);
 void		execute_builtin(t_compound *compound, t_simple *simple_command);
 
@@ -57,6 +57,7 @@ void		builtin_envp(t_compound *compound);
 void		builtin_echo(t_simple *s_cmd);
 int			check_for_n(t_simple *s_cmd);
 int			check_for_only_n(char *str);
+void		builtin_echo_write(t_simple *s_cmd, int i);
 
 //cleaning up at error
 void		cleanup(t_list *execute, t_compound *compound);

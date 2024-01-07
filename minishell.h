@@ -43,7 +43,7 @@
 //command table
 typedef struct s_simple_command
 {
-	char	**command;
+	char	**cmd;
 	char	**hd_delimiter;
 	int		in_fd;
 	int		out_fd;
@@ -53,9 +53,9 @@ typedef struct s_simple_command
 //global struct
 typedef struct s_compound_command
 {
-	t_simple	*cmd;
+	t_simple	*scmd;
 	char		ms_path[200];
-	size_t			amt_simple_cmds;
+	size_t		nbr_scmd;
 	char		**envp;
 }	t_compound;
 #endif

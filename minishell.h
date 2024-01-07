@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/01/07 15:50:35 by mzolfagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 typedef struct s_simple_command
 {
 	char	**cmd;
+	char	**hd_delimiter;
 	int		in_fd;
 	int		out_fd;
 	int		builtin; //a 0/1 flag for execution
@@ -55,8 +56,16 @@ typedef struct s_compound_command
 	t_simple	*scmd;
 	char		ms_path[200];
 	size_t		nbr_scmd;
+	char		**envp;
+	t_env		env_ll;
 }	t_compound;
 
+
+typedef struct s_env
+{
+	char	*str;
+	t_env	*next;
+}	t_env;
 
 
 void	struct_free(t_compound cmds);
@@ -71,6 +80,7 @@ void	err_handler(char *str);
 int	in_quot(char *str, size_t n);
 t_compound	struct_init(char *str);
 void	struct_nullifier(t_compound *cmds);
+
 
 
 

@@ -50,6 +50,12 @@ typedef struct s_simple_command
 	int		builtin; //a 0/1 flag for execution
 }	t_simple;
 
+typedef struct s_env
+{
+	char			*str;
+	struct s_env	*next;
+}	t_env;
+
 //global struct
 typedef struct s_compound_command
 {
@@ -57,15 +63,8 @@ typedef struct s_compound_command
 	char		ms_path[200];
 	size_t		nbr_scmd;
 	char		**envp;
-	t_env		env_ll;
+	t_env		*env_ll;
 }	t_compound;
-
-
-typedef struct s_env
-{
-	char	*str;
-	t_env	*next;
-}	t_env;
 
 
 void	struct_free(t_compound cmds);

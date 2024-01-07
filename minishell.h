@@ -63,15 +63,8 @@ typedef struct s_compound_command
 	char		ms_path[200];
 	size_t		nbr_scmd;
 	char		**envp;
-	t_env		env_ll;
+	t_env		*env_ll;
 }	t_compound;
-
-
-typedef struct s_env
-{
-	char	*str;
-	t_env	*next;
-}	t_env;
 
 
 void	struct_free(t_compound cmds);

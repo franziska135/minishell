@@ -27,10 +27,10 @@ int main()
 {
 	char	*str;
 	char	**tokens;
-	char	*str1 = "echo 123 >| cat >> infile | <<out   ";
+	char	*str1 = "ut";
 
 	str = malloc(sizeof(char) * 100);
-	ft_strlcpy(str, str1, ft_strlen(str1));
+	ft_strlcpy(str, str1, ft_strlen(str1) + 1);
 	
 	if (!syntax(str))
 		return (free(str), 1);

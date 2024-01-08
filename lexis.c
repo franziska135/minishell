@@ -13,10 +13,12 @@ static size_t	token_lenght(char *str)
 		{
 			if (str[len] == ' ' || str[len] == '\t')
 				return (len);
-			else if (str[len] == str[len + 1])
-				return (len + 2);
+			else if (len == 0 && str[len] == str[len + 1])
+				return (2);
+			else if (len == 0)
+				return (1);
 			else
-				return (len + 1);
+				return (len);
 		}
 		len++;
 	}

@@ -27,16 +27,16 @@ int main()
 {
 	char	*str;
 	char	**tokens;
-	char	*str1 = "echo 123 >| cat <infile | out   ";
+	char	*str1 = "echo 123 >| cat >> infile | <<out   ";
 
 	str = malloc(sizeof(char) * 100);
 	ft_strlcpy(str, str1, ft_strlen(str1));
 	
 	if (!syntax(str))
-		return (1);
+		return (free(str), 1);
 	tokens = lexis(str);
 	if (!tokens)
-		return (1);
+		return (free(str), 1);
 	
 	
 	int i = 0;
@@ -45,6 +45,7 @@ int main()
 		printf("%s$\n", tokens[i]);
 		i++;
 	}
+	printf("%s$\n", tokens[i]);
 
 	dpointer_free(tokens);
 	free(str);

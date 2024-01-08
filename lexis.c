@@ -13,6 +13,8 @@ static size_t	token_lenght(char *str)
 		{
 			if (str[len] == ' ' || str[len] == '\t')
 				return (len);
+			else if (str[len] == str[len + 1])
+				return (len + 2);
 			else
 				return (len + 1);
 		}
@@ -55,10 +57,9 @@ static char	**tokenizer(char *str)
 			tokens[i] = token_creat(str, tokens);
 			if (!tokens[i])
 				return (NULL);
-			len = token_lenght(str);
 			if (str[0] == '>' && str[1] == '|')
 				str++;
-			str += len;
+			str += token_lenght(str);
 		}
 		i++;
 	}

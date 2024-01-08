@@ -44,7 +44,6 @@
 typedef struct s_simple_command
 {
 	char	**cmd;
-	char	**hd_delimiter;
 	int		in_fd;
 	int		out_fd;
 	int		builtin; //a 0/1 flag for execution
@@ -69,10 +68,11 @@ typedef struct s_compound_command
 
 // SYNTAX
 int	syntax(char *str);
-int	syntax_pipe(char *str);
+
 // int	syntax_redir(char *str);
 
 // LEXIS
+char	**lexis(char *str);
 
 
 // PARSER
@@ -80,6 +80,7 @@ int	syntax_pipe(char *str);
 // PARSER UTILS
 int	is_delimiter(char c);
 int	in_quot(char *str, size_t n);
+size_t	token_counter(char *str);
 
 
 // UTILS

@@ -27,7 +27,8 @@ int main()
 {
 	char	*str;
 	char	**tokens;
-	char	*str1 = "ut";
+	t_compound	cmds;
+	char	*str1 = "<< 0 | >> out";
 
 	str = malloc(sizeof(char) * 100);
 	ft_strlcpy(str, str1, ft_strlen(str1) + 1);
@@ -45,9 +46,9 @@ int main()
 		printf("%s$\n", tokens[i]);
 		i++;
 	}
-	printf("%s$\n", tokens[i]);
+	printf("%s$\n\n", tokens[i]);
 
-	dpointer_free(tokens);
-	free(str);
+	cmds = parser(tokens);
+	printf("%d--%d\n", cmds.scmd[0].in_fd, cmds.scmd[1].out_fd);
 
 }

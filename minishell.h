@@ -46,6 +46,7 @@ typedef struct s_simple_command
 	char	**cmd;
 	int		in_fd;
 	int		out_fd;
+	int		hd;
 	int		builtin; //a 0/1 flag for execution
 }	t_simple;
 
@@ -76,21 +77,27 @@ char	**lexis(char *str);
 
 
 // PARSER
+t_compound	parser(char **tokens);
+char	*remove_quotes(char *str);
+int	ft_here_doc(char *delimiter);
+
 
 // PARSER UTILS
 int	is_delimiter(char c);
 int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
+int	open_redir(t_compound *cmds, char **tokens);
+
 
 
 // UTILS
-void	err_handler(char *str);
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 
 // utils to be deleted
 void	print_struct(t_compound ccmd);
 void	print_dpointer(char **str);
+void	err_handler(char *str);
 
 
 

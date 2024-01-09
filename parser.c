@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-size_t	pipe_count(char **tokens)
+static size_t	pipe_count(char **tokens)
 {
 	size_t	i;
 	size_t	nbr_pipe;
@@ -25,7 +25,9 @@ t_compound	parser(char **tokens)
 
 	cmds.nbr_scmd = pipe_count(tokens) + 1;
 	cmds.scmd = (t_simple *)malloc(sizeof(t_simple) * cmds.nbr_scmd);
-	if (!open_redir(&cmds, tokens))
-		err_handler("OPENFILE ERROR");
+	struct_nullifier(&cmds);
+	cmds.nbr_scmd = pipe_count(tokens) + 1;
+	open_redir(&cmds, tokens);
+	
 	return(cmds);
 }

@@ -47,7 +47,7 @@ char	*remove_quotes(char *str)
 	int		nbr_qouts;
 
 	nbr_qouts = qout_counter(str);
-	dst = (char *)malloc(sizeof(char) * ft_strlen(str) - nbr_qouts);
+	dst = (char *)malloc(sizeof(char) * ft_strlen(str) - nbr_qouts + 1);
 	if (!dst)
 		return (NULL);
 	dst[ft_strlen(str) - nbr_qouts] = '\0';

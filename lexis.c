@@ -75,6 +75,7 @@ char	**lexis(char *str)
 
 	nbr_token = token_counter(str);
 	tokens = tokenizer(str);
+	free (str);
 	if (!tokens)
 		return (NULL);
 	return (tokens);

@@ -28,7 +28,7 @@ int main()
 	char	*str;
 	char	**tokens;
 	t_compound	cmds;
-	char	*str1 = "<< 0 | >> out";
+	char	*str1 = "< Makefile cat | ls -l > out";
 
 	str = malloc(sizeof(char) * 100);
 	ft_strlcpy(str, str1, ft_strlen(str1) + 1);
@@ -40,15 +40,19 @@ int main()
 		return (free(str), 1);
 	
 	
-	int i = 0;
-	while (tokens[i])
-	{
-		printf("%s$\n", tokens[i]);
-		i++;
-	}
-	printf("%s$\n\n", tokens[i]);
+	// int i = 0;
+	// while (tokens[i])
+	// {
+	// 	printf("%s$\n", tokens[i]);
+	// 	i++;
+	// }
+	// printf("%s$\n\n", tokens[i]);
 
 	cmds = parser(tokens);
-	printf("%d--%d\n", cmds.scmd[0].in_fd, cmds.scmd[1].out_fd);
+	if (!struct_cpy(&cmds, tokens))
+		return (0);
+	print_struct(cmds);
+	dpointer_free(tokens);
+	struct_free(cmds);
 
 }

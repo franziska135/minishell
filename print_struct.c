@@ -6,7 +6,7 @@ void	print_dpointer(char **str)
 
 	while (str[i])
 	{
-		printf("%s, ", str[i]);
+		printf("[%s]", str[i]);
 		i++;
 	}
 	printf ("\n");

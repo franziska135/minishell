@@ -80,19 +80,22 @@ char	**lexis(char *str);
 t_compound	parser(char **tokens);
 char	*remove_quotes(char *str);
 int	ft_here_doc(char *delimiter);
+int	struct_cpy(t_compound *cmds, char **tokens);
 
 
 // PARSER UTILS
 int	is_delimiter(char c);
 int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
-int	open_redir(t_compound *cmds, char **tokens);
+void	open_redir(t_compound *cmds, char **tokens);
 
 
 
 // UTILS
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
+void	struct_nullifier(t_compound *cmds);
+
 
 // utils to be deleted
 void	print_struct(t_compound ccmd);

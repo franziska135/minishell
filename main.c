@@ -28,7 +28,7 @@ int main()
 	char	*str;
 	char	**tokens;
 	t_compound	cmds;
-	char	*str1 = "< Makefile cat | ls -l > out";
+	char	*str1 = "cat>|out<in|ls";
 
 	str = malloc(sizeof(char) * 100);
 	ft_strlcpy(str, str1, ft_strlen(str1) + 1);

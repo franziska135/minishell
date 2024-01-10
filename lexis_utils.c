@@ -14,7 +14,7 @@ static size_t	token_parse(char **str, int i, int *word_begin)
 		word_count++;
 		*word_begin = 0;
 		if (str[0][i] == str[0][i + 1])
-			str[0] += 2;
+			str[0] += 1;
 	}
 	else if (*word_begin == 0)
 	{

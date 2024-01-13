@@ -17,7 +17,7 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	make --no-print-directory -C ./libft
-	${CC} ${CFLAGS} -o ${NAME} $^ ./libft/libft.a
+	${CC} ${CFLAGS} -o ${NAME} $^ ./libft/libft.a -lreadline -lhistory
 
 bonus: ${BONUS_OBJS}
 	make --no-print-directory -C ./libft

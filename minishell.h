@@ -67,6 +67,9 @@ typedef struct s_compound_command
 }	t_compound;
 
 
+// HISTORY
+int	history();
+
 // SYNTAX
 int	syntax(char *str);
 

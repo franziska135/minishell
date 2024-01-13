@@ -9,8 +9,7 @@ static size_t	malloc_size(char **tokens, int i)
 	{
 		if (tokens[i][0] == '|')
 			return (len);
-		else if (!ft_strncmp(tokens[i], ">", 2) || !ft_strncmp(tokens[i], "<", 2)
-				|| !ft_strncmp(tokens[i], ">>", 3))
+		else if (tokens[i][0] == '>' || tokens[i][0] == '<')
 			i++;
 		else
 			len++;

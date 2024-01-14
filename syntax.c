@@ -85,6 +85,5 @@ int	syntax(char *str)
 		err_handler("SYNTAX ERROR (redirection)");
 		return (0);
 	}
-	printf ("\n***NO ERROR***\n");
 	return (1);
 }

@@ -64,6 +64,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 		else
 		{
 			cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
+
 			ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);
 			if(!cmds->scmd[pipe].cmd)
 				return(struct_free(*cmds), dpointer_free(tokens), 0);
@@ -77,8 +78,15 @@ static int	write_struct(t_compound *cmds, char **tokens)
 int	struct_cpy(t_compound *cmds, char **tokens)
 {
 	if(!malloc_struct(cmds, tokens))
+	{
+		dpointer_free(tokens);
 		return (0);
+	}
 	if (!write_struct(cmds, tokens))
+	{
+		struct_free(*cmds);
+		dpointer_free(tokens);
 		return (0);
+	}
 	return (1);
 }

@@ -65,11 +65,10 @@ void	init_env_llist(t_compound *cmds, char **envp)
 	char	*key;
 	char	*value;
 	size_t	i_equal_sign;
+	int		i;
 
 	key = NULL;
 	value = NULL;
-	int i;
-
 	head = NULL;
 	i = 0;
 	while(envp[i])

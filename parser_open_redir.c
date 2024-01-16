@@ -7,8 +7,6 @@ static int	redir_out(char **str, int fd_out, int fd_in, size_t *i)
 		return (-1);
 	if (fd_out)
 		close (fd_out);
-	// 			EXPAND
-	*str = remove_quotes(*str);
 	fd_out = open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd_out == -1)
 		perror("fzsh: ");
@@ -22,8 +20,6 @@ static int	redir_in(char **str, int fd_in, int fd_out, size_t *i)
 		return (-1);
 	if (fd_in)
 		close (fd_in);
-	// 			EXPAND
-	*str = remove_quotes(*str);
 	fd_in = open(*str, O_RDONLY);
 	if (fd_in == -1)
 		perror("fzsh: ");
@@ -38,8 +34,6 @@ static int	redir_append(char **str, int fd_out, int fd_in, size_t *i)
 		return (-1);
 	if (fd_out)
 		close (fd_out);
-	// 			EXPAND
-	*str = remove_quotes(*str);
 	fd_out = open(*str, O_WRONLY | O_CREAT | O_APPEND, 0664);
 	if (fd_out == -1)
 		perror("fzsh: ");
@@ -77,6 +71,7 @@ void	open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
+	token_expand(cmds, tokens);
 	while (tokens[i])
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))

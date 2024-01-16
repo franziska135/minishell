@@ -30,7 +30,7 @@ t_env	*find_node(t_compound *cmds, char *needle)
 	haystack = cmds->env_ll;
 	while (haystack)
 	{
-		if (ft_strncmp(haystack->key, needle, ft_strlen(needle)) == 0)
+		if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key)) == 0)
 			return (haystack);
 		haystack = haystack->next;
 	}

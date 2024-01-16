@@ -46,13 +46,13 @@ typedef struct s_simple_command
 	char	**cmd;
 	int		in_fd;
 	int		out_fd;
-	int		hd;
 	int		builtin; //a 0/1 flag for execution
 }	t_simple;
 
 typedef struct s_env
 {
-	char			*str;
+	char			*key;
+	char			*value;
 	struct s_env	*next;
 }	t_env;
 
@@ -68,7 +68,7 @@ typedef struct s_compound_command
 
 
 // HISTORY
-int	history();
+int	run_minishell(t_compound	*cmds);
 
 // SYNTAX
 int	syntax(char *str);
@@ -80,7 +80,7 @@ char	**lexis(char *str);
 
 
 // PARSER
-t_compound	parser(char **tokens);
+int	parser(t_compound *cmds, char **tokens);
 char	*remove_quotes(char *str);
 int	ft_here_doc(char *delimiter);
 int	struct_cpy(t_compound *cmds, char **tokens);
@@ -92,12 +92,18 @@ int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 void	open_redir(t_compound *cmds, char **tokens);
 
+//  EXPAND
+char	*token_expand(t_compound *cmds, char **token);
+
 
 
 // UTILS
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
+void	init_env_llist(t_compound *cmds, char **envp);
+t_env	*find_node(t_compound *cmds, char *needle);
+
 
 
 // utils to be deleted

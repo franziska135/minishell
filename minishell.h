@@ -93,7 +93,7 @@ size_t	token_counter(char *str);
 void	open_redir(t_compound *cmds, char **tokens);
 
 //  EXPAND
-char	*token_expand(t_compound *cmds, char **token);
+void	token_expand(t_compound *cmds, char **token);
 
 
 

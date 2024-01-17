@@ -35,7 +35,7 @@ static int	shall_cpy(char *str, size_t i)
 	if (in_quot(str, i) && i == 0)
 		return (FALSE);
 	if (in_quot(str, i) != in_quot(str, i - 1))
-		return (TRUE);
+		return (FALSE);
 	return (TRUE);
 }
 

@@ -28,6 +28,7 @@ static int	run_procces(t_compound	*cmds, char *str)
 	print_struct(*cmds);
 	dpointer_free(tokens);
 	struct_free(*cmds);
+	return (1);
 }
 
 int	run_minishell(t_compound	*cmds)

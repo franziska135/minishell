@@ -29,4 +29,5 @@ int	parser(t_compound *cmds, char **tokens)
 	open_redir(cmds, tokens);
 	if (!struct_cpy(cmds, tokens))
 		return (0);
+	return (1);
 }

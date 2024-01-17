@@ -43,23 +43,32 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 static char	*expand_token(t_compound *cmds, char *token)
 {
 	char	*str;
+	char	*token_copy;
 	int		fd[2];
+	size_t	i;
 
+	token_copy = token;
 	if (pipe(fd) == -1)
 		return (NULL);
+	i = 0;
 	while (token[0])
 	{
-		if (in_quot(token, 0) == 1 || token[0] != '$')
+		if (in_quot(token_copy, i) == 1 || token[0] != '$')
 		{
 			write(fd[1], token, 1);
 			token ++;
+			i++;
 		}
 		else
 		{
+			i++;
 			token++;
 			write_expansion(cmds, token, fd[1]);
 			while(token[0] && (ft_isalpha(token[0]) || token[0] == '_'))
+			{
+				i++;	
 				token++;
+			}
 		}
 	}
 	write(fd[1], "\0", 1);
@@ -69,7 +78,7 @@ static char	*expand_token(t_compound *cmds, char *token)
 	return (str);
 }
 
-char	*token_expand(t_compound *cmds, char **tokens)
+void	token_expand(t_compound *cmds, char **tokens)
 {
 	char	*str;
 	int		i;

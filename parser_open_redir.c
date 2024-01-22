@@ -63,7 +63,7 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 	}
 }
 
-void	open_redir(t_compound *cmds, char **tokens)
+char	**open_redir(t_compound *cmds, char **tokens)
 {
 	size_t	i;
 	int		pipe;
@@ -71,7 +71,9 @@ void	open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
-	token_expand(cmds, tokens);
+	tokens = token_expand(cmds, tokens);
+	if (!tokens)
+		return (NULL);
 	while (tokens[i])
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))
@@ -84,4 +86,5 @@ void	open_redir(t_compound *cmds, char **tokens)
 			cmds->scmd[pipe].out_fd = redir_append(&tokens[i + 1], cmds->scmd[pipe].out_fd, cmds->scmd[pipe].in_fd, &i);
 		i++;
 	}
+	return (tokens);
 }

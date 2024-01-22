@@ -1,5 +1,15 @@
 #include "minishell.h"
 
+static size_t	tokens_counter(char **tokens)
+{
+	size_t	i;
+
+	i = 0;
+	while (tokens[i])
+		i++;
+	return (i);
+}
+
 static char	*find_key(char *token)
 {
 	size_t	j;
@@ -78,26 +88,32 @@ static char	*expand_token(t_compound *cmds, char *token)
 	return (str);
 }
 
-void	token_expand(t_compound *cmds, char **tokens)
+char	**token_expand(t_compound *cmds, char **tokens)
 {
+	char	**new_token;
 	char	*str;
+	size_t	len;
 	int		i;
+	int		j;
 
+	len = tokens_counter(tokens);
+	new_token = (char**)malloc(sizeof(char**) * (len + 1));
+	if (!new_token)
+		return (NULL);
 	i = 0;
+	j = 0;
 	while (tokens[i])
 	{
 		str = expand_token(cmds, tokens[i]);
 		if (str)
 		{
-			free(tokens[i]);
-			tokens[i] = remove_quotes(str);
+			new_token[j] = remove_quotes(str);
+			j++;
 		}
-		else
-		{
-			free(str);
-			tokens[i] = (char *)malloc(sizeof(char) * 1);
-			tokens[i][0] = '\0';
-		}
+		free(tokens[i]);
 		i++;
 	}
+	free(tokens);
+	new_token[j] = NULL;
+	return(new_token);
 }

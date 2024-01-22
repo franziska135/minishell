@@ -80,7 +80,7 @@ char	**lexis(char *str);
 
 
 // PARSER
-int	parser(t_compound *cmds, char **tokens);
+char	**parser(t_compound *cmds, char **tokens);
 char	*remove_quotes(char *str);
 int	ft_here_doc(char *delimiter);
 int	struct_cpy(t_compound *cmds, char **tokens);
@@ -90,10 +90,15 @@ int	struct_cpy(t_compound *cmds, char **tokens);
 int	is_delimiter(char c);
 int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
-void	open_redir(t_compound *cmds, char **tokens);
+char	**open_redir(t_compound *cmds, char **tokens);
 
 //  EXPAND
-void	token_expand(t_compound *cmds, char **token);
+char	**token_expand(t_compound *cmds, char **token);
+
+
+// PIPEX
+int	piping_root(t_compound *cmds);
+char	*path_finder(t_compound *cmds, int pipe);
 
 
 
@@ -103,6 +108,7 @@ void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 void	init_env_llist(t_compound *cmds, char **envp);
 t_env	*find_node(t_compound *cmds, char *needle);
+
 
 
 

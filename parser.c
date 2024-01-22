@@ -19,15 +19,15 @@ static size_t	pipe_count(char **tokens)
 
 
 
-int	parser(t_compound *cmds, char **tokens)
+char	**parser(t_compound *cmds, char **tokens)
 {
 
 	cmds->nbr_scmd = pipe_count(tokens) + 1;
 	cmds->scmd = (t_simple *)malloc(sizeof(t_simple) * cmds->nbr_scmd);
 	struct_nullifier(cmds);
 	cmds->nbr_scmd = pipe_count(tokens) + 1;
-	open_redir(cmds, tokens);
+	tokens = open_redir(cmds, tokens);
 	if (!struct_cpy(cmds, tokens))
 		return (0);
-	return (1);
+	return (tokens);
 }

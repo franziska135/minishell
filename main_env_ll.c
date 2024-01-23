@@ -71,6 +71,7 @@ void	init_env_llist(t_compound *cmds, char **envp)
 	value = NULL;
 	head = NULL;
 	i = 0;
+	cmds->envp = envp;
 	while(envp[i])
 	{
 		i_equal_sign = iterate_ultil_equal(envp[i]);

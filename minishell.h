@@ -91,6 +91,8 @@ int	is_delimiter(char c);
 int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
+void	close_fds(t_compound *cmds, int *fd);
+
 
 //  EXPAND
 char	**token_expand(t_compound *cmds, char **token);

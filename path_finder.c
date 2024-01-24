@@ -32,9 +32,7 @@ static char	*path_access(char *path, char *cmd)
 char	*path_finder(t_compound *cmds, int pipe)
 {
 	t_env	*env;
-	int		i;
 
-	i = 0;
 	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
 		return (cmds->scmd[pipe].cmd[0]);
 	env = find_node(cmds, "PATH=");

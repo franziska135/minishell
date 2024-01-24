@@ -8,14 +8,10 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1)
 	{
 		if (cmds->scmd[i].out_fd != 0)
-		{
-			dup2(cmds->scmd->out_fd, STDOUT_FILENO);
-			close (cmds->scmd[i].out_fd);
-		}
+			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
 		else if (i != cmds->nbr_scmd - 1)
 			dup2(fd[1], STDOUT_FILENO);
-		close (fd[0]);
-		close (fd[1]);
+		close_fds(cmds, fd);
  		path = path_finder(cmds, i);
 		if (!path)
 		{
@@ -51,7 +47,7 @@ static int	piping(t_compound *cmds)
 		if (pid == 0)
 			child_proccess(cmds, fd, i, initial_stdin);
 		close (fd[1]);
-		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0 && cmds->scmd[i].out_fd == 0)
+		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
 			dup2(fd[0], STDIN_FILENO);
 		close (fd[0]);
 		if (cmds->scmd[i].out_fd != 0)

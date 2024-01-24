@@ -1,5 +1,26 @@
 #include "minishell.h"
 
+static int	is_built_in(char *str)
+{
+	if (!str)
+		return (FALSE);
+	if (!ft_strncmp(str, "cd", 3))
+		return (TRUE);
+	else if (!ft_strncmp(str, "pwd", 4))
+		return (TRUE);
+	else if (!ft_strncmp(str, "export", 7))
+		return (TRUE);
+	else if (!ft_strncmp(str, "unset", 6))
+		return (TRUE);
+	else if (!ft_strncmp(str, "env", 4))
+		return (TRUE);
+	else if (!ft_strncmp(str, "exit", 5))
+		return (TRUE);
+	// else if (!ft_strncmp(str, "echo", 5))
+	// 	return (TRUE);
+	return (FALSE);
+}
+
 static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 {
 	char	*path;
@@ -54,7 +75,7 @@ static int	piping(t_compound *cmds)
 			close (cmds->scmd[i].out_fd);
 		i++;
 	}
-	if (waitpid(pid, NULL, 0) == -1)
+	if (waitpid(pid, &cmds->exit_status, 0) == -1)
 		return(0);
 	dup2(initial_stdin, STDIN_FILENO);
 	close (initial_stdin);
@@ -65,12 +86,12 @@ static int	piping(t_compound *cmds)
 
 int	piping_root(t_compound *cmds)
 {
-	if (!piping(cmds))
+	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]))
 	{
-		dup2(0, STDIN_FILENO);
-		dup2(1, STDOUT_FILENO);
+		// run builtin
+	}	
+	else if (!piping(cmds))
 		return (0);
-	}
 
 	return (1);
 

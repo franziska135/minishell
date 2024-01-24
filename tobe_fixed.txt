@@ -1,0 +1,6 @@
+--echo $q
+		after many times running gives out ./minishell
+
+--all errors should be handled properly
+
+

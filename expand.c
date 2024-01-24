@@ -47,6 +47,8 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 	}
 	else if (token[0] == '\0')
 		write(fd, "$", 1);
+	else if(token[0] == '?')
+		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
 	free(key);
 }
 
@@ -74,10 +76,18 @@ static char	*expand_token(t_compound *cmds, char *token)
 			i++;
 			token++;
 			write_expansion(cmds, token, fd[1]);
-			while(token[0] && (ft_isalpha(token[0]) || token[0] == '_'))
+			if (token[0] && (ft_isdigit(token[0]) || token[0] == '?'))
 			{
 				i++;	
-				token++;
+				token++;			
+			}
+			else
+			{
+				while(token[0] && (ft_isalnum(token[0]) || token[0] == '_'))
+				{
+					i++;	
+					token++;
+				}
 			}
 		}
 	}

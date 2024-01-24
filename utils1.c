@@ -40,6 +40,7 @@ void	struct_nullifier(t_compound *cmds)
 		i++;
 	}
 	cmds->nbr_scmd = 0;
+	// cmds->exit_status = 0;
 }
 void	err_handler(char *str)
 {

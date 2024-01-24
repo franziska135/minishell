@@ -14,21 +14,20 @@
 
 int	ft_here_doc(char *delimiter)
 {
-	int		fd;
+	int		fd[2];
 	char	*gnl;
 
-	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (fd == -1)
+	if (pipe(fd) == -1)
 		return (-1);
 	gnl = get_next_line(STDIN_FILENO);
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) != 0))
 	{
-		write (fd, gnl, ft_strlen(gnl));
+		write (fd[1], gnl, ft_strlen(gnl));
 		free(gnl);
 		gnl = get_next_line(STDIN_FILENO);
 	}
 	free(gnl);
-	close (fd);
-	fd = open(".here_doc", O_RDONLY);
-	return (fd);
+	close (fd[1]);
+
+	return (fd[0]);
 }

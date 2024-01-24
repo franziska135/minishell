@@ -64,6 +64,7 @@ typedef struct s_compound_command
 	size_t		nbr_scmd;
 	char		**envp;
 	t_env		*env_ll;
+	int			exit_status;
 }	t_compound;
 
 

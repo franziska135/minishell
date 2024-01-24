@@ -40,6 +40,7 @@ int	run_minishell(t_compound	*cmds)
 	char		*str;
 	int			i;
 
+	cmds->exit_status = 0;
 	while(TRUE)
 	{
 		str = readline("fzsh: ");

@@ -73,12 +73,13 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	char	*key;
 	char	*value;
 	size_t	equal_sing;
+	int i;
 
 	key = NULL;
 	value = NULL;
-	int i;
-
+	cmds->envp = envp;
 	head = NULL;
+
 	i = 0;
 	while(envp[i])
 	{

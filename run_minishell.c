@@ -43,7 +43,8 @@ int	run_minishell(t_compound	*cmds)
 	cmds->exit_status = 0;
 	while(TRUE)
 	{
-		str = readline("fzsh: ");
+		str = readline("\033[32mf\033[35mz\033[32msh\033[0m \xF0\x9F\x90\xB3 ");
+		// str = readline("fzsh: ");
 		if (!all_space(str))
 		{
 			if (str[0] != ' ')

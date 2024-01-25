@@ -83,6 +83,6 @@ void	init_env_llist(t_compound *cmds, char **envp)
 	}
 	//i cant free key and value can i?
 	//i can free if i use strdup on both every time, but that creates even more trouble doesnt it?
-	free (key);
+	// free (key);
 	cmds->env_ll = head;
 }

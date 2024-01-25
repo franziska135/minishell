@@ -27,6 +27,7 @@ t_env	*ft_new_env_node(char *key, char *value, int env_display)
 	if (value)
 	{
 		ptr->value = ft_strdup(value);
+		free(value);
 		if (!ptr->value)
 			return (free(ptr->key), free(ptr), NULL);
 	}
@@ -83,6 +84,10 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	i = 0;
 	while(envp[i])
 	{
+		if (value)
+			free(value);
+		if (key)
+			free(key);
 		equal_sing = iterate_ultil_equal(envp[i]);
 		key = ft_substr(envp[i], 0, equal_sing);
 		if (!key)
@@ -92,7 +97,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 			return (free(key), 0);
 		new_node = ft_new_env_node(key, value, TRUE);
 		if (!new_node)
-			return (free(key), free(new_node), 0);
+			return (free(key), free(value), free(new_node), 0);
 		ft_add_last_node(&head, new_node);
 		i++;
 	}

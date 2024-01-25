@@ -2,6 +2,7 @@
 	"files.associations": {
 		"types.h": "c",
 		"history.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"execute.h": "c"
 	}
 }

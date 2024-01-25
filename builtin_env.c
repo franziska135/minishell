@@ -11,26 +11,26 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "execute.h"
 
 void	init_path_struct(t_execute *execute)
 {
 	execute->binary_paths = NULL;
-	execute->amt_children = 0;
-	execute->amt_pipes = 0;
 }
 
-//returns a pointer to the node storing the variable the variable
-//returns NULL if variable not found
+//returns a pointer to the node storing the key and the variable
+//returns NULL if key not found
 t_env	*find_node(t_compound *cmds, char *needle)
 {
 	t_env	*haystack;
 	char	*str;
+	size_t	h_length;
 
+	h_length = 0;
 	haystack = cmds->env_ll;
 	while (haystack)
 	{
-		if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key)) == 0)
+		h_length = ft_strlen(haystack->key);
+		if (ft_strncmp(haystack->key, needle, ft_strlen(needle)) == 0)
 			return (haystack);
 		haystack = haystack->next;
 	}
@@ -64,9 +64,11 @@ void	split_binary_paths(t_execute *execute, t_compound *cmds)
 {
 	t_env	*node;
 
-	node = find_node(cmds, "PATH=");
+	node = find_node(cmds, "PATH");
 	if (node && node->value != NULL)
-	execute->binary_paths = ft_split(node->value, ':');
+		execute->binary_paths = ft_split(node->value, ':');
+	else
+		printf("no path found\n");
 	// if (!execute->binary_paths)
 		// (free (path_str), path_str = NULL);
 		// 	free everything for the current process, return to history readline;

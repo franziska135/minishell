@@ -11,37 +11,45 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "execute.h"
 
 //add checks for key/value = NULL -> what would that mean?
 //if one of them null, no variable value??
-t_env	*ft_new_env_node(char *key, char *value)
+t_env	*ft_new_env_node(char *key, char *value, int env_display)
 {
 	t_env	*ptr;
 
 	ptr = (t_env *)malloc(sizeof(t_env));
 	if (!(ptr))
 		return (NULL);
-	ptr->key = key;
-	ptr->value = value;
-	// printf("key:%s\n", ptr->key);
-	// printf("value:%s\n", ptr->value);
+	ptr->key = ft_strdup(key);
+	if (!ptr->key)
+		return (free(ptr), NULL);
+	if (value)
+	{
+		ptr->value = ft_strdup(value);
+		if (!ptr->value)
+			return (free(ptr->key), free(ptr), NULL);
+	}
+	//but free ptr and key;
+	else
+		ptr->value = NULL;
+	ptr->env_display = env_display;
 	ptr->next = NULL;
 	return (ptr);
 }
 
-void	ft_add_last_node(t_env **lst, t_env *new)
+void	ft_add_last_node(t_env **lst, t_env *new_node)
 {
 	t_env	*tmp;
 
 	tmp = *lst;
 	if (*lst == NULL)
-		*lst = new;
+		*lst = new_node;
 	else
 	{
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = new;
+		tmp->next = new_node;
 	}
 }
 
@@ -53,36 +61,42 @@ size_t	iterate_ultil_equal(const char *envp_i)
 	i = 0;
 	while (envp_i[i] && envp_i[i] != '=')
 		i++;
-	return (i + 1);
+	return (i);
 }
 
 //a copy of the environment stored in a linked list
 //add NULL checks for substr and new_env_node
-void	init_env_llist(t_compound *cmds, char **envp)
+int	init_env_llist(t_compound *cmds, char **envp)
 {
 	t_env	*new_node;
 	t_env	*head;
 	char	*key;
 	char	*value;
-	size_t	i_equal_sign;
-	int		i;
+	size_t	equal_sing;
 
 	key = NULL;
 	value = NULL;
+	int i;
+
 	head = NULL;
 	i = 0;
-	cmds->envp = envp;
 	while(envp[i])
 	{
-		i_equal_sign = iterate_ultil_equal(envp[i]);
-		key = ft_substr(envp[i], 0, i_equal_sign);
-		value = ft_substr(envp[i], i_equal_sign, ft_strlen(envp[i]) - i_equal_sign);
-		new_node = ft_new_env_node(key, value);
+		equal_sing = iterate_ultil_equal(envp[i]);
+		key = ft_substr(envp[i], 0, equal_sing);
+		if (!key)
+			return (0);
+		value = ft_substr(envp[i], equal_sing + 1, ft_strlen(envp[i]) - equal_sing);
+		if (!value)
+			return (free(key), 0);
+		new_node = ft_new_env_node(key, value, TRUE);
+		if (!new_node)
+			return (free(key), free(new_node), 0);
 		ft_add_last_node(&head, new_node);
 		i++;
 	}
-	//i cant free key and value can i?
-	//i can free if i use strdup on both every time, but that creates even more trouble doesnt it?
-	// free (key);
+	free (key);
+	free(value);
 	cmds->env_ll = head;
+	return (1);
 }

@@ -88,7 +88,7 @@ int	piping_root(t_compound *cmds)
 {
 	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]))
 	{
-		// run builtin
+		if_builtin_execute(cmds, &cmds->scmd[0]);
 	}	
 	else if (!piping(cmds))
 		return (0);

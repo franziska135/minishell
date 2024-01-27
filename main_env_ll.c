@@ -27,11 +27,9 @@ t_env	*ft_new_env_node(char *key, char *value, int env_display)
 	if (value)
 	{
 		ptr->value = ft_strdup(value);
-		free(value);
 		if (!ptr->value)
 			return (free(ptr->key), free(ptr), NULL);
 	}
-	//but free ptr and key;
 	else
 		ptr->value = NULL;
 	ptr->env_display = env_display;
@@ -74,7 +72,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	char	*key;
 	char	*value;
 	size_t	equal_sing;
-	int i;
+	int		i;
 
 	key = NULL;
 	value = NULL;
@@ -84,10 +82,6 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	i = 0;
 	while(envp[i])
 	{
-		if (value)
-			free(value);
-		if (key)
-			free(key);
 		equal_sing = iterate_ultil_equal(envp[i]);
 		key = ft_substr(envp[i], 0, equal_sing);
 		if (!key)
@@ -99,10 +93,14 @@ int	init_env_llist(t_compound *cmds, char **envp)
 		if (!new_node)
 			return (free(key), free(value), free(new_node), 0);
 		ft_add_last_node(&head, new_node);
+		if (value)
+			(free(value), value = NULL);
+		if (key)
+			(free(key), key = NULL);
 		i++;
 	}
-	free (key);
-	free(value);
 	cmds->env_ll = head;
+	//insert to test if valgrind is working uon termination./m
+	//cleanup_envp_ll(cmds->env_ll);
 	return (1);
 }

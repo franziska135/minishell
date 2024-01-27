@@ -101,6 +101,9 @@
 
 //this function returns 1 if a builtin matched
 //0 if no builtin matched
+//open issues:
+//valgrind for cd, pwd, env, echo, unset okay
+//restructure export
 int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 {
 	if (ft_strncmp(scmd->cmd[0], "echo\0", 6) == 0)
@@ -121,5 +124,6 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 	else
 		return (0);
 	//if a buitin matched, the return will be 1
+	//cleanup_envp_ll(cmds->env_ll);
 	return (1);
 }

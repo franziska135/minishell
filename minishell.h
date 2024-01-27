@@ -134,6 +134,7 @@ void	err_handler(char *str);
 //initialize and error messages
 void		init_path_struct(t_execute *execute);
 void		print_error(char *str1, char *str2, char *str3, char *str4);
+void cleanup_envp_ll(t_env *env_ll);
 
 //node stuff
 // int			init_env_llist(t_compound *cmds, char **envp);

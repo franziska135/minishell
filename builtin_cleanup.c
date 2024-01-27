@@ -43,6 +43,23 @@ void	cleanup(t_execute *execute, t_compound *cmds)
 	// }
 }
 
+//receives the head and cleans the envp linked list, valgrind checked out
+void cleanup_envp_ll(t_env *env_ll)
+{
+	t_env *temp;
+
+    while (env_ll != NULL)
+    {
+        temp = env_ll;
+        env_ll = env_ll->next;
+		if (temp->key)
+			(free(temp->key), temp->key = NULL);
+        if (temp->value)
+			(free(temp->value), temp->value = NULL);
+		free(temp);
+    }
+}
+
 void	ft_free_list(t_env *lst)
 {
 	t_env	*tmp;

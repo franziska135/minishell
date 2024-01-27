@@ -81,7 +81,7 @@ void	builtin_export(t_compound *cmds, t_simple *scmd)
 		 	new_node->env_display = TRUE;
 		}
 		else
-			write (1, "new empty val added only to export\n", 39);
+			write (1, "new empty val added only to export\n", 37);
 		ft_add_last_node(&cmds->env_ll, new_node);
 	}
 	//if node exists

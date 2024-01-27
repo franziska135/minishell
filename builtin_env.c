@@ -51,10 +51,10 @@ void	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 		node = find_node(cmds, variable);
   		if (node)
 		{
-    		printf("old value of %s: \t%s\n", variable, node->value);
+    		// printf("old value of %s: \t%s\n", variable, node->value);
 			free(node->value);
 			node->value = ft_strdup(new_value);
-			printf("new  value of %s: \t%s\n\n", variable, node->value);
+			// printf("new  value of %s: \t%s\n\n", variable, node->value);
 		}
 	}
 }

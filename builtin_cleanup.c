@@ -12,37 +12,6 @@
 
 #include "minishell.h"
 
-void	cleanup(t_execute *execute, t_compound *cmds)
-{
-	int	i;
-
-	i = 0;
-	// if (execute)
-	// {
-	// 	if (execute->binary_paths)
-	// 		free_double_ptr(execute->binary_paths);
-	// 	free(execute);
-	// 	execute = NULL;
-	// }
-	// if (cmds)
-	// {
-	// 	if (cmds->envp)
-	// 		free_double_ptr(cmds->envp);
-	// 	if (cmds->env_ll)
-	// 		ft_free_list(cmds->env_ll);
-	// 	if (cmds->scmd)
-	// 	{
-	// 		while (i < cmds->nbr_scmd)
-	// 		{
-	// 			free_double_ptr(cmds->scmd[i].cmd);
-	// 			i++;
-	// 		}
-	// 		free(cmds->scmd);
-	// 		cmds->scmd = NULL;
-	// 	}
-	// }
-}
-
 //receives the head and cleans the envp linked list, valgrind checked out
 void cleanup_envp_ll(t_env *env_ll)
 {
@@ -89,6 +58,7 @@ void	free_double_ptr(char **double_ptr)
 		free(double_ptr[i]);
 		i++;
 	}
+	free(double_ptr);
 	double_ptr = NULL;
 }
 

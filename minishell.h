@@ -115,6 +115,7 @@ void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
+void	ft_transfer_ll_to_ptr(t_compound *cmds);
 t_env	*find_node(t_compound *cmds, char *needle);
 
 
@@ -134,7 +135,7 @@ void	err_handler(char *str);
 //initialize and error messages
 void		init_path_struct(t_execute *execute);
 void		print_error(char *str1, char *str2, char *str3, char *str4);
-void cleanup_envp_ll(t_env *env_ll);
+void		cleanup_envp_ll(t_env *env_ll);
 
 //node stuff
 // int			init_env_llist(t_compound *cmds, char **envp);
@@ -187,6 +188,5 @@ static int	s_plus(const char *s, char c);
 char		**ft_split(char const *s, char c);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t		ft_strlen(const char *str);
-
 
 #endif

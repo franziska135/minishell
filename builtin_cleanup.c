@@ -38,9 +38,12 @@ void	ft_free_list(t_env *lst)
 		while (lst)
 		{
 			tmp = (lst)->next;
-			free(lst->key);
-			free(lst->value);
-			free(lst->next);
+			if (lst->key)
+				(free(lst->key), lst->key = NULL);
+			if (lst->value)
+				(free(lst->value), lst->value = NULL);
+			if (lst->next)
+				(free(lst->next), lst->next = NULL);
 			free(lst);
 			lst = tmp;
 		}
@@ -53,13 +56,16 @@ void	free_double_ptr(char **double_ptr)
 	int	i;
 
 	i = 0;
-	while (double_ptr[i])
+	if (double_ptr)
 	{
-		free(double_ptr[i]);
-		i++;
+		while (double_ptr[i])
+		{
+			free(double_ptr[i]);
+			i++;
+		}
+		free(double_ptr);
+		double_ptr = NULL;
 	}
-	free(double_ptr);
-	double_ptr = NULL;
 }
 
 // void	ft_write_error(int status, char *str)

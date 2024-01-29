@@ -118,8 +118,11 @@ void	builtin_export(t_compound *cmds, t_simple *scmd)
 		print_export(cmds->env_ll);
 		return ;
 	}
-	else if (ft_strncmp(scmd->cmd[1], "=\0", 2) == 0)
-		print_error("minishell: ", "export: ", "'='", "not a valid identifier");
+	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0)
+	{
+		print_error("minishell: ", "export: ", scmd->cmd[1], "not a valid identifier");
+		return ;
+	}
 	//create node if variable does not exist yet
 	key = save_key(scmd->cmd[1]);
 //malloc

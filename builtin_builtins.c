@@ -94,26 +94,34 @@ void	builtin_unset(t_compound *cmds, t_simple *scmd)
 	t_env	*tmp;
 	char	*needle;
 
-	write(1, "check", 5);
-	needle = scmd->cmd[1];
+	needle = NULL;
+	if (scmd->cmd[1])
+		needle = scmd->cmd[1];
 	haystack = cmds->env_ll;
 	if (needle)
 	{
 		while (haystack)
 		{
-			//this CAN BE MORE ELEGANT LOL
-			if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key) - 1) == 0)
+			if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key)) == 0)
 			{
-				if (needle[ft_strlen(haystack->key) - 1] == '\0')
-				{
 					tmp->next = haystack->next;
 					haystack->next = NULL;
+					write(1, haystack->key, ft_strlen(haystack->key));
+					write (1, " is now unset\n", 14);
 					ft_free_list(haystack);
 					return ;
-				}
 			}
 			tmp = haystack;
 			haystack = haystack->next;
 		}
+		write (1, "variable not found\n", 19);
 	}
+}
+
+void	builtin_exit(t_compound *cmds)
+{
+	cleanup_envp_ll(cmds->env_ll);
+	free_double_ptr(cmds->envp);
+	struct_free(*cmds);
+	exit (1);
 }

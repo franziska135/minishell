@@ -54,7 +54,10 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 	else if (ft_strncmp(scmd->cmd[0], "env\0", 4) == 0)
 		builtin_env(cmds->env_ll);
 	else if (ft_strncmp(scmd->cmd[0], "exit\0", 6) == 0)
-		printf("exit\n");
+		builtin_exit(cmds);
+	//if no builtin matched, 0 will be returned, proceed with pipex
+	else
+		return (0);
 	
 	/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
 	/*(the function is in this file, scoll up:)*/
@@ -67,16 +70,6 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 		i++;
 	}
 	/******************************************************************/
-	
-	
-	/*****TO REMOVE REMAINING VALGRIND FREES; COMMENT THIS IN*********/
-	// cleanup_envp_ll(cmds->env_ll);
-	// free_double_ptr(cmds->envp);
-	/******************************************************************/
-	
-	//if no builtin matched, 0 will be returned, proceed with pipex
-	// else
-	// 	return (0);
 	//if a buitin matched, the return will be 1
 	return (1);
 }

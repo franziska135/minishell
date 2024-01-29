@@ -172,6 +172,7 @@ void		builtin_echo_write(t_simple *s_cmd, int i);
 void		builtin_unset(t_compound *cmds, t_simple *scmd);
 void		builtin_export(t_compound *cmds, t_simple *scmd);
 void 		print_export(t_env *head);
+void		builtin_exit(t_compound *cmds);
 
 
 //cleaning up at error

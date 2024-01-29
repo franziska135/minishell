@@ -76,7 +76,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 
 	key = NULL;
 	value = NULL;
-	cmds->envp = envp;
+	cmds->envp = NULL;
 	head = NULL;
 
 	i = 0;
@@ -100,7 +100,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 		i++;
 	}
 	cmds->env_ll = head;
-	//insert to test if valgrind is working uon termination./m
+	//insert to test if valgrind is working uon termination.
 	//cleanup_envp_ll(cmds->env_ll);
 	return (1);
 }

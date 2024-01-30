@@ -39,16 +39,23 @@ void	ft_transfer_ll_to_ptr(t_compound *cmds)
 	}
 }
 
+//export & cd malloc protected
 int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 {
 	if (ft_strncmp(scmd->cmd[0], "echo\0", 6) == 0)
 		builtin_echo(scmd);
 	else if (ft_strncmp(scmd->cmd[0], "cd\0", 3) == 0)
-		builtin_cd(scmd, cmds);
+	{
+		if (builtin_cd(scmd, cmds) == FALSE)
+			return (0);
+	}
 	else if (ft_strncmp(scmd->cmd[0], "pwd\0", 4) == 0)
 		builtin_pwd();
 	else if (ft_strncmp(scmd->cmd[0], "export\0", 7) == 0)
-		builtin_export(cmds, scmd);
+	{
+		if (builtin_export(cmds, scmd) == FALSE)
+			return (0);
+	}
 	else if (ft_strncmp(scmd->cmd[0], "unset\0", 6) == 0)
 		builtin_unset(cmds, scmd);
 	else if (ft_strncmp(scmd->cmd[0], "env\0", 4) == 0)

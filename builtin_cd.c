@@ -17,55 +17,80 @@
 //find_needle & update blah do NOTHING, if anything is NULL/not found
 //but what happens with chdir and getcwd?
 //fix what happens if error statement is printed
-
-void	builtin_cd(t_simple *scmd, t_compound *cmds)
+int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
 	if (!scmd->cmd[1])
-		builtin_cd_home(cmds);
-	else if (scmd->cmd[2])
-		print_error("bash: ", "cd: ", NULL, "too many arguments");
+    {
+		if (builtin_cd_home(cmds) == FALSE)
+            return (FALSE);
+    }
+    else if (scmd->cmd[2])
+		print_error("cd: ", NULL, "too many arguments");
     else if (ft_strncmp(scmd->cmd[1], "..", 2) == 0)
-		builtin_cd_dotdot(cmds);
-	else if (ft_strncmp(scmd->cmd[1], "-", 1) == 0)
-        builtin_cd_back(cmds);
-	else
-        builtin_cd_path(cmds, scmd);
-	//can be removed later:
-	builtin_pwd();
+    {
+		if (builtin_cd_dotdot(cmds) == FALSE)
+            return (FALSE);
+    }
+    else if (ft_strncmp(scmd->cmd[1], "-", 1) == 0)
+    {
+        if (builtin_cd_back(cmds) == FALSE)
+            return (FALSE);
+    }
+    else
+    {
+        if (builtin_cd_path(cmds, scmd) == FALSE)
+            return (FALSE);
+    }
+    //can be removed later:
+	// builtin_pwd();
+    return (TRUE);
 }
 
 //what happens on errors? go back to history promt?
 //what's the error if chdir fails?
-void    builtin_cd_home(t_compound *cmds)
+int builtin_cd_home(t_compound *cmds)
 {
-    t_env	*node;
+    t_env   *node;
     char    pwd[100];
 
     node = find_node(cmds, "HOME");
     if (node != NULL && node->value != NULL)
 	{
-        update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100));
-		chdir(node->value);
-		update_env_ll(cmds, "PWD", getcwd(pwd, 100));
+        if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
+            return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+        // if (access(node->value, F_OK) == -1)
+        // {
+        //     print_error("cd: ", node->value, strerror(errno));
+        //     return (FALSE);
+        // }
+        if (chdir(node->value) == -1)
+            return (print_error("cd: ", node->value, strerror(errno)), FALSE);
+		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+             return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
     }
 	else
-		print_error("bash: ", "cd: ", NULL, "HOME not set");
+		print_error("cd: ", NULL, "HOME not set");
+    return (TRUE);
 }
 
 //what happens on errors? go back to history promt?
 //what's the error if chdir fails?
-void    builtin_cd_dotdot(t_compound *cmds)
+int    builtin_cd_dotdot(t_compound *cmds)
 {
     char    pwd[100];
 
-    update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100));
-	chdir("..");
-	update_env_ll(cmds, "PWD", getcwd(pwd, 100));
+    if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
+        return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+	if (chdir("..") == -1)
+        return (print_error("cd: ", "..: ", strerror(errno)), FALSE);
+	if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+        return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+    return (TRUE);
 }
 
 //what happens on errors? go back to history promt?
 //what's the error if chdir fails?
-void    builtin_cd_back(t_compound *cmds)
+int    builtin_cd_back(t_compound *cmds)
 {
     char    pwd[100];
     t_env   *node;
@@ -75,27 +100,39 @@ void    builtin_cd_back(t_compound *cmds)
     if (node != NULL && node->value != NULL)
 	{
         tmp = getcwd(pwd, 100);
-        chdir(node->value);
-        update_env_ll(cmds, "OLDPWD", tmp);
-        update_env_ll(cmds, "PWD", getcwd(pwd, 100));
+        if (chdir(node->value) == -1)
+            return (print_error("cd: ", "-: ", strerror(errno)), FALSE);
+        if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)
+            return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+        if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+            return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
     }
 	else
-		print_error("bash: ", "cd: ", NULL, "OLDPWD not set");
+		print_error("cd: ", NULL, "OLDPWD not set");
+    return (TRUE);
 }
 
 //what's the error if chdir fails?
-void    builtin_cd_path(t_compound *cmds, t_simple *scmd)
+int    builtin_cd_path(t_compound *cmds, t_simple *scmd)
 {
     t_env   *node;
     char    pwd[100];
     char    *tmp;
 
     tmp = getcwd(pwd, 100);
-    if (chdir(scmd->cmd[1]) == 0)
+    if (!tmp) //if getwcd didnt work
     {
-        update_env_ll(cmds, "OLDPWD", tmp);
-    	update_env_ll(cmds, "PWD", getcwd(pwd, 100));
+        print_error("cd: ", scmd->cmd[1], strerror(errno));
+        return (0);
     }
-	else //on chdir == -1
-		print_error("bash: ", "cd: ", scmd->cmd[1], strerror(errno));
+    if (chdir(scmd->cmd[1]) == -1)
+        print_error("cd: ", scmd->cmd[1], strerror(errno)); //errno if chdir didnt work
+    else
+    {
+        if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)
+            return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+    	if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+            return(print_error("Malloc failed: ", NULL, strerror(errno)), FALSE);
+    }
+    return (TRUE);
 }

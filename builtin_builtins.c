@@ -49,10 +49,9 @@ void builtin_env(t_env *head)
 	//newline at the end?
 }
 
-void	print_error(char *str1, char *str2, char *str3, char *str4)
+void	print_error(char *str2, char *str3, char *str4)
 {
-	if (str1)
-		write (2, str1, ft_strlen(str1));
+	write (2, "bash: ", 6);
 	if (str2)
 		write (2, str2, ft_strlen(str2));
 	if (str3)

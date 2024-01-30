@@ -41,7 +41,7 @@ t_env	*find_node(t_compound *cmds, char *needle)
 //check for if new value == NULL;
 ////!!!!!CHECK FOR NEW VALUIE == NULL;
 //error if node is unset and not found?
-void	update_env_ll(t_compound *cmds, char *variable, char *new_value)
+int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 {
 	t_env	*node;
 
@@ -49,14 +49,22 @@ void	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 	if (new_value && variable)
 	{
 		node = find_node(cmds, variable);
-  		if (node)
+		if (node)
 		{
-    		// printf("old value of %s: \t%s\n", variable, node->value);
 			free(node->value);
 			node->value = ft_strdup(new_value);
-			// printf("new  value of %s: \t%s\n\n", variable, node->value);
+			if (!node->value)
+				return (FALSE);
+		}
+		else if (!node)
+		{
+			node = ft_new_env_node(variable, new_value, TRUE);
+			if (!node)
+				return (FALSE);
+			ft_add_last_node(&cmds->env_ll, node);
 		}
 	}
+	return (TRUE);
 }
 
 //splits the path under PATH=to check 

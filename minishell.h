@@ -134,7 +134,7 @@ void	err_handler(char *str);
 
 //initialize and error messages
 void		init_path_struct(t_execute *execute);
-void		print_error(char *str1, char *str2, char *str3, char *str4);
+void		print_error(char *str2, char *str3, char *str4);
 void		cleanup_envp_ll(t_env *env_ll);
 
 //node stuff
@@ -158,12 +158,12 @@ int			if_builtin_execute(t_compound *compound, t_simple *simple_command);
 
 //builtins
 void		builtin_pwd(void);
-void		builtin_cd(t_simple *simple_command, t_compound *cmds);
-void		builtin_cd_home(t_compound *cmds);
-void		builtin_cd_dotdot(t_compound *cmds);
-void		builtin_cd_back(t_compound *cmds);
-void    	builtin_cd_path(t_compound *cmds, t_simple *scmd);
-void		update_env_ll(t_compound *cmds, char *variable, char *new_value);
+int			builtin_cd(t_simple *simple_command, t_compound *cmds);
+int			builtin_cd_home(t_compound *cmds);
+int			builtin_cd_dotdot(t_compound *cmds);
+int			builtin_cd_back(t_compound *cmds);
+int	    	builtin_cd_path(t_compound *cmds, t_simple *scmd);
+int			update_env_ll(t_compound *cmds, char *variable, char *new_value);
 void		builtin_env(t_env *head);
 void		builtin_echo(t_simple *s_cmd);
 int			check_for_n(t_simple *s_cmd);
@@ -171,8 +171,18 @@ int			check_for_only_n(char *str);
 void		builtin_echo_write(t_simple *s_cmd, int i);
 void		builtin_unset(t_compound *cmds, t_simple *scmd);
 int			builtin_export(t_compound *cmds, t_simple *scmd);
-void 		print_export(t_env *head);
 void		builtin_exit(t_compound *cmds);
+
+//export utils
+void 		print_export(t_env *head);
+int			save_key_and_value(char **key, char **value, t_simple *scmd);
+int			adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int			new_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int			equal_sign_and_value(char *cmd1);
+int			export_error_check(t_compound *cmds, t_simple *scmd);
+char		*save_key(char *cmd1);
+char		*save_value(char *cmd1);
+void		free_export(char *key, char *value);
 
 
 //cleaning up at error

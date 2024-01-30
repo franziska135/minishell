@@ -65,29 +65,10 @@ void	print_error(char *str1, char *str2, char *str3, char *str4)
 	write (2, "\n", 1);
 }
 
-/*expport without =*/
-
-/*"export VAR" -> "VAR=''"" is stored in empty export call but not in env*/
-/*second call "export VAR" -> "VAR=''" is now stored empty export call and "VAR=" is stored in env??*/
-/*"export VAR=2" -> "VAR2=''" is store in empty export call and "VAR2=" is stored in env*/
-
-
-
-
-
 /*Unsetting a variable or function that was not previously set
 shall not be considered an error and does not cause the shell to
 abort.*/
 
-//check with 42 computer:
-/*Note that: VARIABLE=
-is not equivalent to an unset of VARIABLE; in the example,
-VARIABLE is set to "".  Also, the variables that can be unset
-should not be misinterpreted to include the special parameters*/
-
-//only works if the argument has AT LEAST and JUST the Variable name
-//implement check, as of now its unsetting everything, also PW and PWD=
-//nothing happens in case unsetting didnt work
 void	builtin_unset(t_compound *cmds, t_simple *scmd)
 {
 	t_env	*haystack;

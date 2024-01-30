@@ -61,14 +61,14 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 	
 	/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
 	/*(the function is in this file, scoll up:)*/
-	int i = 0;
-	ft_transfer_ll_to_ptr(cmds);
-	while (cmds->envp[i])
-	{
-		write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
-		write (1, "\n", 1);
-		i++;
-	}
+	// int i = 0;
+	// ft_transfer_ll_to_ptr(cmds);
+	// while (cmds->envp[i])
+	// {
+	// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
+	// 	write (1, "\n", 1);
+	// 	i++;
+	// }
 	/******************************************************************/
 	//if a buitin matched, the return will be 1
 	return (1);

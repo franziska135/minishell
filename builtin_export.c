@@ -97,7 +97,7 @@ int	new_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
 	if (equal_sign_and_value(scmd->cmd[1]) == 0)
 	{
 		new_node->env_display = FALSE;
-		write (1, "new empty variable added only to export\n", 42);
+		write (1, "new empty variable added only to export\n", 40);
 	}
 	if (equal_sign_and_value(scmd->cmd[1]) == 1)
 	{

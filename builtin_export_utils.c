@@ -33,25 +33,26 @@ int	equal_sign_and_value(char *cmd1)
 int	export_error_check(t_compound *cmds, t_simple *scmd)
 {
 	int	flag;
+	int	i;
 
-	
+	i = 0;
 	flag = TRUE;
 	if (!scmd->cmd[1])
 	{
 		print_export(cmds->env_ll);
 		return (FALSE);
 	}
-	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0)
-	{
+	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0 ||
+		ft_strncmp(scmd->cmd[1], ".", 1) == 0 ||
+		ft_isdigit(scmd->cmd[1][0]) == 1)
 		flag = FALSE;
-		write (1, "check", 5);
-	}
-	else if (ft_isdigit(scmd->cmd[1][0]) == TRUE)
+	while (scmd->cmd[1][i] && scmd->cmd[1][i] != '=')
 	{
-		flag = FALSE;
-		write (1, "check2 ", 7);
+		if (ft_isalnum(scmd->cmd[1][i]) != 1 &&
+			scmd->cmd[1][i] != '_')
+			flag = FALSE;
+		i++;
 	}
-	else if (ft_strchr(scmd->cmd[i], "."))
 	if (flag == FALSE)
 		print_error("export: ", scmd->cmd[1], "not a valid identifier");
 	return (flag);

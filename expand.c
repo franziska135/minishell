@@ -28,8 +28,7 @@ static char	*find_key(char *token)
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, token, j + 1);
-	str[j] = '=';
-	str[j + 1] = '\0';
+	str[j] = '\0';
 	return (str);
 }
 
@@ -42,7 +41,7 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 	if (key)
 	{
 		env = find_node(cmds, key);
-		if (env)
+		if (env && env->value)
 			write(fd, env->value, ft_strlen(env->value));
 	}
 	else if (token[0] == '\0')

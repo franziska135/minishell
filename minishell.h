@@ -62,6 +62,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				env_display;
 	struct s_env	*next;
 }	t_env;
 
@@ -77,13 +78,17 @@ typedef struct s_compound_command
 }	t_compound;
 
 
+typedef struct s_execute
+{
+	char	**binary_paths;
+}	t_execute;
+
 // HISTORY
 int	run_minishell(t_compound	*cmds);
 
 // SYNTAX
 int	syntax(char *str);
 
-// int	syntax_redir(char *str);
 
 // LEXIS
 char	**lexis(char *str);
@@ -118,7 +123,8 @@ char	*path_finder(t_compound *cmds, int pipe);
 void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
-void	init_env_llist(t_compound *cmds, char **envp);
+int		init_env_llist(t_compound *cmds, char **envp);
+void	ft_transfer_ll_to_ptr(t_compound *cmds);
 t_env	*find_node(t_compound *cmds, char *needle);
 
 
@@ -130,5 +136,77 @@ void	print_dpointer(char **str);
 void	err_handler(char *str);
 
 
+
+
+
+
+
+//initialize and error messages
+void		init_path_struct(t_execute *execute);
+void		print_error(char *str2, char *str3, char *str4);
+void		cleanup_envp_ll(t_env *env_ll);
+
+//node stuff
+// int			init_env_llist(t_compound *cmds, char **envp);
+//can eventually be taken out
+void		free_node(void *node);
+t_env		*find_node(t_compound *cmds, char *needle);
+//adjusted libft lstnew
+t_env		*ft_new_env_node(char *key, char *value, int env_display);
+//adjusted lstaddback libft
+void		ft_add_last_node(t_env **lst, t_env *new);
+
+//PATH paths
+void		split_binary_paths(t_execute *execute, t_compound *compound);
+//can be taken out at some point:
+void		print_paths(t_execute *execute);
+
+//check amt of commands and pipes, children
+void		process_commands(t_execute *execute, t_compound *compound);
+int			if_builtin_execute(t_compound *compound, t_simple *simple_command);
+
+//builtins
+void		builtin_pwd(void);
+int			builtin_cd(t_simple *simple_command, t_compound *cmds);
+int			builtin_cd_home(t_compound *cmds);
+int			builtin_cd_dotdot(t_compound *cmds);
+int			builtin_cd_back(t_compound *cmds);
+int	    	builtin_cd_path(t_compound *cmds, t_simple *scmd);
+int			update_env_ll(t_compound *cmds, char *variable, char *new_value);
+void		builtin_env(t_env *head);
+void		builtin_echo(t_simple *s_cmd);
+int			check_for_n(t_simple *s_cmd);
+int			check_for_only_n(char *str);
+void		builtin_echo_write(t_simple *s_cmd, int i);
+void		builtin_unset(t_compound *cmds, t_simple *scmd);
+int			builtin_export(t_compound *cmds, t_simple *scmd);
+void		builtin_exit(t_compound *cmds);
+
+//export utils
+void 		print_export(t_env *head);
+int			save_key_and_value(char **key, char **value, t_simple *scmd);
+int			adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int			new_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int			equal_sign_and_value(char *cmd1);
+int			export_error_check(t_compound *cmds, t_simple *scmd);
+char		*save_key(char *cmd1);
+char		*save_value(char *cmd1);
+void		free_export(char *key, char *value);
+
+
+//cleaning up at error
+void		cleanup(t_execute *execute, t_compound *compound);
+void		free_double_ptr(char **double_ptr);
+void		free_env(t_simple **cmd);
+void		ft_free_list(t_env *lst);
+
+//utils identical to the libft folder and can be removed once linked
+size_t		ft_strlcpy(char *dst, const char *src, size_t size);
+static int	ft_word_counter(char const *str, char c);
+static char	**ft_free_malloc(char **ptr, int j);
+static int	s_plus(const char *s, char c);
+char		**ft_split(char const *s, char c);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t		ft_strlen(const char *str);
 
 #endif

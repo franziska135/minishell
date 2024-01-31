@@ -29,7 +29,6 @@ static int	run_procces(t_compound	*cmds, char *str)
 	dpointer_free(tokens);
 	if (!piping_root(cmds))
 		return (0);
-	// print_struct(*cmds);
 	struct_free(*cmds);
 	return (1);
 }

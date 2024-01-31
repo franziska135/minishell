@@ -11,26 +11,26 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "execute.h"
 
 void	init_path_struct(t_execute *execute)
 {
 	execute->binary_paths = NULL;
-	execute->amt_children = 0;
-	execute->amt_pipes = 0;
 }
 
-//returns a pointer to the node storing the variable the variable
-//returns NULL if variable not found
+//returns a pointer to the node storing the key and the variable
+//returns NULL if key not found
 t_env	*find_node(t_compound *cmds, char *needle)
 {
 	t_env	*haystack;
 	char	*str;
+	size_t	h_length;
 
+	h_length = 0;
 	haystack = cmds->env_ll;
 	while (haystack)
 	{
-		if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key)) == 0)
+		h_length = ft_strlen(haystack->key) + 1;
+		if (ft_strncmp(haystack->key, needle, h_length) == 0)
 			return (haystack);
 		haystack = haystack->next;
 	}
@@ -41,7 +41,7 @@ t_env	*find_node(t_compound *cmds, char *needle)
 //check for if new value == NULL;
 ////!!!!!CHECK FOR NEW VALUIE == NULL;
 //error if node is unset and not found?
-void	update_env_ll(t_compound *cmds, char *variable, char *new_value)
+int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 {
 	t_env	*node;
 
@@ -49,14 +49,22 @@ void	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 	if (new_value && variable)
 	{
 		node = find_node(cmds, variable);
-  		if (node)
+		if (node)
 		{
-    		printf("old value of %s: \t%s\n", variable, node->value);
 			free(node->value);
 			node->value = ft_strdup(new_value);
-			printf("new  value of %s: \t%s\n\n", variable, node->value);
+			if (!node->value)
+				return (FALSE);
+		}
+		else if (!node)
+		{
+			node = ft_new_env_node(variable, new_value, TRUE);
+			if (!node)
+				return (FALSE);
+			ft_add_last_node(&cmds->env_ll, node);
 		}
 	}
+	return (TRUE);
 }
 
 //splits the path under PATH=to check 
@@ -64,9 +72,11 @@ void	split_binary_paths(t_execute *execute, t_compound *cmds)
 {
 	t_env	*node;
 
-	node = find_node(cmds, "PATH=");
+	node = find_node(cmds, "PATH");
 	if (node && node->value != NULL)
-	execute->binary_paths = ft_split(node->value, ':');
+		execute->binary_paths = ft_split(node->value, ':');
+	else
+		printf("no path found\n");
 	// if (!execute->binary_paths)
 		// (free (path_str), path_str = NULL);
 		// 	free everything for the current process, return to history readline;

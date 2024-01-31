@@ -6,8 +6,8 @@ static int	is_built_in(char *str)
 		return (FALSE);
 	if (!ft_strncmp(str, "cd", 3))
 		return (TRUE);
-	else if (!ft_strncmp(str, "pwd", 4))
-		return (TRUE);
+	// else if (!ft_strncmp(str, "pwd", 4))
+	// 	return (TRUE);
 	else if (!ft_strncmp(str, "export", 7))
 		return (TRUE);
 	else if (!ft_strncmp(str, "unset", 6))

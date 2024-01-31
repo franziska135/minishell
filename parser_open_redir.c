@@ -9,7 +9,7 @@ static int	redir_out(char **str, int fd_out, int fd_in, size_t *i)
 		close (fd_out);
 	fd_out = open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (fd_out == -1)
-		perror("fzsh: ");
+		print_error(NULL, *str, strerror(errno));
 	return (fd_out);
 }
 
@@ -22,7 +22,7 @@ static int	redir_in(char **str, int fd_in, int fd_out, size_t *i)
 		close (fd_in);
 	fd_in = open(*str, O_RDONLY);
 	if (fd_in == -1)
-		perror("fzsh: ");
+		print_error(NULL, *str, strerror(errno));
 	return (fd_in);
 }
 
@@ -36,7 +36,7 @@ static int	redir_append(char **str, int fd_out, int fd_in, size_t *i)
 		close (fd_out);
 	fd_out = open(*str, O_WRONLY | O_CREAT | O_APPEND, 0664);
 	if (fd_out == -1)
-		perror("fzsh: ");
+		print_error(NULL, *str, strerror(errno));
 	return (fd_out);
 }
 

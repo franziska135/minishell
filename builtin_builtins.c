@@ -51,7 +51,7 @@ void builtin_env(t_env *head)
 
 void	print_error(char *str2, char *str3, char *str4)
 {
-	write (2, "bash: ", 6);
+	write (2, "fzsh: ", 6);
 	if (str2)
 		write (2, str2, ft_strlen(str2));
 	if (str3)

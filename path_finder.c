@@ -25,7 +25,7 @@ static char	*path_access(char *path, char *cmd)
 		j++;
 	}
 	dpointer_free(path_split);
-	perror("fzsh");
+	print_error(NULL, cmd, "command not found.");
 	return (NULL);
 }
 
@@ -35,8 +35,8 @@ char	*path_finder(t_compound *cmds, int pipe)
 
 	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
 		return (cmds->scmd[pipe].cmd[0]);
-	env = find_node(cmds, "PATH=");
-	if (env->value)
+	env = find_node(cmds, "PATH");
+	if (env && env->value)
 		return (path_access(env->value, cmds->scmd[pipe].cmd[0]));
 	return (NULL);
 }

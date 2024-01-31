@@ -72,17 +72,17 @@ int	syntax(char *str)
 {
 	if (in_quot(str, ft_strlen(str) - 1))
 	{
-		err_handler("SYNTAX ERROR (quotes)");
+		print_error(NULL, "syntax error", "quote has to close");
 		return (0);
 	}
 	if (syntax_pipe(str))
 	{
-		err_handler("SYNTAX ERROR (pipe)");
+		print_error(NULL, "syntax error", "pipe(s) is not set correctly");
 		return (0);
 	}
 	if (syntax_redir(str))
 	{
-		err_handler("SYNTAX ERROR (redirection)");
+		print_error(NULL, "syntax error", "redirection(s) is not valid");
 		return (0);
 	}
 	return (1);

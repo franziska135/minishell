@@ -71,6 +71,7 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
+	// ambiguous
 	tokens = token_expand(cmds, tokens);
 	if (!tokens)
 		return (NULL);

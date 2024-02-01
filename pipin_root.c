@@ -34,6 +34,8 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 		if (is_built_in(cmds->scmd[i].cmd[0]))
 		{
 			if_builtin_execute(cmds, &cmds->scmd[i]);
+			cleanup_envp_ll(cmds->env_ll);
+			struct_free(*cmds);
 			exit (EXIT_SUCCESS);
 		}
  		path = path_finder(cmds, i);
@@ -44,6 +46,8 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			exit (EXIT_FAILURE);
 		}
 		ft_transfer_ll_to_ptr(cmds);
+		// char *str = find_node(cmds, "TERM");
+		// printf("TERM=%s\n", str);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 	}
 	exit (EXIT_FAILURE);

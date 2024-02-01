@@ -20,7 +20,7 @@ void	print_export(t_env *head)
 	while (current)
 	{
 		write (1, "dexlare -x ", 11);
-		write(1, current->key, ft_strlen(current->key));
+		write (1, current->key, ft_strlen(current->key));
 		if (current->env_display == TRUE)
 		{
 			write (1, "=", 1);

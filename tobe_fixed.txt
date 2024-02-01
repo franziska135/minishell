@@ -1,11 +1,18 @@
---echo $q
-		after many times running gives out ./minishell
-
 --all errors should be handled properly
-
--- space in history -> bash saves commands that start with space
 
 --starting minishell with "env -i | ./minishell" creates endless loop
 	- env -i passes an emtpy env to the shell
 
---expansion: $"" leads to segmentation fault
+--A="s -l"// l$A
+
+
+--clear returns error
+
+
+--export | grep a returns error
+
+
+
+
+-- space in history -> bash saves commands that start with space	NOTE: my bash doesnt!
+--expansion: $"" leads to segmentation fault				NOTE: it doesnt, was it something else?

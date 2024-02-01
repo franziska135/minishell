@@ -8,4 +8,7 @@
 --starting minishell with "env -i | ./minishell" creates endless loop
 	- env -i passes an emtpy env to the shell
 
---expansion: $"" leads to segmentation fault
+fixed: --expansion: $"" leads to segmentation fault
+
+--what happens if PATH is unset
+	- atm: no error displayed

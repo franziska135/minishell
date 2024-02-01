@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:24:47 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,27 @@
 //open issues:
 //valgrind for cd, pwd, env, echo, unset okay
 //restructure export
-
+//if PATH is currently unset, value of PATH is empty
+//and function returns nothing 
+/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
+	/*(the function is in this file, scoll up:)*/
+	// int i = 0;
+	// ft_transfer_ll_to_ptr(cmds);
+	// while (cmds->envp[i])
+	// {
+	// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
+	// 	write (1, "\n", 1);
+	// 	i++;
+	// }
+	/******************************************************************/
+	//if a buitin matched, the return will be 1
 void	ft_transfer_ll_to_ptr(t_compound *cmds)
 {
-	int	i;
-	t_env *current;
-	
+	int		i;
+	t_env	*current;
+
 	i = 0;
 	current = find_node(cmds, "PATH");
-	
-	//if PATH unset or value of PATH is empty
 	if (!current || !current->value)
 		return ;
 	if (cmds->envp)
@@ -62,21 +73,7 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 		builtin_env(cmds->env_ll);
 	else if (ft_strncmp(scmd->cmd[0], "exit\0", 6) == 0)
 		builtin_exit(cmds);
-	//if no builtin matched, 0 will be returned, proceed with pipex
 	else
 		return (0);
-	
-	/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
-	/*(the function is in this file, scoll up:)*/
-	// int i = 0;
-	// ft_transfer_ll_to_ptr(cmds);
-	// while (cmds->envp[i])
-	// {
-	// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
-	// 	write (1, "\n", 1);
-	// 	i++;
-	// }
-	/******************************************************************/
-	//if a buitin matched, the return will be 1
 	return (1);
 }

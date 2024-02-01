@@ -1,15 +1,18 @@
 --all errors should be handled properly
 
---starting minishell with "env -i | ./minishell" creates endless loop
+--starting minishell with "env -i | ./minishell" creates endless loop			you should not do that (its not env -i, its piping)
 	- env -i passes an emtpy env to the shell
 
---A="s -l"// l$A
+--A="s -l"// l$A		almost resolved. export A="'ls -s'"; $A has leaks
 
 
---clear returns error
+--clear returns error		TERM prints wrong
 
 
---export | grep a returns error
+--export | grep a returns error		env works but prints END and START
+
+
+--ambiguous redirection
 
 
 

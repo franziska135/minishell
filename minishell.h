@@ -197,7 +197,6 @@ void		free_export(char *key, char *value);
 //cleaning up at error
 void		cleanup(t_execute *execute, t_compound *compound);
 void		free_double_ptr(char **double_ptr);
-void		free_env(t_simple **cmd);
 void		ft_free_list(t_env *lst);
 
 //utils identical to the libft folder and can be removed once linked

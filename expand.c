@@ -118,7 +118,7 @@ char	**token_expand(t_compound *cmds, char **tokens)
 		{
 			new_token[j] = remove_quotes(str);
 			j++;
-		}
+		}	
 		free(tokens[i]);
 		i++;
 	}

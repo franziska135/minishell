@@ -50,6 +50,12 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 		// printf("TERM=%s\n", str);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 	}
+	else
+	{
+		close_fds(cmds, fd);
+		struct_free(*cmds);
+		// ft_free_list(cmds->env_ll);
+	}
 	exit (EXIT_FAILURE);
 }
 

@@ -94,6 +94,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 				k++;
 			}
 			j++;
+			dpointer_free(str);
 		}
 		i++;
 	}

@@ -100,7 +100,7 @@ static int	piping(t_compound *cmds)
 
 int	piping_root(t_compound *cmds)
 {
-	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]))
+	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
 		if_builtin_execute(cmds, &cmds->scmd[0]);
 	}	

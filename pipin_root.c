@@ -45,7 +45,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			struct_free(*cmds);
 			exit (EXIT_FAILURE);
 		}
-		ft_transfer_ll_to_ptr(cmds);
+		// ft_transfer_ll_to_ptr(cmds);
 		// char *str = find_node(cmds, "TERM");
 		// printf("TERM=%s\n", str);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
@@ -73,7 +73,7 @@ static int	piping(t_compound *cmds)
 	{
 		if (pipe(fd) == -1)
 			return (0);
-		if (cmds->scmd[i].in_fd != 0)
+		if (cmds->scmd[i].in_fd > 2)
 		{
 			dup2(cmds->scmd[i].in_fd, STDIN_FILENO);
 			close (cmds->scmd[i].in_fd);
@@ -85,7 +85,7 @@ static int	piping(t_compound *cmds)
 		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
 			dup2(fd[0], STDIN_FILENO);
 		close (fd[0]);
-		if (cmds->scmd[i].out_fd != 0)
+		if (cmds->scmd[i].out_fd > 2)
 			close (cmds->scmd[i].out_fd);
 		i++;
 	}

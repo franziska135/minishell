@@ -29,7 +29,8 @@ static size_t	malloc_size(char **tokens, int i)
 				j++;
 			}
 		}
-		i++;
+		if (tokens[i])
+			i++;
 	}
 	return (len);
 }
@@ -96,7 +97,8 @@ static int	write_struct(t_compound *cmds, char **tokens)
 			j++;
 			dpointer_free(str);
 		}
-		i++;
+		if (tokens[i])
+			i++;
 	}
 	return (1);
 }

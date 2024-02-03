@@ -71,7 +71,7 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
-	// ambiguous
+	ambiguous(cmds, tokens);
 	tokens = token_expand(cmds, tokens);
 	if (!tokens)
 		return (NULL);
@@ -79,11 +79,11 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))
 			pipe++;
-		else if (!ft_strncmp(tokens[i], ">", 2))
+		else if (!ft_strncmp(tokens[i], ">", 2) && cmds->scmd[pipe].out_fd != -1)
 			cmds->scmd[pipe].out_fd = redir_out(&tokens[i + 1], cmds->scmd[pipe].out_fd, cmds->scmd[pipe].in_fd, &i);
-		else if (!ft_strncmp(tokens[i], "<", 2))
+		else if (!ft_strncmp(tokens[i], "<", 2) && cmds->scmd[pipe].in_fd != -1)
 			cmds->scmd[pipe].in_fd = redir_in(&tokens[i + 1], cmds->scmd[pipe].in_fd, cmds->scmd[pipe].out_fd, &i);
-		else if (!ft_strncmp(tokens[i], ">>", 3))
+		else if (!ft_strncmp(tokens[i], ">>", 3) && cmds->scmd[pipe].out_fd != -1)
 			cmds->scmd[pipe].out_fd = redir_append(&tokens[i + 1], cmds->scmd[pipe].out_fd, cmds->scmd[pipe].in_fd, &i);
 		i++;
 	}

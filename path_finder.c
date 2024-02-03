@@ -33,6 +33,8 @@ char	*path_finder(t_compound *cmds, int pipe)
 {
 	t_env	*env;
 
+	if (!cmds->scmd[pipe].cmd[0])
+		return (NULL);
 	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
 		return (cmds->scmd[pipe].cmd[0]);
 	env = find_node(cmds, "PATH");

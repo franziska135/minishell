@@ -107,10 +107,13 @@ int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
+void	ambiguous (t_compound *cmds, char **tokens);
+
 
 
 //  EXPAND
 char	**token_expand(t_compound *cmds, char **token);
+char	*expand_token(t_compound *cmds, char *token);
 
 
 // PIPEX

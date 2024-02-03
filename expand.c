@@ -51,7 +51,7 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 	free(key);
 }
 
-static char	*expand_token(t_compound *cmds, char *token)
+char	*expand_token(t_compound *cmds, char *token)
 {
 	char	*str;
 	char	*token_copy;
@@ -118,7 +118,7 @@ char	**token_expand(t_compound *cmds, char **tokens)
 		{
 			new_token[j] = remove_quotes(str);
 			j++;
-		}	
+		}
 		free(tokens[i]);
 		i++;
 	}

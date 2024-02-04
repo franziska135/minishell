@@ -12,16 +12,23 @@
 --export | grep a returns error		env works but prints END and START
 
 
---ambiguous redirection			any failed redir cant free ll cuz its not properly set			i think the rest is resolved.
+--ambiguous redirection			any failed redir cant free ll cuz its not properly set			
+					i think the rest is resolved.
 
 
---make and git(comment) doesnt work.
+--make and doesnt work.
+
+
+--echo "hello		world" prints hello world
 
 
 --heredoc doesnt go to newline.
 
 
 --cmd not found is not fzsh error.
+
+
+--expand inside of hd
 
 
 

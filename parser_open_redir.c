@@ -1,43 +1,100 @@
 #include "minishell.h"
 
-static int	redir_out(char **str, int fd_out, int fd_in, size_t *i)
+static char	**redir_expand(t_compound *cmds, char *token)
 {
-	*i += 1;
-	if (fd_out == -1 || fd_in == -1)
-		return (-1);
-	if (fd_out)
-		close (fd_out);
-	fd_out = open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-	if (fd_out == -1)
-		print_error(NULL, *str, strerror(errno));
-	return (fd_out);
-}
+	char	*new_token;
+	char	*ret;
+	char	**split_token;
 
-static int	redir_in(char **str, int fd_in, int fd_out, size_t *i)
-{
-	*i += 1;
-	if (fd_in == -1 || fd_out == -1)
-		return (-1);
-	if (fd_in)
-		close (fd_in);
-	fd_in = open(*str, O_RDONLY);
-	if (fd_in == -1)
-		print_error(NULL, *str, strerror(errno));
-	return (fd_in);
+
+	new_token = expand_token(cmds, token);
+	if (!new_token)
+		return (NULL);
+	split_token = expansion_split(new_token);
+	free(new_token);
+	if (!split_token)
+		return (NULL);
+	if (!split_token[0] || split_token[1])
+	{
+		dpointer_free(split_token);
+		return (NULL);
+	}
+	split_token[0] = remove_quotes(split_token[0]);
+	return (split_token);
 }
 
 
-static int	redir_append(char **str, int fd_out, int fd_in, size_t *i)
+static void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i)
 {
+	char	**str;
+
 	*i += 1;
-	if (fd_out == -1 || fd_in == -1)
-		return (-1);
-	if (fd_out)
-		close (fd_out);
-	fd_out = open(*str, O_WRONLY | O_CREAT | O_APPEND, 0664);
-	if (fd_out == -1)
-		print_error(NULL, *str, strerror(errno));
-	return (fd_out);
+	if (cmds->scmd[pipe].out_fd == -1 || cmds->scmd[pipe].in_fd == -1)
+		cmds->scmd[pipe].out_fd = -1;
+	if (cmds->scmd[pipe].out_fd)
+		close (cmds->scmd[pipe].out_fd);
+	str = redir_expand(cmds, file);
+	if (!str)
+	{
+		print_error(NULL, file, "ambiguous redirect");
+		cmds->scmd[pipe].out_fd = -1;
+	}
+	else
+	{
+		cmds->scmd[pipe].out_fd = open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cmds->scmd[pipe].out_fd == -1)
+			print_error(NULL, *str, strerror(errno));
+		dpointer_free(str);
+	}
+}
+
+static void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i)
+{
+	char	**str;
+
+	*i += 1;
+	if (cmds->scmd[pipe].out_fd == -1 || cmds->scmd[pipe].in_fd == -1)
+		cmds->scmd[pipe].in_fd = -1;
+	if (cmds->scmd[pipe].in_fd)
+		close (cmds->scmd[pipe].in_fd);
+	str = redir_expand(cmds, file);
+	if (!str)
+	{
+		print_error(NULL, file, "ambiguous redirect");
+		cmds->scmd[pipe].in_fd = -1;
+	}
+	else
+	{
+		cmds->scmd[pipe].in_fd = open(*str, O_RDONLY);
+		if (cmds->scmd[pipe].in_fd == -1)
+			print_error(NULL, *str, strerror(errno));
+		dpointer_free(str);
+	}
+}
+
+
+static void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i)
+{
+	char	**str;
+
+	*i += 1;
+	if (cmds->scmd[pipe].out_fd == -1 || cmds->scmd[pipe].in_fd == -1)
+		cmds->scmd[pipe].out_fd = -1;
+	if (cmds->scmd[pipe].out_fd)
+		close (cmds->scmd[pipe].out_fd);
+	str = redir_expand(cmds, file);
+	if (!str)
+	{
+		print_error(NULL, file, "ambiguous redirect");
+		cmds->scmd[pipe].out_fd = -1;
+	}
+	else
+	{
+		cmds->scmd[pipe].out_fd = open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cmds->scmd[pipe].out_fd == -1)
+			print_error(NULL, *str, strerror(errno));
+		dpointer_free(str);
+	}
 }
 
 static void	redir_hd(t_compound *cmds, char **tokens)
@@ -71,8 +128,6 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
-	ambiguous(cmds, tokens);
-	tokens = token_expand(cmds, tokens);
 	if (!tokens)
 		return (NULL);
 	while (tokens[i])
@@ -80,11 +135,11 @@ char	**open_redir(t_compound *cmds, char **tokens)
 		if (!ft_strncmp(tokens[i], "|", 2))
 			pipe++;
 		else if (!ft_strncmp(tokens[i], ">", 2) && cmds->scmd[pipe].out_fd != -1)
-			cmds->scmd[pipe].out_fd = redir_out(&tokens[i + 1], cmds->scmd[pipe].out_fd, cmds->scmd[pipe].in_fd, &i);
+			redir_out(cmds, tokens[i + 1], pipe, &i);
 		else if (!ft_strncmp(tokens[i], "<", 2) && cmds->scmd[pipe].in_fd != -1)
-			cmds->scmd[pipe].in_fd = redir_in(&tokens[i + 1], cmds->scmd[pipe].in_fd, cmds->scmd[pipe].out_fd, &i);
+			redir_in(cmds, tokens[i + 1], pipe, &i);
 		else if (!ft_strncmp(tokens[i], ">>", 3) && cmds->scmd[pipe].out_fd != -1)
-			cmds->scmd[pipe].out_fd = redir_append(&tokens[i + 1], cmds->scmd[pipe].out_fd, cmds->scmd[pipe].in_fd, &i);
+			redir_append(cmds, tokens[i + 1], pipe, &i);
 		i++;
 	}
 	return (tokens);

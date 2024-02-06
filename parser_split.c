@@ -53,9 +53,11 @@ char	**expansion_split(char *s)
 	char	**ptr;
 
 	j = 0;
+	if (!s)
+		return (NULL);
 	ptr = (char **)malloc(sizeof(char *) * (ft_word_count(s) + 1));
 	if (!ptr)
-		return (0);
+		return (NULL);
 	ptr[ft_word_count(s)] = NULL;
 	i = 0;
 	while (s[i])
@@ -76,3 +78,18 @@ char	**expansion_split(char *s)
 	ptr[j] = NULL;
 	return (ptr);
 }
+
+
+// int main()
+// {
+// 	char *str = NULL;
+// 	char **split = expansion_split(str);
+
+// 	int i = 0;
+// 	while (split && split[i])
+// 	{
+// 		printf("%s\n", split[i]);
+// 		i++;
+// 	}
+// 	printf("%s\n", split[i]);
+// }

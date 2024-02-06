@@ -108,7 +108,7 @@ size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
 void	ambiguous (t_compound *cmds, char **tokens);
-char	**ft_new_split(char *s);
+char	**expansion_split(char *s);
 
 
 

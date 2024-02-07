@@ -39,6 +39,8 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			struct_free(*cmds);
 			exit (EXIT_FAILURE);
 		}
+		// char *str = find_node(cmds, "TERM");
+		// printf("TERM=%s\n", str);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 	}
 	perror("child");

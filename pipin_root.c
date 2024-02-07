@@ -24,7 +24,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 	char	*path;
 
 	close (initial_stdin);
-	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1)
+	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1 && cmds->scmd[i].cmd)
 	{
 		if (cmds->scmd[i].out_fd != 0)
 			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
@@ -100,7 +100,7 @@ static int	piping(t_compound *cmds)
 
 int	piping_root(t_compound *cmds)
 {
-	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
+	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
 		if_builtin_execute(cmds, &cmds->scmd[0]);
 	}	

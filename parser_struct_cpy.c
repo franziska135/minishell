@@ -82,20 +82,11 @@ static int	write_struct(t_compound *cmds, char **tokens)
 			i++;
 		else
 		{
-			str = ft_split(tokens[i], ' ');
-			if (!str)
-				return (struct_free(*cmds), 0);
-			k = 0;
-			while (str[k])
-			{
-				cmds->scmd[pipe].cmd[j + k] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
-				if(!cmds->scmd[pipe].cmd[j + k])
+				cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
+				if(!cmds->scmd[pipe].cmd[j])
 					return(struct_free(*cmds), dpointer_free(tokens), 0);
-				ft_strlcpy(cmds->scmd[pipe].cmd[j + k], str[k], ft_strlen(str[k]) + 1);
-				k++;
-			}
+				ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);
 			j++;
-			dpointer_free(str);
 		}
 		if (tokens[i])
 			i++;
@@ -105,6 +96,8 @@ static int	write_struct(t_compound *cmds, char **tokens)
 
 int	struct_cpy(t_compound *cmds, char **tokens)
 {
+	int	i;
+
 	if(!malloc_struct(cmds, tokens))
 	{
 		dpointer_free(tokens);
@@ -115,6 +108,12 @@ int	struct_cpy(t_compound *cmds, char **tokens)
 		struct_free(*cmds);
 		dpointer_free(tokens);
 		return (0);
+	}
+	i = 0;
+	while (i < cmds->nbr_scmd)
+	{
+		cmds->scmd[i].cmd = scmds_expand(cmds, cmds->scmd[i].cmd);
+		i++;
 	}
 	return (1);
 }

@@ -7,7 +7,7 @@ static char	**redir_expand(t_compound *cmds, char *token)
 	char	**split_token;
 
 
-	new_token = expand_token(cmds, token);
+	new_token = expand_redir(cmds, token);
 	if (!new_token)
 		return (NULL);
 	split_token = expansion_split(new_token);

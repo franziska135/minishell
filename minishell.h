@@ -114,8 +114,11 @@ char	**expansion_split(char *s);
 
 
 //  EXPAND
-char	*token_expand(t_compound *cmds, char *token);
-char	*expand_token(t_compound *cmds, char *token);
+// char	*token_expand(t_compound *cmds, char *token);
+char	*expand_redir(t_compound *cmds, char *token);
+char	**scmds_expand(t_compound *cmds, char **scmds);
+void	expand_token(t_compound *cmds, char *token, int *fd);
+
 
 
 // PIPEX

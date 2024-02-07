@@ -54,16 +54,12 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 		write(fd, "\0", 1);
 }
 
-char	*expand_token(t_compound *cmds, char *token)
+void	expand_token(t_compound *cmds, char *token, int *fd)
 {
-	char	*str;
+	int	i;
 	char	*token_copy;
-	int		fd[2];
-	size_t	i;
 
 	token_copy = token;
-	if (pipe(fd) == -1)
-		return (NULL);
 	i = 0;
 	while (token[0])
 	{
@@ -93,6 +89,15 @@ char	*expand_token(t_compound *cmds, char *token)
 			}
 		}
 	}
+}
+char	*expand_redir(t_compound *cmds, char *token)
+{
+	char	*str;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+		return (NULL);
+	expand_token(cmds, token, fd);
 	write(fd[1], "\0", 1);
 	close(fd[1]);
 	str = get_next_line(fd[0]);
@@ -101,6 +106,12 @@ char	*expand_token(t_compound *cmds, char *token)
 		return (free(str), NULL);
 	return (str);
 }
+
+
+
+
+
+
 
 // char	*token_expand(t_compound *cmds, char *token)
 // {

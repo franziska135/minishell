@@ -19,12 +19,12 @@ static size_t	malloc_size(char **tokens, int i)
 			status = 0;
 			while (tokens[i][j])
 			{
-				if (!status && tokens[i][j] != ' ')
+				if (!status && (tokens[i][j] != ' ' || !in_quot(tokens[i], j)))
 				{
 					len ++;
 					status = 1;
 				}
-				else if (tokens[i][j] == ' ')
+				else if (tokens[i][j] == ' ' && !in_quot(tokens[i], j))
 					status = 0;
 				j++;
 			}

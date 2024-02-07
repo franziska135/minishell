@@ -16,7 +16,7 @@ static int	ft_word_count(char *str)
 			word_counter++;
 			word_begin = 0;
 		}
-		else if (*str == ' ' && quotes == 0)
+		if (*str == ' ' && quotes == 0)
 			word_begin = 1;
 		else if (*str == '"' && quotes == 0)
 			quotes = 1;

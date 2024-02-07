@@ -107,7 +107,7 @@ void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
-void	ft_transfer_ll_to_ptr(t_compound *cmds);
+int		ft_transfer_ll_to_ptr(t_compound *cmds);
 t_env	*find_node(t_compound *cmds, char *needle);
 
 // utils to be deleted
@@ -166,6 +166,6 @@ void	free_export(char *key, char *value);
 void	cleanup(t_execute *execute, t_compound *compound);
 void	free_double_ptr(char **double_ptr);
 void	free_env(t_simple **cmd);
-void	ft_free_list(t_env *lst);
+void	ft_free_node(t_env *lst);
 
 #endif

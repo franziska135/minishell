@@ -80,7 +80,7 @@ void	builtin_unset(t_compound *cmds, t_simple *scmd)
 				haystack->next = NULL;
 				write(1, haystack->key, ft_strlen(haystack->key));
 				write (1, " is now unset\n", 14);
-				ft_free_list(haystack);
+				ft_free_node(haystack);
 				return ;
 			}
 			tmp = haystack;

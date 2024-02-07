@@ -29,7 +29,7 @@ void	cleanup_envp_ll(t_env *env_ll)
 	}
 }
 
-void	ft_free_list(t_env *lst)
+void	ft_free_node(t_env *lst)
 {
 	t_env	*tmp;
 

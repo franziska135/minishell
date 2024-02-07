@@ -24,10 +24,10 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 		if (builtin_cd_home(cmds) == FALSE)
 			return (FALSE);
 	}
-	else if (scmd->cmd[1][0] == '\0')
-		return  (TRUE);
 	else if (scmd->cmd[2])
 		print_error("cd: ", NULL, "too many arguments");
+	else if (scmd->cmd[1][0] == '\0')
+		return  (TRUE);
 	else if (ft_strncmp(scmd->cmd[1], "..\0", 3) == 0)
 	{
 		if (builtin_cd_dotdot(cmds) == FALSE)

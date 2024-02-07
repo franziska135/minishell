@@ -18,38 +18,7 @@
 //valgrind for cd, pwd, env, echo, unset okay
 //restructure export
 //if PATH is currently unset, value of PATH is empty
-//and function returns nothing 
-/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
-	/*(the function is in this file, scoll up:)*/
-	// int i = 0;
-	// ft_transfer_ll_to_ptr(cmds);
-	// while (cmds->envp[i])
-	// {
-	// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
-	// 	write (1, "\n", 1);
-	// 	i++;
-	// }
-	/******************************************************************/
-	//if a buitin matched, the return will be 1
-void	ft_transfer_ll_to_ptr(t_compound *cmds)
-{
-	int		i;
-	t_env	*current;
-
-	i = 0;
-	current = find_node(cmds, "PATH");
-	if (!current || !current->value)
-		return ;
-	if (cmds->envp)
-		free_double_ptr(cmds->envp);
-	if (current->value)
-	{
-		cmds->envp = ft_split(current->value, ':');
-		if (!cmds->envp)
-			return ;
-	}
-}
-
+//and function returns nothing
 //export & cd malloc protected
 int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 {
@@ -75,5 +44,6 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 		builtin_exit(cmds);
 	else
 		return (0);
+	ft_transfer_ll_to_ptr(cmds);
 	return (1);
 }

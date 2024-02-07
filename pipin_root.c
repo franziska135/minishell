@@ -24,7 +24,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 	char	*path;
 
 	close (initial_stdin);
-	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1)
+	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1 && cmds->scmd[i].cmd)
 	{
 		if (cmds->scmd[i].out_fd != 0)
 			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
@@ -45,10 +45,14 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			struct_free(*cmds);
 			exit (EXIT_FAILURE);
 		}
-		ft_transfer_ll_to_ptr(cmds);
-		// char *str = find_node(cmds, "TERM");
-		// printf("TERM=%s\n", str);
+		// ft_transfer_ll_to_ptr(cmds);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
+	}
+	else
+	{
+		close_fds(cmds, fd);
+		struct_free(*cmds);
+		cleanup_envp_ll(cmds->env_ll);
 	}
 	exit (EXIT_FAILURE);
 }
@@ -67,7 +71,7 @@ static int	piping(t_compound *cmds)
 	{
 		if (pipe(fd) == -1)
 			return (0);
-		if (cmds->scmd[i].in_fd != 0)
+		if (cmds->scmd[i].in_fd > 2)
 		{
 			dup2(cmds->scmd[i].in_fd, STDIN_FILENO);
 			close (cmds->scmd[i].in_fd);
@@ -79,7 +83,7 @@ static int	piping(t_compound *cmds)
 		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
 			dup2(fd[0], STDIN_FILENO);
 		close (fd[0]);
-		if (cmds->scmd[i].out_fd != 0)
+		if (cmds->scmd[i].out_fd > 2)
 			close (cmds->scmd[i].out_fd);
 		i++;
 	}
@@ -94,7 +98,7 @@ static int	piping(t_compound *cmds)
 
 int	piping_root(t_compound *cmds)
 {
-	if (cmds->nbr_scmd == 1 && is_built_in(cmds->scmd[0].cmd[0]))
+	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
 		if_builtin_execute(cmds, &cmds->scmd[0]);
 	}	
@@ -102,5 +106,4 @@ int	piping_root(t_compound *cmds)
 		return (0);
 
 	return (1);
-
 }

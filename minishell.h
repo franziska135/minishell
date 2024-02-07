@@ -107,10 +107,18 @@ int	in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
+void	ambiguous (t_compound *cmds, char **tokens);
+char	**expansion_split(char *s);
+
+
 
 
 //  EXPAND
-char	**token_expand(t_compound *cmds, char **token);
+// char	*token_expand(t_compound *cmds, char *token);
+char	*expand_redir(t_compound *cmds, char *token);
+char	**scmds_expand(t_compound *cmds, char **scmds);
+void	expand_token(t_compound *cmds, char *token, int *fd);
+
 
 
 // PIPEX
@@ -197,7 +205,6 @@ void		free_export(char *key, char *value);
 //cleaning up at error
 void		cleanup(t_execute *execute, t_compound *compound);
 void		free_double_ptr(char **double_ptr);
-void		free_env(t_simple **cmd);
 void		ft_free_list(t_env *lst);
 
 //utils identical to the libft folder and can be removed once linked

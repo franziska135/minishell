@@ -29,7 +29,8 @@ static size_t	malloc_size(char **tokens, int i)
 				j++;
 			}
 		}
-		i++;
+		if (tokens[i])
+			i++;
 	}
 	return (len);
 }
@@ -47,10 +48,15 @@ static int	malloc_struct(t_compound *cmds, char **tokens)
 	while (tokens[i])
 	{
 		len = malloc_size(tokens, i);
-		cmds->scmd[pipe].cmd = (char **)malloc(sizeof(char *) * (len + 1));
-		if (!cmds->scmd[pipe].cmd)
-			return(struct_free(*cmds), dpointer_free(tokens), 0);
-		cmds->scmd[pipe].cmd[len] = NULL;
+		if (len == 0)
+			cmds->scmd[pipe].cmd = NULL;
+		else
+		{
+			cmds->scmd[pipe].cmd = (char **)malloc(sizeof(char *) * (len + 1));
+			if (!cmds->scmd[pipe].cmd)
+				return(struct_free(*cmds), dpointer_free(tokens), 0);
+			cmds->scmd[pipe].cmd[len] = NULL;
+		}
 		while (tokens[i + 1] && tokens[i][0] != '|')
 			i++;
 		pipe++;
@@ -79,29 +85,25 @@ static int	write_struct(t_compound *cmds, char **tokens)
 		}
 		else if (tokens[i][0] == '<' || tokens[i][0] == '>')
 			i++;
-		else
+		else if (cmds->scmd[pipe].cmd)
 		{
-			str = ft_split(tokens[i], ' ');
-			if (!str)
-				return (struct_free(*cmds), 0);
-			k = 0;
-			while (str[k])
-			{
-				cmds->scmd[pipe].cmd[j + k] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
-				if(!cmds->scmd[pipe].cmd[j + k])
-					return(struct_free(*cmds), dpointer_free(tokens), 0);
-				ft_strlcpy(cmds->scmd[pipe].cmd[j + k], str[k], ft_strlen(str[k]) + 1);
-				k++;
-			}
+			cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
+			if(!cmds->scmd[pipe].cmd[j])
+				return(struct_free(*cmds), dpointer_free(tokens), 0);
+			ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);
 			j++;
 		}
-		i++;
+		if (tokens[i])
+			i++;
 	}
 	return (1);
 }
 
 int	struct_cpy(t_compound *cmds, char **tokens)
 {
+	int	i;
+	int	j;
+
 	if(!malloc_struct(cmds, tokens))
 	{
 		dpointer_free(tokens);
@@ -112,6 +114,21 @@ int	struct_cpy(t_compound *cmds, char **tokens)
 		struct_free(*cmds);
 		dpointer_free(tokens);
 		return (0);
+	}
+	i = 0;
+	while (i < cmds->nbr_scmd)
+	{
+		if (cmds->scmd[i].cmd)
+		{
+			cmds->scmd[i].cmd = scmds_expand(cmds, cmds->scmd[i].cmd);
+			j = 0;
+			while (cmds->scmd[i].cmd && cmds->scmd[i].cmd[j])
+			{
+				cmds->scmd[i].cmd[j] = remove_quotes(cmds->scmd[i].cmd[j]);
+				j++;
+			}
+		}
+		i++;
 	}
 	return (1);
 }

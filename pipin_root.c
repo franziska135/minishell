@@ -46,15 +46,13 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			exit (EXIT_FAILURE);
 		}
 		// ft_transfer_ll_to_ptr(cmds);
-		// char *str = find_node(cmds, "TERM");
-		// printf("TERM=%s\n", str);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 	}
 	else
 	{
 		close_fds(cmds, fd);
 		struct_free(*cmds);
-		// ft_free_list(cmds->env_ll);
+		cleanup_envp_ll(cmds->env_ll);
 	}
 	exit (EXIT_FAILURE);
 }
@@ -108,5 +106,4 @@ int	piping_root(t_compound *cmds)
 		return (0);
 
 	return (1);
-
 }

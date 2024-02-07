@@ -10,7 +10,7 @@ char	**scmds_expand(t_compound *cmds, char **scmds)
 	if (pipe(fd) == -1)
 		return (NULL);
 	i = 0;
-	while (scmds[i])
+	while (scmds && scmds[i])
 	{
 		expand_token(cmds, scmds[i], fd);
 		write(fd[1], " ", 1);

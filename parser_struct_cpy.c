@@ -48,10 +48,15 @@ static int	malloc_struct(t_compound *cmds, char **tokens)
 	while (tokens[i])
 	{
 		len = malloc_size(tokens, i);
-		cmds->scmd[pipe].cmd = (char **)malloc(sizeof(char *) * (len + 1));
-		if (!cmds->scmd[pipe].cmd)
-			return(struct_free(*cmds), dpointer_free(tokens), 0);
-		cmds->scmd[pipe].cmd[len] = NULL;
+		if (len == 0)
+			cmds->scmd[pipe].cmd = NULL;
+		else
+		{
+			cmds->scmd[pipe].cmd = (char **)malloc(sizeof(char *) * (len + 1));
+			if (!cmds->scmd[pipe].cmd)
+				return(struct_free(*cmds), dpointer_free(tokens), 0);
+			cmds->scmd[pipe].cmd[len] = NULL;
+		}
 		while (tokens[i + 1] && tokens[i][0] != '|')
 			i++;
 		pipe++;
@@ -80,12 +85,12 @@ static int	write_struct(t_compound *cmds, char **tokens)
 		}
 		else if (tokens[i][0] == '<' || tokens[i][0] == '>')
 			i++;
-		else
+		else if (cmds->scmd[pipe].cmd)
 		{
-				cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
-				if(!cmds->scmd[pipe].cmd[j])
-					return(struct_free(*cmds), dpointer_free(tokens), 0);
-				ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);
+			cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
+			if(!cmds->scmd[pipe].cmd[j])
+				return(struct_free(*cmds), dpointer_free(tokens), 0);
+			ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);
 			j++;
 		}
 		if (tokens[i])
@@ -97,6 +102,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 int	struct_cpy(t_compound *cmds, char **tokens)
 {
 	int	i;
+	int	j;
 
 	if(!malloc_struct(cmds, tokens))
 	{
@@ -112,7 +118,16 @@ int	struct_cpy(t_compound *cmds, char **tokens)
 	i = 0;
 	while (i < cmds->nbr_scmd)
 	{
-		cmds->scmd[i].cmd = scmds_expand(cmds, cmds->scmd[i].cmd);
+		if (cmds->scmd[i].cmd)
+		{
+			cmds->scmd[i].cmd = scmds_expand(cmds, cmds->scmd[i].cmd);
+			j = 0;
+			while (cmds->scmd[i].cmd && cmds->scmd[i].cmd[j])
+			{
+				cmds->scmd[i].cmd[j] = remove_quotes(cmds->scmd[i].cmd[j]);
+				j++;
+			}
+		}
 		i++;
 	}
 	return (1);

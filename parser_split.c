@@ -78,18 +78,3 @@ char	**expansion_split(char *s)
 	ptr[j] = NULL;
 	return (ptr);
 }
-
-
-// int main()
-// {
-// 	char *str = NULL;
-// 	char **split = expansion_split(str);
-
-// 	int i = 0;
-// 	while (split && split[i])
-// 	{
-// 		printf("%s\n", split[i]);
-// 		i++;
-// 	}
-// 	printf("%s\n", split[i]);
-// }

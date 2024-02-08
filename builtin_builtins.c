@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:29:58 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,12 @@ void	builtin_pwd(void)
 	write (1, "\n", 1);
 }
 
-//takes the head of the env_ll as argument and iterates through all nodes, printing their content
-void builtin_env(t_env *head)
+void	builtin_env(t_env *head)
 {
-	t_env *current;
-	
-	current = head;
+	t_env	*current;
 
-	//take out:
+	current = head;
 	write(1, "\n", 1);
-	write (2, "-------ENV START-------------\n", 30);
 	while (current)
 	{
 		if (current->env_display == TRUE)
@@ -44,14 +40,11 @@ void builtin_env(t_env *head)
 		}
 		current = current->next;
 	}
-	//take out
-	write (2, "-------ENV END-------------\n", 28);
-	//newline at the end?
 }
 
 void	print_error(char *str2, char *str3, char *str4)
 {
-	write (2, "fzsh: ", 6);
+	write (2, "bash: ", 6);
 	if (str2)
 		write (2, str2, ft_strlen(str2));
 	if (str3)
@@ -67,7 +60,6 @@ void	print_error(char *str2, char *str3, char *str4)
 /*Unsetting a variable or function that was not previously set
 shall not be considered an error and does not cause the shell to
 abort.*/
-
 void	builtin_unset(t_compound *cmds, t_simple *scmd)
 {
 	t_env	*haystack;
@@ -82,14 +74,15 @@ void	builtin_unset(t_compound *cmds, t_simple *scmd)
 	{
 		while (haystack)
 		{
-			if (ft_strncmp(haystack->key, needle, ft_strlen(haystack->key)) == 0)
+			if (ft_strncmp(haystack->key, needle,
+					ft_strlen(haystack->key)) == 0)
 			{
-					tmp->next = haystack->next;
-					haystack->next = NULL;
-					write(1, haystack->key, ft_strlen(haystack->key));
-					write (1, " is now unset\n", 14);
-					ft_free_list(haystack);
-					return ;
+				tmp->next = haystack->next;
+				haystack->next = NULL;
+				write(1, haystack->key, ft_strlen(haystack->key));
+				write (1, " is now unset\n", 14);
+				ft_free_node(haystack);
+				return ;
 			}
 			tmp = haystack;
 			haystack = haystack->next;

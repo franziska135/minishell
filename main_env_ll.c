@@ -78,9 +78,8 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	value = NULL;
 	cmds->envp = NULL;
 	head = NULL;
-
 	i = 0;
-	while(envp[i])
+	while (envp[i])
 	{
 		equal_sing = iterate_ultil_equal(envp[i]);
 		key = ft_substr(envp[i], 0, equal_sing);
@@ -100,7 +99,5 @@ int	init_env_llist(t_compound *cmds, char **envp)
 		i++;
 	}
 	cmds->env_ll = head;
-	//insert to test if valgrind is working uon termination.
-	//cleanup_envp_ll(cmds->env_ll);
 	return (1);
 }

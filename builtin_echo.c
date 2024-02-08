@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:29:58 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 //infinite amt of -n possible
 //once anything not following the structure -nnn... is found: string printed
 
+//check_for_n returns index to last occurence of only -n if there are any
+//if i != 0 that means there is at least on -n
+//else just write all cmds
 void	builtin_echo(t_simple *scmd)
 {
 	int	i;
@@ -24,14 +27,11 @@ void	builtin_echo(t_simple *scmd)
 	i = 0;
 	if (scmd->cmd[1])
 	{
-		//returns the index to the last occurence of only -n if there are any
 		i = check_for_n(scmd);
 		if (check_for_only_n(scmd->cmd[i]) == TRUE)
-			//write i + 1, space after each word except the last
 			builtin_echo_write(scmd, i);
 		else
 		{
-			//write i, space after each word except last
 			builtin_echo_write(scmd, 0);
 			write (1, "\n", 1);
 		}
@@ -41,15 +41,17 @@ void	builtin_echo(t_simple *scmd)
 }
 
 //utils function for echo, cuts 25 lines
-void	builtin_echo_write(t_simple *scmd, int i)
+//if status = i, then -n was found, no newline at the end
+//if status = 0, no -n and all cmds are written out with nl
+void	builtin_echo_write(t_simple *scmd, int status)
 {
-	if (scmd->cmd[i + 1])
+	if (scmd->cmd[status + 1])
 	{
-		write (1, scmd->cmd[i + 1], ft_strlen(scmd->cmd[i + 1]));
-		while (scmd->cmd[++i + 1])
+		write (1, scmd->cmd[status + 1], ft_strlen(scmd->cmd[status + 1]));
+		while (scmd->cmd[++status + 1])
 		{
 			write (1, " ", 1);
-			write (1, scmd->cmd[i + 1], ft_strlen(scmd->cmd[i + 1]));
+			write (1, scmd->cmd[status + 1], ft_strlen(scmd->cmd[status + 1]));
 		}
 	}
 }
@@ -74,10 +76,10 @@ int	check_for_n(t_simple *scmd)
 
 //utils function for builtin_echo
 //checks if string contains only valid -n
-int		check_for_only_n(char *str)
+int	check_for_only_n(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	if (str[i] == '-' && str[i + 1])
 	{

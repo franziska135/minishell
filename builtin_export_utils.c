@@ -42,9 +42,9 @@ int	export_error_check(t_compound *cmds, t_simple *scmd)
 		print_export(cmds->env_ll);
 		return (FALSE);
 	}
-	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0 ||
-		ft_strncmp(scmd->cmd[1], ".", 1) == 0 ||
-		ft_isdigit(scmd->cmd[1][0]) == 1)
+	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0
+		|| ft_strncmp(scmd->cmd[1], ".", 1) == 0
+		|| ft_isdigit(scmd->cmd[1][0]) == 1)
 		flag = FALSE;
 	while (scmd->cmd[1][i] && scmd->cmd[1][i] != '=')
 	{
@@ -65,7 +65,6 @@ char	*save_key(char *cmd1)
 
 	key = NULL;
 	i = 0;
-
 	while (cmd1[i] != '=' && cmd1[i] != '\0')
 		i++;
 	key = (char *)malloc(sizeof(char) * (i + 1));
@@ -80,6 +79,7 @@ char	*save_key(char *cmd1)
 	key[i] = '\0';
 	return (key);
 }
+
 //function is just called after a check whether a value exists
 char	*save_value(char *cmd1)
 {

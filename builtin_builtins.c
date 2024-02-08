@@ -23,7 +23,7 @@ void	builtin_pwd(void)
 		write (1, "\n", 1);
 	}
 	else
-		print_error(NULL, NULL, strerror(errno));
+		print_error(NULL, "pwd", strerror(errno));
 }
 
 void	print_error(char *str2, char *str3, char *str4)

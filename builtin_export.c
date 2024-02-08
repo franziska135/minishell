@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-void	print_export(t_env *head)
-{
-	t_env	*current;
-
-	current = head;
-	while (current)
-	{
-		write (1, "dexlare -x ", 11);
-		write(1, current->key, ft_strlen(current->key));
-		if (current->env_display == TRUE)
-		{
-			write (1, "=", 1);
-			write (1, "\"", 1);
-			if (current->value)
-				write(1, current->value, ft_strlen(current->value));
-			write (1, "\"", 1);
-		}
-		write (1, "\n", 1);
-		current = current->next;
-	}
-}
-
 int	save_key_and_value(char **key, char **value, char *current_cmd)
 {
 	*key = save_key(current_cmd);
@@ -55,7 +33,7 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
-	write(1, "node found: \t\t", 14);
+	//write(1, "node found: \t\t", 14);
 	new_node = find_node(cmds, key);
 	if (equal_sign_and_value(current_cmd) != 0)
 	{
@@ -65,7 +43,7 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 				free(new_node->value);
 			new_node->value = NULL;
 			new_node->env_display = TRUE;
-			write (1, "existing variable set to null in env and export\n", 48);
+			//write (1, "existing variable set to null in env and export\n", 48);
 		}
 		else if (equal_sign_and_value(current_cmd) == 2)
 		{
@@ -75,11 +53,11 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 			if (!new_node->value)
 				return (FALSE);
 			new_node->env_display = TRUE;
-			write (1, "existing variable set to new value in env and export\n", 53);
+			//write (1, "existing variable set to new value in env and export\n", 53);
 		}
 	}
-	else
-		write(1, "nothing happened to the existing variable\n", 42);
+	//else
+		//write(1, "nothing happened to the existing variable\n", 42);
 	return (TRUE);
 }
 
@@ -90,28 +68,50 @@ int	new_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
-	write(1, "node didnt exist yet: \t", 23);
+	//write(1, "node didnt exist yet: \t", 23);
 	new_node = ft_new_env_node(key, NULL, TRUE);
 	if (!new_node)
 		return (FALSE);
 	if (equal_sign_and_value(current_cmd) == 0)
 	{
 		new_node->env_display = FALSE;
-		write (1, "new empty variable added only to export\n", 40);
+		//write (1, "new empty variable added only to export\n", 40);
 	}
 	if (equal_sign_and_value(current_cmd) == 1)
 	{
 		new_node->value = NULL;
-		write (1, "new empty variable added to env and export\n", 43);
+		//write (1, "new empty variable added to env and export\n", 43);
 	}
 	else if (equal_sign_and_value(current_cmd) == 2)
 	{
 		new_node->value = ft_strdup(value);
 		if (!new_node->value)
 			return (free(new_node->key), FALSE);
-		write (1, "new full val added to env and export\n", 37);
+		//write (1, "new full val added to env and export\n", 37);
 	}
 	ft_add_last_node(&cmds->env_ll, new_node);
+	return (TRUE);
+}
+
+int	export_loop(t_compound *cmds, char *key, char *value, char *current_cmd)
+{
+	if (save_key_and_value(&key, &value, current_cmd) == FALSE)
+		return (free_export(key, value), FALSE);
+	if (find_node(cmds, key) != NULL)
+	{
+		if (adapt_node(cmds, current_cmd, key, value) == FALSE)
+			return (free_export(key, value), FALSE);
+	}
+	else
+	{
+		if (new_node(cmds, current_cmd, key, value) == FALSE)
+			return (free_export(key, value), FALSE);
+	}
+	free(key);
+	if (value)
+		free(value);
+	key = NULL;
+	value = NULL;
 	return (TRUE);
 }
 
@@ -133,27 +133,27 @@ int	builtin_export(t_compound *cmds, t_simple *scmd)
 	}
 	while (scmd->cmd[i])
 	{
-		write (1, scmd->cmd[i], ft_strlen(scmd->cmd[i]));
-		write (1, ":\t", 2);
 		if (export_error_check(cmds, scmd->cmd[i]) != FALSE)
 		{
-			if (save_key_and_value(&key, &value, scmd->cmd[i]) == FALSE)
-				return (free_export(key, value), FALSE);
-			if (find_node(cmds, key) != NULL)
-			{
-				if (adapt_node(cmds, scmd->cmd[i], key, value) == FALSE)
-					return (free_export(key, value), FALSE);
-			}
-			else
-			{
-				if (new_node(cmds, scmd->cmd[i], key, value) == FALSE)
-					return (free_export(key, value), FALSE);
-			}
-			free(key);
-			if (value)
-				free(value);
-			key = NULL;
-			value = NULL;
+			if (export_loop(cmds, key, value, scmd->cmd[i]) == FALSE)
+				return (FALSE);
+			// if (save_key_and_value(&key, &value, scmd->cmd[i]) == FALSE)
+			// 	return (free_export(key, value), FALSE);
+			// if (find_node(cmds, key) != NULL)
+			// {
+			// 	if (adapt_node(cmds, scmd->cmd[i], key, value) == FALSE)
+			// 		return (free_export(key, value), FALSE);
+			// }
+			// else
+			// {
+			// 	if (new_node(cmds, scmd->cmd[i], key, value) == FALSE)
+			// 		return (free_export(key, value), FALSE);
+			// }
+			// free(key);
+			// if (value)
+			// 	free(value);
+			// key = NULL;
+			// value = NULL;
 		}
 		i++;
 	}

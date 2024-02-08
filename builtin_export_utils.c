@@ -112,17 +112,3 @@ char	*save_value(char *cmd1)
 	value[lenght_value] = '\0';
 	return (value);
 }
-
-void	free_export(char *key, char *value)
-{
-	if (key)
-	{
-		free(key);
-		key = NULL;
-	}
-	if (value)
-	{
-		free(value);
-		value = NULL;
-	}
-}

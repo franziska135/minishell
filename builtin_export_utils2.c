@@ -59,3 +59,39 @@ int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 	}
 	return (TRUE);
 }
+
+void	print_export(t_env *head)
+{
+	t_env	*current;
+
+	current = head;
+	while (current)
+	{
+		write (1, "dexlare -x ", 11);
+		write(1, current->key, ft_strlen(current->key));
+		if (current->env_display == TRUE)
+		{
+			write (1, "=", 1);
+			write (1, "\"", 1);
+			if (current->value)
+				write(1, current->value, ft_strlen(current->value));
+			write (1, "\"", 1);
+		}
+		write (1, "\n", 1);
+		current = current->next;
+	}
+}
+
+void	free_export(char *key, char *value)
+{
+	if (key)
+	{
+		free(key);
+		key = NULL;
+	}
+	if (value)
+	{
+		free(value);
+		value = NULL;
+	}
+}

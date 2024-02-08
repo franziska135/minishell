@@ -88,7 +88,7 @@ int	ft_transfer_ll_to_env_ptr(t_compound *cmds)
 	int		length;
 	t_env	*temp;
 
-	i = 0;
+	i = -1;
 	length = 0;
 	temp = cmds->env_ll;
 	if (cmds->envp)
@@ -102,8 +102,10 @@ int	ft_transfer_ll_to_env_ptr(t_compound *cmds)
 		if (temp->env_display == TRUE)
 		{
 			length = pro_ft_strlen(temp->key) + pro_ft_strlen(temp->value);
-			cmds->envp[i] = pro_ft_strjoin(temp->key, temp->value);
-			i++;
+			cmds->envp[++i] = pro_ft_strjoin(temp->key, temp->value);
+			//if malloc fails return??
+			if (!cmds->envp[i])
+				return (free_double_ptr(cmds->envp), FALSE);
 		}
 		temp = temp->next;
 	}

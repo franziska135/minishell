@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
+/*   Updated: 2024/02/01 14:24:16 by fmarggra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 // for closedir valgrind --leak-check=full
-
-int main()
+int	main(void)
 {
 	struct dirent	*dp;
 	DIR				*dir;
@@ -28,8 +39,7 @@ int main()
 		dp = readdir(dir);
 	}
 	closedir (dir);
-	
-					// POSSIBLE USECASE:
+	// POSSIBLE USECASE:
 	dir = opendir("../");
 	if (dir == NULL)
 	{

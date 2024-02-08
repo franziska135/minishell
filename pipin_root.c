@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_built_in(char *str)
@@ -15,6 +27,9 @@ static int	is_built_in(char *str)
 	else if (!ft_strncmp(str, "exit", 5))
 		return (TRUE);
 	else if (!ft_strncmp(str, "echo", 5))
+		return (TRUE);
+	//take out!
+	else if (!ft_strncmp(str, "print", 5))
 		return (TRUE);
 	return (FALSE);
 }
@@ -38,14 +53,15 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			struct_free(*cmds);
 			exit (EXIT_SUCCESS);
 		}
- 		path = path_finder(cmds, i);
+		path = path_finder(cmds, i);
 		if (!path)
 		{
 			cleanup_envp_ll(cmds->env_ll);
+			free_double_ptr(cmds->envp);
 			struct_free(*cmds);
 			exit (EXIT_FAILURE);
 		}
-		// ft_transfer_ll_to_ptr(cmds);
+		ft_transfer_ll_to_env_ptr(cmds);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 	}
 	else
@@ -56,7 +72,6 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 	}
 	exit (EXIT_FAILURE);
 }
-
 
 static int	piping(t_compound *cmds)
 {
@@ -88,7 +103,7 @@ static int	piping(t_compound *cmds)
 		i++;
 	}
 	if (waitpid(pid, &cmds->exit_status, 0) == -1)
-		return(0);
+		return (0);
 	dup2(initial_stdin, STDIN_FILENO);
 	close (initial_stdin);
 	close (fd[0]);
@@ -101,9 +116,8 @@ int	piping_root(t_compound *cmds)
 	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
 		if_builtin_execute(cmds, &cmds->scmd[0]);
-	}	
+	}
 	else if (!piping(cmds))
 		return (0);
-
 	return (1);
 }

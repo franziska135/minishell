@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	all_space(char *str)
@@ -17,14 +29,14 @@ static int	all_space(char *str)
 static int	run_procces(t_compound	*cmds, char *str)
 {
 	char	**tokens;
-	
+
 	if (!syntax(str))
 		return (free(str), 0);
 	tokens = lexis(str);
 	if (!tokens)
 		return (0);
 	tokens = parser(cmds, tokens);
-	if(!tokens)
+	if (!tokens)
 		return (0);
 	dpointer_free(tokens);
 	if (!piping_root(cmds))
@@ -40,7 +52,7 @@ int	run_minishell(t_compound	*cmds)
 	int			i;
 
 	cmds->exit_status = 0;
-	while(TRUE)
+	while (TRUE)
 	{
 		str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
 		if (!all_space(str))
@@ -52,4 +64,3 @@ int	run_minishell(t_compound	*cmds)
 	}
 	return (0);
 }
-

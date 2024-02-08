@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_cleanup.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:17:08 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //receives the head and cleans the envp linked list, valgrind checked out
-void cleanup_envp_ll(t_env *env_ll)
+void	cleanup_envp_ll(t_env *env_ll)
 {
-	t_env *temp;
+	t_env	*temp;
 
-    while (env_ll != NULL)
-    {
-        temp = env_ll;
-        env_ll = env_ll->next;
+	while (env_ll != NULL)
+	{
+		temp = env_ll;
+		env_ll = env_ll->next;
 		if (temp->key)
 			(free(temp->key), temp->key = NULL);
-        if (temp->value)
+		if (temp->value)
 			(free(temp->value), temp->value = NULL);
 		free(temp);
-    }
+	}
 }
 
-void	ft_free_list(t_env *lst)
+void	ft_free_node(t_env *lst)
 {
 	t_env	*tmp;
 

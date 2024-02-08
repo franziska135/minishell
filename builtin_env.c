@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2023/12/15 17:10:23 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:54:46 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 {
 	t_env	*node;
 
-
 	if (new_value && variable)
 	{
 		node = find_node(cmds, variable);
@@ -68,20 +67,20 @@ int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 }
 
 //splits the path under PATH=to check 
-void	split_binary_paths(t_execute *execute, t_compound *cmds)
-{
-	t_env	*node;
+// void	split_binary_paths(t_execute *execute, t_compound *cmds)
+// {
+// 	t_env	*node;
 
-	node = find_node(cmds, "PATH");
-	if (node && node->value != NULL)
-		execute->binary_paths = ft_split(node->value, ':');
-	else
-		printf("no path found\n");
-	// if (!execute->binary_paths)
-		// (free (path_str), path_str = NULL);
-		// 	free everything for the current process, return to history readline;
-	// print_paths(execute);
-}
+// 	node = find_node(cmds, "PATH");
+// 	if (node && node->value != NULL)
+// 		execute->binary_paths = ft_split(node->value, ':');
+// 	else
+// 		printf("no path found\n");
+// 	// if (!execute->binary_paths)
+// 		// (free (path_str), path_str = NULL);
+// 		// 	free everything for the current process, return to history readline;
+// 	// print_paths(execute);
+// }
 
 //can be taken out later
 void	print_paths(t_execute *execute)

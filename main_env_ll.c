@@ -63,44 +63,47 @@ size_t	iterate_ultil_equal(const char *envp_i)
 	return (i);
 }
 
-//a copy of the environment stored in a linked list
-//add NULL checks for substr and new_env_node
-int	init_env_llist(t_compound *cmds, char **envp)
+int	ft_init_ll_loop(t_compound *cmds, char **envp, t_env *new_node, int i)
 {
-	t_env	*new_node;
-	t_env	*head;
 	char	*key;
 	char	*value;
 	size_t	equal_sing;
-	int		i;
 
 	key = NULL;
 	value = NULL;
-	cmds->envp = NULL;
-	head = NULL;
+	equal_sing = iterate_ultil_equal(envp[i]);
+	key = ft_substr(envp[i], 0, equal_sing);
+	if (!key)
+		return (0);
+	value = ft_substr(envp[i], equal_sing + 1, ft_strlen(envp[i]) - equal_sing);
+	if (!value)
+		return (free(key), 0);
+	new_node = ft_new_env_node(key, value, TRUE);
+	if (!new_node)
+		return (free(key), free(value), free(new_node), 0);
+	ft_add_last_node(&cmds->env_ll, new_node);
+	if (value)
+		(free(value), value = NULL);
+	if (key)
+		(free(key), key = NULL);
+	return (TRUE);
+}
 
+//a copy of the environment stored in a linked list
+int	init_env_llist(t_compound *cmds, char **envp)
+{
+	t_env	*new_node;
+	int		i;
+
+	cmds->envp = NULL;
+	cmds->env_ll = NULL;
 	i = 0;
-	while(envp[i])
+	while (envp[i])
 	{
-		equal_sing = iterate_ultil_equal(envp[i]);
-		key = ft_substr(envp[i], 0, equal_sing);
-		if (!key)
-			return (0);
-		value = ft_substr(envp[i], equal_sing + 1, ft_strlen(envp[i]) - equal_sing);
-		if (!value)
-			return (free(key), 0);
-		new_node = ft_new_env_node(key, value, TRUE);
-		if (!new_node)
-			return (free(key), free(value), free(new_node), 0);
-		ft_add_last_node(&head, new_node);
-		if (value)
-			(free(value), value = NULL);
-		if (key)
-			(free(key), key = NULL);
+		//correct error code?
+		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
+			return (ft_write_error(NULL, NULL, strerror(errno)), FALSE);
 		i++;
 	}
-	cmds->env_ll = head;
-	//insert to test if valgrind is working uon termination.
-	//cleanup_envp_ll(cmds->env_ll);
 	return (1);
 }

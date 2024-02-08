@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_main.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
+/*   Updated: 2024/02/01 15:24:47 by fmarggra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static size_t	tokens_counter(char **tokens)
@@ -47,8 +59,7 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 	}
 	else if (token[0] == '\0')
 		write(fd, "$", 1);
-
-	else if(token[0] == '?')
+	else if (token[0] == '?')
 		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
 	else
 		write(fd, "\0", 1);
@@ -56,7 +67,7 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 
 void	expand_token(t_compound *cmds, char *token, int *fd)
 {
-	int	i;
+	int		i;
 	char	*token_copy;
 
 	token_copy = token;
@@ -76,20 +87,21 @@ void	expand_token(t_compound *cmds, char *token, int *fd)
 			write_expansion(cmds, token, fd[1]);
 			if (token[0] && (ft_isdigit(token[0]) || token[0] == '?'))
 			{
-				i++;	
-				token++;			
+				i++;
+				token++;
 			}
 			else
 			{
-				while(token[0] && (ft_isalnum(token[0]) || token[0] == '_'))
+				while (token[0] && (ft_isalnum(token[0]) || token[0] == '_'))
 				{
-					i++;	
+					i++;
 					token++;
 				}
 			}
 		}
 	}
 }
+
 char	*expand_redir(t_compound *cmds, char *token)
 {
 	char	*str;
@@ -106,12 +118,6 @@ char	*expand_redir(t_compound *cmds, char *token)
 		return (free(str), NULL);
 	return (str);
 }
-
-
-
-
-
-
 
 // char	*token_expand(t_compound *cmds, char *token)
 // {

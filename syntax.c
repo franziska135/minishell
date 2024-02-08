@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 static int	pipe_argument(char *str, int i)
 {
@@ -27,7 +38,7 @@ static int	syntax_pipe(char *str)
 			if (printable == 0)
 				return (1);
 			if (!in_quot(str, i) && !pipe_argument(str, i))
-				return (1);			
+				return (1);
 		}
 		if (printable == 0 && ft_isprint(str[i]) && str[i] != ' ' && str[i] != '\t')
 			printable = 1;
@@ -35,13 +46,14 @@ static int	syntax_pipe(char *str)
 	}
 	return (0);
 }
+
 static int	redir_argument(char *str, int i)
 {
 	i++;
 	if (str[i - 1] == '>' && (str[i] == '>' || str[i] == '|'))
 		i++;
 	else if (str[i - 1] == '<' && str[i] == '<')
-		i++;	
+		i++;
 	while (i < ft_strlen(str) && str[i] != '<' && str[i] != '>' && str[i] != '|')
 	{
 		if (ft_isprint(str[i]) && str[i] != ' ' && str[i] != '\t')
@@ -61,7 +73,7 @@ static int	syntax_redir(char *str)
 		if (str[i] == '<' || str[i] == '>')
 		{
 			if (!in_quot(str, i) && !redir_argument(str, i))
-				return (1);			
+				return (1);
 		}
 		i++;
 	}

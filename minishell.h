@@ -40,14 +40,13 @@
 # include <readline/history.h>
 # include "./libft/libft.h"
 
-
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+# define ANSI_COLOR_RED     "\x1b[31m"
+# define ANSI_COLOR_GREEN   "\x1b[32m"
+# define ANSI_COLOR_YELLOW  "\x1b[33m"
+# define ANSI_COLOR_BLUE    "\x1b[34m"
+# define ANSI_COLOR_MAGENTA "\x1b[35m"
+# define ANSI_COLOR_CYAN    "\x1b[36m"
+# define ANSI_COLOR_RESET   "\x1b[0m"
 
 //command table
 typedef struct s_simple_command
@@ -77,41 +76,34 @@ typedef struct s_compound_command
 	int			exit_status;
 }	t_compound;
 
-
 typedef struct s_execute
 {
 	char	**binary_paths;
 }	t_execute;
 
 // HISTORY
-int	run_minishell(t_compound	*cmds);
+int		run_minishell(t_compound	*cmds);
 
 // SYNTAX
-int	syntax(char *str);
-
+int		syntax(char *str);
 
 // LEXIS
 char	**lexis(char *str);
 
-
 // PARSER
 char	**parser(t_compound *cmds, char **tokens);
 char	*remove_quotes(char *str);
-int	ft_here_doc(char *delimiter);
-int	struct_cpy(t_compound *cmds, char **tokens);
-
+int		ft_here_doc(char *delimiter);
+int		struct_cpy(t_compound *cmds, char **tokens);
 
 // PARSER UTILS
-int	is_delimiter(char c);
-int	in_quot(char *str, size_t n);
+int		is_delimiter(char c);
+int		in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
-void	ambiguous (t_compound *cmds, char **tokens);
+void	ambiguous(t_compound *cmds, char **tokens);
 char	**expansion_split(char *s);
-
-
-
 
 //  EXPAND
 // char	*token_expand(t_compound *cmds, char *token);
@@ -119,13 +111,9 @@ char	*expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
 void	expand_token(t_compound *cmds, char *token, int *fd);
 
-
-
 // PIPEX
 int		piping_root(t_compound *cmds);
 char	*path_finder(t_compound *cmds, int pipe);
-
-
 
 // UTILS
 void	struct_free(t_compound cmds);
@@ -135,33 +123,16 @@ int		init_env_llist(t_compound *cmds, char **envp);
 int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
 t_env	*find_node(t_compound *cmds, char *needle);
 
-
-
-
 // utils to be deleted
 void	print_struct(t_compound ccmd);
 void	print_dpointer(char **str);
 void	err_handler(char *str);
-
-
-
-
-
-
-
-//initialize and error messages
-//void		init_path_struct(t_execute *execute);
 
 //node stuff
 void	free_node(void *node);
 t_env	*find_node(t_compound *cmds, char *needle);
 t_env	*ft_new_env_node(char *key, char *value, int env_display);
 void	ft_add_last_node(t_env **lst, t_env *new);
-
-//PATH paths
-//void		split_binary_paths(t_execute *execute, t_compound *compound);
-//can be taken out at some point:
-//void		print_paths(t_execute *execute);
 
 //check amt of commands and pipes, children
 void	process_commands(t_execute *execute, t_compound *compound);
@@ -200,8 +171,6 @@ int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
 int		ft_count_nodes(t_compound *cmds);
 char	*pro_ft_strjoin(char *s1, char *s2);
 void	print_double_ptr(t_compound *cmds);
-
-
 
 //cleaning up at error
 void	cleanup(t_execute *execute, t_compound *compound);

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	is_delimiter(char c)
 {
 	if (c == '|' || c == '<' || c == '>' || c == ' ' || c == '\t')
 		return (TRUE);
-	return(FALSE);
+	return (FALSE);
 }
 
 int	in_quot(char *str, size_t n)
@@ -15,7 +27,7 @@ int	in_quot(char *str, size_t n)
 
 	i = 0;
 	res = 0;
-	while(str && str[i] && i <= n)
+	while (str && str[i] && i <= n)
 	{
 		if (str[i] == '\'' && res != 2)
 		{
@@ -35,5 +47,3 @@ int	in_quot(char *str, size_t n)
 	}
 	return (res);
 }
-
-

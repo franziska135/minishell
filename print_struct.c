@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	print_dpointer(char **str)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (str[i])
 	{
 		printf("[%s]", str[i]);
@@ -14,14 +27,14 @@ void	print_dpointer(char **str)
 
 void	print_struct(t_compound ccmd)
 {
-	int		i = 0;
+	int	i;
 
+	i = 0;
 	while (i < ccmd.nbr_scmd)
 	{
 		printf("\nPipe %d:\n", i + 1);
 		printf("commands: ");
 		print_dpointer(ccmd.scmd[i].cmd);
-
 		printf ("in_fd: %d\t\tout_fd:%d\n", ccmd.scmd[i].in_fd, ccmd.scmd[i].out_fd);
 		i++;
 	}

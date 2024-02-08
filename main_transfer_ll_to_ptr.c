@@ -12,25 +12,6 @@
 
 #include "minishell.h"
 
-//this function returns 1 if a builtin matched
-//0 if no builtin matched
-//open issues:
-//valgrind for cd, pwd, env, echo, unset okay
-//restructure export
-//if PATH is currently unset, value of PATH is empty
-//and function returns nothing 
-/***************THIS IS TO TRANSFER LL TO DOUBLE PTR**************/
-	/*(the function is in this file, scoll up:)*/
-	// int i = 0;
-	// ft_transfer_ll_to_ptr(cmds);
-	// while (cmds->envp[i])
-	// {
-	// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
-	// 	write (1, "\n", 1);
-	// 	i++;
-	// }
-	/******************************************************************/
-	//if a buitin matched, the return will be 1
 size_t	pro_ft_strlen(const char *str)
 {
 	size_t	len;
@@ -55,9 +36,8 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 	ptr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 2));
 	if (!ptr)
 		return (0);
-	// i = s1_len + 1 --> strjoin
 	i = 0;
-	//in case errors occur as gedankentütze: ich hab s1_len -1 rausgenommen
+	//in case errors tbfixed as Gedankentütze: ich hab s1_len -1 rausgenommen
 	while (s1[i] != '\0' && i < s1_len && s1_len != 0)
 	{
 		ptr[i] = s1[i];
@@ -113,7 +93,7 @@ int	ft_transfer_ll_to_env_ptr(t_compound *cmds)
 	temp = cmds->env_ll;
 	if (cmds->envp)
 		free_double_ptr(cmds->envp);
-	cmds->envp= (char **)malloc(sizeof(char *) * (ft_count_nodes(cmds) + 1));
+	cmds->envp = (char **)malloc(sizeof(char *) * (ft_count_nodes(cmds) + 1));
 	if (!cmds->envp)
 		return (0);
 	cmds->envp[ft_count_nodes(cmds)] = NULL;

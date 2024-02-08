@@ -41,3 +41,6 @@
 --in is_builtin and if_builtin_execute take the print out, thats just for control
 
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
+
+
+--pwd check for access

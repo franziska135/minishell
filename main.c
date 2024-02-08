@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2024/02/01 14:29:58 by fmarggra         ###   ########.fr       */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	main(int ac, char **av, char **envp)
 {
 	t_compound	cmds;
 
-	init_env_llist(&cmds, envp);
+	//correct error if init fails?
+	if (init_env_llist(&cmds, envp) == FALSE)
+		return (FALSE);
 	run_minishell(&cmds);
 }

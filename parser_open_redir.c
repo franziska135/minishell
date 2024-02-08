@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	**redir_expand(t_compound *cmds, char *token)
@@ -5,7 +17,6 @@ static char	**redir_expand(t_compound *cmds, char *token)
 	char	*new_token;
 	char	*ret;
 	char	**split_token;
-
 
 	new_token = expand_redir(cmds, token);
 	if (!new_token)
@@ -22,7 +33,6 @@ static char	**redir_expand(t_compound *cmds, char *token)
 	split_token[0] = remove_quotes(split_token[0]);
 	return (split_token);
 }
-
 
 static void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i)
 {
@@ -71,7 +81,6 @@ static void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i)
 		dpointer_free(str);
 	}
 }
-
 
 static void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i)
 {

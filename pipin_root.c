@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_built_in(char *str)
@@ -41,7 +53,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			struct_free(*cmds);
 			exit (EXIT_SUCCESS);
 		}
- 		path = path_finder(cmds, i);
+		path = path_finder(cmds, i);
 		if (!path)
 		{
 			cleanup_envp_ll(cmds->env_ll);
@@ -60,7 +72,6 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 	}
 	exit (EXIT_FAILURE);
 }
-
 
 static int	piping(t_compound *cmds)
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_main.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
+/*   Updated: 2024/02/01 15:24:47 by fmarggra         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static size_t	token_lenght(char *str)
@@ -25,7 +37,7 @@ static size_t	token_lenght(char *str)
 	return (len);
 }
 
-char *token_creat(char *str, char **tokens)
+char	*token_creat(char *str, char **tokens)
 {
 	char	*token;
 	size_t	len;
@@ -51,11 +63,11 @@ static char	**tokenizer(char *str)
 	tokens[len] = NULL;
 	i = 0;
 	while (*str)
-	{			
-		while(*str && (*str == ' ' || *str == '\t'))
+	{
+		while (*str && (*str == ' ' || *str == '\t'))
 			str++;
 		if (*str)
-		{	
+		{
 			tokens[i] = token_creat(str, tokens);
 			if (!tokens[i])
 				return (NULL);

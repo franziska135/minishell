@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
+/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	dpointer_free(char **str)
@@ -42,8 +54,8 @@ void	struct_nullifier(t_compound *cmds)
 	cmds->nbr_scmd = 0;
 	// cmds->exit_status = 0;
 }
+
 void	err_handler(char *str)
 {
 	printf("%s\n", str);
 }
-

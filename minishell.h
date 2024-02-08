@@ -76,10 +76,10 @@ typedef struct s_compound_command
 	int			exit_status;
 }	t_compound;
 
-typedef struct s_execute
-{
-	char	**binary_paths;
-}	t_execute;
+// typedef struct s_execute
+// {
+// 	char	**binary_paths;
+// }	t_execute;
 
 // HISTORY
 int		run_minishell(t_compound	*cmds);
@@ -135,7 +135,7 @@ t_env	*ft_new_env_node(char *key, char *value, int env_display);
 void	ft_add_last_node(t_env **lst, t_env *new);
 
 //check amt of commands and pipes, children
-void	process_commands(t_execute *execute, t_compound *compound);
+//void	process_commands(t_execute *execute, t_compound *compound);
 int		if_builtin_execute(t_compound *compound, t_simple *simple_command);
 
 //builtins
@@ -157,11 +157,11 @@ void	builtin_exit(t_compound *cmds);
 
 //export utils
 void	print_export(t_env *head);
-int		save_key_and_value(char **key, char **value, t_simple *scmd);
-int		adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
-int		new_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int		save_key_and_value(char **key, char **value, char *current_cmd);
+int		adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value);
+int		new_node(t_compound *cmds, char *current_cmd, char *key, char *value);
 int		equal_sign_and_value(char *cmd1);
-int		export_error_check(t_compound *cmds, t_simple *scmd);
+int		export_error_check(t_compound *cmds, char *new_var);
 char	*save_key(char *cmd1);
 char	*save_value(char *cmd1);
 void	free_export(char *key, char *value);
@@ -173,7 +173,7 @@ char	*pro_ft_strjoin(char *s1, char *s2);
 void	print_double_ptr(t_compound *cmds);
 
 //cleaning up at error
-void	cleanup(t_execute *execute, t_compound *compound);
+//void	cleanup(t_execute *execute, t_compound *compound);
 void	cleanup_envp_ll(t_env *env_ll);
 void	free_double_ptr(char **double_ptr);
 void	free_env(t_simple **cmd);

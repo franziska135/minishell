@@ -30,31 +30,36 @@ int	equal_sign_and_value(char *cmd1)
 		return (2);
 }
 
-int	export_error_check(t_compound *cmds, t_simple *scmd)
+int	valid_var_check(char *new_var)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strncmp(new_var, "=", 1) == 0
+		|| ft_strncmp(new_var, ".", 1) == 0
+		|| ft_isdigit(new_var[0]) == 1)
+		return (FALSE);
+	while (new_var[i] && new_var[i] != '=')
+	{
+		if (ft_isalnum(new_var[i]) != 1 && new_var[i] != '_')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
+int	export_error_check(t_compound *cmds, char *new_var)
 {
 	int	flag;
 	int	i;
 
 	i = 0;
 	flag = TRUE;
-	if (!scmd->cmd[1])
+	if (valid_var_check(new_var) == FALSE)
 	{
-		print_export(cmds->env_ll);
-		return (FALSE);
-	}
-	else if (ft_strncmp(scmd->cmd[1], "=", 1) == 0
-		|| ft_strncmp(scmd->cmd[1], ".", 1) == 0
-		|| ft_isdigit(scmd->cmd[1][0]) == 1)
 		flag = FALSE;
-	while (scmd->cmd[1][i] && scmd->cmd[1][i] != '=')
-	{
-		if (ft_isalnum(scmd->cmd[1][i]) != 1 &&
-			scmd->cmd[1][i] != '_')
-			flag = FALSE;
-		i++;
+		print_error("export: ", new_var, "not a valid identifier");
 	}
-	if (flag == FALSE)
-		print_error("export: ", scmd->cmd[1], "not a valid identifier");
 	return (flag);
 }
 

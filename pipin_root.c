@@ -50,6 +50,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 		{
 			if_builtin_execute(cmds, &cmds->scmd[i]);
 			cleanup_envp_ll(cmds->env_ll);
+			free_double_ptr(cmds->envp);
 			struct_free(*cmds);
 			exit (EXIT_SUCCESS);
 		}

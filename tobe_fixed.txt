@@ -9,38 +9,24 @@
 --clear returns error		TERM prints wrong
 
 
---export | grep a returns error		env works but prints END and START
-
-
 --ambiguous redirection			any failed redir cant free ll cuz its not properly set			
 					i think the rest is resolved.
 
-
 --make and doesnt work.
-
 
 --echo "hello		world" prints hello world
 
-
 --heredoc doesnt go to newline.
-
 
 --cmd not found is not fzsh error.
 
-
 --expand inside of hd
-
-
-
 
 -- space in history -> bash saves commands that start with space	NOTE: my bash doesnt!
 --expansion: $"" leads to segmentation fault				NOTE: it doesnt, was it something else?
 
---is_builtin function strncmp with \0
-
 --in is_builtin and if_builtin_execute take the print out, thats just for control
 
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
-
 
 --pwd check for access

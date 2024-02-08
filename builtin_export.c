@@ -24,24 +24,24 @@ void	print_export(t_env *head)
 		if (current->env_display == TRUE)
 		{
 			write (1, "=", 1);
-			write (1, "\"", 2);
+			write (1, "\"", 1);
 			if (current->value)
 				write(1, current->value, ft_strlen(current->value));
-			write (1, "\"", 2);
+			write (1, "\"", 1);
 		}
 		write (1, "\n", 1);
 		current = current->next;
 	}
 }
 
-int	save_key_and_value(char **key, char **value, t_simple *scmd)
+int	save_key_and_value(char **key, char **value, char *current_cmd)
 {
-	*key = save_key(scmd->cmd[1]);
+	*key = save_key(current_cmd);
 	if (!key)
 		return (FALSE);
-	if (equal_sign_and_value(scmd->cmd[1]) == 2)
+	if (equal_sign_and_value(current_cmd) == 2)
 	{
-		*value = save_value(scmd->cmd[1]);
+		*value = save_value(current_cmd);
 		if (!value)
 			return (FALSE);
 	}
@@ -51,15 +51,15 @@ int	save_key_and_value(char **key, char **value, t_simple *scmd)
 //if there is an equal sign but no value, variable is set to null
 //if there is an equal sign and value, variable is set to value
 //if no equal sign, nothing happes to the existing variable
-int	adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
+int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
 	write(1, "node found: \t\t", 14);
 	new_node = find_node(cmds, key);
-	if (equal_sign_and_value(scmd->cmd[1]) != 0)
+	if (equal_sign_and_value(current_cmd) != 0)
 	{
-		if (equal_sign_and_value(scmd->cmd[1]) == 1)
+		if (equal_sign_and_value(current_cmd) == 1)
 		{
 			if (new_node->value)
 				free(new_node->value);
@@ -67,7 +67,7 @@ int	adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
 			new_node->env_display = TRUE;
 			write (1, "existing variable set to null in env and export\n", 48);
 		}
-		else if (equal_sign_and_value(scmd->cmd[1]) == 2)
+		else if (equal_sign_and_value(current_cmd) == 2)
 		{
 			if (new_node->value)
 				free(new_node->value);
@@ -86,7 +86,7 @@ int	adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
 //if there is no equal sign: variable is created and added to export only
 //if there is an equal sign but no value, variable is created and added to both
 //if there is an equal sign and value, variable added to both
-int	new_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
+int	new_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
@@ -94,17 +94,17 @@ int	new_node(t_compound *cmds, t_simple *scmd, char *key, char *value)
 	new_node = ft_new_env_node(key, NULL, TRUE);
 	if (!new_node)
 		return (FALSE);
-	if (equal_sign_and_value(scmd->cmd[1]) == 0)
+	if (equal_sign_and_value(current_cmd) == 0)
 	{
 		new_node->env_display = FALSE;
 		write (1, "new empty variable added only to export\n", 40);
 	}
-	if (equal_sign_and_value(scmd->cmd[1]) == 1)
+	if (equal_sign_and_value(current_cmd) == 1)
 	{
 		new_node->value = NULL;
 		write (1, "new empty variable added to env and export\n", 43);
 	}
-	else if (equal_sign_and_value(scmd->cmd[1]) == 2)
+	else if (equal_sign_and_value(current_cmd) == 2)
 	{
 		new_node->value = ft_strdup(value);
 		if (!new_node->value)
@@ -121,27 +121,41 @@ int	builtin_export(t_compound *cmds, t_simple *scmd)
 {
 	char	*key;
 	char	*value;
+	int		i;
 
 	key = NULL;
 	value = NULL;
-	if (export_error_check(cmds, scmd) == FALSE)
+	i = 1;
+	if (!scmd->cmd[1])
+	{
+		print_export(cmds->env_ll);
 		return (FALSE);
-	if (save_key_and_value(&key, &value, scmd) == FALSE)
-		return (free_export(key, value), FALSE);
-	if (find_node(cmds, key) != NULL)
-	{
-		if (adapt_node(cmds, scmd, key, value) == FALSE)
-			return (free_export(key, value), FALSE);
 	}
-	else
+	while (scmd->cmd[i])
 	{
-		if (new_node(cmds, scmd, key, value) == FALSE)
-			return (free_export(key, value), FALSE);
+		write (1, scmd->cmd[i], ft_strlen(scmd->cmd[i]));
+		write (1, ":\t", 2);
+		if (export_error_check(cmds, scmd->cmd[i]) != FALSE)
+		{
+			if (save_key_and_value(&key, &value, scmd->cmd[i]) == FALSE)
+				return (free_export(key, value), FALSE);
+			if (find_node(cmds, key) != NULL)
+			{
+				if (adapt_node(cmds, scmd->cmd[i], key, value) == FALSE)
+					return (free_export(key, value), FALSE);
+			}
+			else
+			{
+				if (new_node(cmds, scmd->cmd[i], key, value) == FALSE)
+					return (free_export(key, value), FALSE);
+			}
+			free(key);
+			if (value)
+				free(value);
+			key = NULL;
+			value = NULL;
+		}
+		i++;
 	}
-	free(key);
-	if (value)
-		free(value);
-	key = NULL;
-	value = NULL;
 	return (TRUE);
 }

@@ -31,6 +31,18 @@
 	// }
 	/******************************************************************/
 	//if a buitin matched, the return will be 1
+size_t	pro_ft_strlen(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	if (!str)
+		return (0);
+	while (str[len] != '\0')
+		len++;
+	return (len);
+}
+
 char	*pro_ft_strjoin(char *s1, char *s2)
 {
 	size_t	s1_len;
@@ -38,8 +50,8 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 	int		i;
 	char	*ptr;
 
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
+	s1_len = pro_ft_strlen(s1);
+	s2_len = pro_ft_strlen(s2);
 	ptr = (char *)malloc(sizeof(char) * (s1_len + s2_len + 2));
 	if (!ptr)
 		return (0);
@@ -55,7 +67,8 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 		ptr[i] = '=';
 		ptr[i + 1] = '\0';
 	}
-	ft_strlcat(ptr, s2, s1_len + 1 + s2_len + 1);
+	if (s2 != NULL)
+		ft_strlcat(ptr, s2, s1_len + 1 + s2_len + 1);
 	return (ptr);
 }
 
@@ -74,6 +87,8 @@ int	ft_count_nodes(t_compound *cmds)
 	}
 	return (i);
 }
+
+
 
 int	ft_transfer_ll_to_ptr(t_compound *cmds)
 {
@@ -94,14 +109,11 @@ int	ft_transfer_ll_to_ptr(t_compound *cmds)
 	{
 		if (temp->env_display == TRUE)
 		{
-			length = ft_strlen(temp->key) + ft_strlen(temp->value);
-			cmds->envp[i] = (char *)malloc((length + 1) * sizeof(char));
-			if (!cmds->envp[i])
-				return (free_double_ptr(cmds->envp), FALSE);
-			if (temp->value)
-				cmds->envp[i] = pro_ft_strjoin(temp->key, temp->value);
-			else
-				cmds->envp[i] = ft_strjoin(temp->key, "=");
+			length = pro_ft_strlen(temp->key) + pro_ft_strlen(temp->value);
+			//if (temp->value)
+			cmds->envp[i] = pro_ft_strjoin(temp->key, temp->value);
+			// else
+			// 	cmds->envp[i] = ft_strjoin(temp->key, "=");
 			i++;
 		}
 		temp = temp->next;
@@ -109,7 +121,7 @@ int	ft_transfer_ll_to_ptr(t_compound *cmds)
 	i = 0;
 	while (cmds->envp[i])
 	{
-		write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
+		write (1, cmds->envp[i], pro_ft_strlen(cmds->envp[i]));
 		write (1, "\n", 1);
 		i++;
 	}

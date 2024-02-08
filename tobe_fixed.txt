@@ -12,3 +12,8 @@ fixed: --expansion: $"" leads to segmentation fault
 
 --what happens if PATH is unset
 	- atm: no error displayed
+
+
+
+PATH= in path_finder line 38 change to PATH
+--check for if path is null (node not found)

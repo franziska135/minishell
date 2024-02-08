@@ -39,14 +39,6 @@ int	export_error_check(t_compound *cmds, t_simple *scmd)
 	flag = TRUE;
 	if (!scmd->cmd[1])
 	{
-		//ft_transfer_ll_to_ptr(cmds);
-		// int i = 0;
-		// while (cmds->envp_ll[i])
-		// {
-		// 	write (1, cmds->envp[i], ft_strlen(cmds->envp[i]));
-		// 	write (1, "\n", 1);
-		// 	i++;
-		// }
 		print_export(cmds->env_ll);
 		return (FALSE);
 	}

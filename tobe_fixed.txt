@@ -1,7 +1,5 @@
 --all errors should be handled properly
 
---starting minishell with "env -i | ./minishell" creates endless loop			you should not do that (its not env -i, its piping)
-	- env -i passes an emtpy env to the shell
 
 --A="'ls -s'" 			doesnt return correct error is that ok?
 
@@ -12,26 +10,21 @@
 --export | grep a returns error		env works but prints END and START
 
 
---ambiguous redirection			any failed redir cant free ll cuz its not properly set			
-					i think the rest is resolved.
-
-
 --make and doesnt work.
 
 
---echo "hello		world" prints hello world
-
-
 --heredoc doesnt go to newline.
+--expand inside of hd
 
 
 --cmd not found is not fzsh error.
 
 
---expand inside of hd
-
+--check for deletion\permission of parent dir
 
 
 
 -- space in history -> bash saves commands that start with space	NOTE: my bash doesnt!
---expansion: $"" leads to segmentation fault				NOTE: it doesnt, was it something else?
+--starting minishell with "env -i | ./minishell" creates endless loop			you should not do that (its not env -i, its piping)
+	- env -i passes an emtpy env to the shell
+

@@ -12,27 +12,28 @@
 
 #include "minishell.h"
 
-static char	**redir_expand(t_compound *cmds, char *token)
-{
-	char	*new_token;
-	char	*ret;
-	char	**split_token;
+// static char	**expand_redir(t_compound *cmds, char *token)
+// {
+// 	char	*new_token;
+// 	char	*new_token;
+// 	char	*ret;
+// 	char	**split_token;
 
-	new_token = expand_redir(cmds, token);
-	if (!new_token)
-		return (NULL);
-	split_token = expansion_split(new_token);
-	free(new_token);
-	if (!split_token)
-		return (NULL);
-	if (!split_token[0] || split_token[1])
-	{
-		dpointer_free(split_token);
-		return (NULL);
-	}
-	split_token[0] = remove_quotes(split_token[0]);
-	return (split_token);
-}
+// 	new_token = expand_redir(cmds, token);
+// 	if (!new_token)
+// 		return (NULL);
+// 	split_token = expansion_split(new_token);
+// 	free(new_token);
+// 	if (!split_token)
+// 		return (NULL);
+// 	if (!split_token[0] || split_token[1])
+// 	{
+// 		dpointer_free(split_token);
+// 		return (NULL);
+// 	}
+// 	split_token[0] = remove_quotes(split_token[0]);
+// 	return (split_token);
+// }
 
 static void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i)
 {
@@ -43,7 +44,7 @@ static void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i)
 		cmds->scmd[pipe].out_fd = -1;
 	if (cmds->scmd[pipe].out_fd)
 		close (cmds->scmd[pipe].out_fd);
-	str = redir_expand(cmds, file);
+	str = expand_redir(cmds, file);
 	if (!str)
 	{
 		print_error(NULL, file, "ambiguous redirect");
@@ -67,7 +68,7 @@ static void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i)
 		cmds->scmd[pipe].in_fd = -1;
 	if (cmds->scmd[pipe].in_fd)
 		close (cmds->scmd[pipe].in_fd);
-	str = redir_expand(cmds, file);
+	str = expand_redir(cmds, file);
 	if (!str)
 	{
 		print_error(NULL, file, "ambiguous redirect");
@@ -91,7 +92,7 @@ static void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i)
 		cmds->scmd[pipe].out_fd = -1;
 	if (cmds->scmd[pipe].out_fd)
 		close (cmds->scmd[pipe].out_fd);
-	str = redir_expand(cmds, file);
+	str = expand_redir(cmds, file);
 	if (!str)
 	{
 		print_error(NULL, file, "ambiguous redirect");

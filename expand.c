@@ -44,107 +44,108 @@ static char	*find_key(char *token)
 	return (str);
 }
 
-static void	write_expansion(t_compound *cmds, char *token, int fd)
+static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, int flag)
 {
 	t_env	*env;
 	char	*key;
+	size_t	i;
+	int		ret;
 
+	token++;
+	ret = 0;
 	key = find_key(token);
 	if (key)
 	{
 		env = find_node(cmds, key);
-		if (env && env->value)
-			write(fd, env->value, ft_strlen(env->value));
+		ret = ft_strlen(key);
 		free(key);
+		if (env && env->value)
+		{
+			write(fd, env->value, ft_strlen(env->value));
+			i = 0;
+			while (i < ft_strlen(env->value))
+			{
+				ft_putnbr_fd(flag, fd_flag);
+				i++;
+			}
+			return (ret);
+		}
 	}
 	else if (token[0] == '\0')
+	{
 		write(fd, "$", 1);
+		ft_putnbr_fd(flag, fd_flag);
+	}
 	else if (token[0] == '?')
+	{
 		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
-	else
-		write(fd, "\0", 1);
+		// check for how many digits;
+		ft_putnbr_fd(flag, fd_flag);
+	}
+	return (ret);
 }
 
-void	expand_token(t_compound *cmds, char *token, int *fd)
+void	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
 {
-	int		i;
-	char	*token_copy;
+	int		flag;
 
-	token_copy = token;
-	i = 0;
+	flag = 0;
 	while (token[0])
 	{
-		if (in_quot(token_copy, i) == 1 || token[0] != '$')
+		if (token[0] == '"' && flag == 0)
+			flag = 2;
+		else if (token[0] == '"' && flag == 2)
+			flag = 0;
+		else if (token[0] == '\'' && flag == 0)
+			flag = 1;
+		else if (token[0] == '\'' && flag == 1)
+			flag = 0;
+		else if (flag == 1 || token[0] != '$')
 		{
 			write(fd[1], token, 1);
-			token ++;
-			i++;
+			ft_putnbr_fd(flag, fd_flag[1]);
 		}
 		else
-		{
-			i++;
-			token++;
-			write_expansion(cmds, token, fd[1]);
-			if (token[0] && (ft_isdigit(token[0]) || token[0] == '?'))
-			{
-				i++;
-				token++;
-			}
-			else
-			{
-				while (token[0] && (ft_isalnum(token[0]) || token[0] == '_'))
-				{
-					i++;
-					token++;
-				}
-			}
-		}
+			token += (write_expansion(cmds, token, fd[1], fd_flag[1], flag));
+		token++;
 	}
 }
 
-char	*expand_redir(t_compound *cmds, char *token)
+
+char	**expand_redir(t_compound *cmds, char *token)
 {
 	char	*str;
+	char	*flag;
 	int		fd[2];
+	int		fd_flag[2];
+	char	**split;
 
 	if (pipe(fd) == -1)
 		return (NULL);
-	expand_token(cmds, token, fd);
+	if (pipe(fd_flag) == -1)
+		return (close(fd[1]), close(fd[0]),NULL);
+	expand_token(cmds, token, fd, fd_flag);
 	write(fd[1], "\0", 1);
+	write(fd_flag[1], "\0", 1);
 	close(fd[1]);
+	close(fd_flag[1]);
 	str = get_next_line(fd[0]);
 	close(fd[0]);
 	if (!str || str[0] == '\0')
+		return (close(fd_flag[0]), fd_flag[1], free(str), NULL);
+	flag = get_next_line(fd_flag[0]);
+	close(fd_flag[0]);
+	if (!flag)
 		return (free(str), NULL);
-	return (str);
+	split = expansion_split(str, flag);
+	free(flag);
+	free(str);
+	if (!split)
+		return(NULL);
+	if (!split[0] || split[1])
+	{
+		dpointer_free(split);
+		return (NULL);
+	}
+	return (split);
 }
-
-// char	*token_expand(t_compound *cmds, char *token)
-// {
-// 	char	**new_token;
-// 	char	*str;
-// 	size_t	len;
-// 	int		i;
-// 	int		j;
-
-// 	len = tokens_counter(token);
-// 	new_token = (char**)malloc(sizeof(char**) * (len + 1));
-// 	if (!new_token)
-// 		return (NULL);
-// 	i = 0;
-// 	j = 0;
-// 	while (token[i])
-// 	{
-// 		str = expand_token(cmds, token[i]);
-// 		if (str)
-// 		{
-// 			new_token[j] = remove_quotes(str);
-// 			j++;
-// 		}
-// 		free(token[i]);
-// 		i++;
-// 	}
-// 	free(token);
-// 	new_token[j] = NULL;
-// 	return(new_token);
-// }

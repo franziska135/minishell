@@ -52,6 +52,7 @@
 typedef struct s_simple_command
 {
 	char	**cmd;
+	char	**cmd_flag;
 	int		in_fd;
 	int		out_fd;
 	int		builtin; //a 0/1 flag for execution
@@ -103,13 +104,13 @@ size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
 void	ambiguous(t_compound *cmds, char **tokens);
-char	**expansion_split(char *s);
 
 //  EXPAND
 // char	*token_expand(t_compound *cmds, char *token);
-char	*expand_redir(t_compound *cmds, char *token);
+char	**expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
-void	expand_token(t_compound *cmds, char *token, int *fd);
+void	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
+char	**expansion_split(char *s, char *flag);
 
 // PIPEX
 int		piping_root(t_compound *cmds);

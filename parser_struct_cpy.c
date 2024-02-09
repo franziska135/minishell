@@ -130,15 +130,7 @@ int	struct_cpy(t_compound *cmds, char **tokens)
 	while (i < cmds->nbr_scmd)
 	{
 		if (cmds->scmd[i].cmd)
-		{
 			cmds->scmd[i].cmd = scmds_expand(cmds, cmds->scmd[i].cmd);
-			j = 0;
-			while (cmds->scmd[i].cmd && cmds->scmd[i].cmd[j])
-			{
-				cmds->scmd[i].cmd[j] = remove_quotes(cmds->scmd[i].cmd[j]);
-				j++;
-			}
-		}
 		i++;
 	}
 	return (1);

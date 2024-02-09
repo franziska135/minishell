@@ -28,9 +28,6 @@ static int	is_built_in(char *str)
 		return (TRUE);
 	else if (!ft_strncmp(str, "echo", 5))
 		return (TRUE);
-	//take out!
-	else if (!ft_strncmp(str, "print", 5))
-		return (TRUE);
 	return (FALSE);
 }
 
@@ -52,7 +49,7 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			cleanup_envp_ll(cmds->env_ll);
 			free_double_ptr(cmds->envp);
 			struct_free(*cmds);
-			exit (EXIT_SUCCESS);
+			exit (cmds->exit_status);
 		}
 		path = path_finder(cmds, i);
 		if (!path)

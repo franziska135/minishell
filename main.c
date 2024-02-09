@@ -20,4 +20,5 @@ int	main(int ac, char **av, char **envp)
 	if (init_env_llist(&cmds, envp) == FALSE)
 		return (FALSE);
 	run_minishell(&cmds);
+	return (cmds.exit_status);
 }

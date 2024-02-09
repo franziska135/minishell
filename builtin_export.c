@@ -137,23 +137,6 @@ int	builtin_export(t_compound *cmds, t_simple *scmd)
 		{
 			if (export_loop(cmds, key, value, scmd->cmd[i]) == FALSE)
 				return (FALSE);
-			// if (save_key_and_value(&key, &value, scmd->cmd[i]) == FALSE)
-			// 	return (free_export(key, value), FALSE);
-			// if (find_node(cmds, key) != NULL)
-			// {
-			// 	if (adapt_node(cmds, scmd->cmd[i], key, value) == FALSE)
-			// 		return (free_export(key, value), FALSE);
-			// }
-			// else
-			// {
-			// 	if (new_node(cmds, scmd->cmd[i], key, value) == FALSE)
-			// 		return (free_export(key, value), FALSE);
-			// }
-			// free(key);
-			// if (value)
-			// 	free(value);
-			// key = NULL;
-			// value = NULL;
 		}
 		i++;
 	}

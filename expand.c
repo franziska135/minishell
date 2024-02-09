@@ -60,7 +60,8 @@ static void	write_expansion(t_compound *cmds, char *token, int fd)
 	else if (token[0] == '\0')
 		write(fd, "$", 1);
 	else if (token[0] == '?')
-		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
+	ft_putnbr_fd(cmds->exit_status, fd);
+		// ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
 	else
 		write(fd, "\0", 1);
 }

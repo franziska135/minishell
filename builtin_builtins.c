@@ -15,9 +15,9 @@
 //what happens on error?
 void	builtin_pwd(void)
 {
-	char	buf[100];
+	char	buf[500];
 
-	if (getcwd(buf, 100) != NULL)
+	if (getcwd(buf, 500) != NULL)
 	{
 		write(1, buf, ft_strlen(buf));
 		write (1, "\n", 1);
@@ -41,11 +41,49 @@ void	print_error(char *str2, char *str3, char *str4)
 	write (2, "\n", 1);
 }
 
-void	builtin_exit(t_compound *cmds)
+void	set_status(t_compound *cmds, int i)
 {
+	cmds->exit_status = i;
+}
+
+int	exit_error_check(t_compound *cmds, t_simple *scmd)
+{
+	int	i;
+
+	i = 0;
+	if (!scmd->cmd[1])
+		return (0);
+	if (scmd->cmd[1][0] == '\0')
+		return (print_error("exit: ", "", "numeric argument required"), 2);
+	if (scmd->cmd[1][0] == '-' || scmd->cmd[1][0] == '+')
+		i++;
+	while (scmd->cmd[1][i])
+	{
+		if (ft_isdigit(scmd->cmd[1][i]) == 0)
+		{
+			print_error("exit: ", scmd->cmd[1], "numeric argument required");
+			return (2);
+		}
+		i++;
+	}
+	if (scmd->cmd[2])
+	{
+		print_error("exit: ", NULL, "too many arguments");
+		return (1);
+	}
+	else
+		return (3);
+}
+
+void	builtin_exit(t_compound *cmds, t_simple *scmd)
+{
+	int	status;
+
+	status = exit_error_check(cmds, scmd);
+	cmds->exit_status = status;
 	cleanup_envp_ll(cmds->env_ll);
 	free_double_ptr(cmds->envp);
 	struct_free(*cmds);
 	//exit code on regular exit?
-	exit (1);
+	exit (status);
 }

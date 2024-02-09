@@ -42,7 +42,11 @@ int	valid_var_check(char *new_var)
 	while (new_var[i] && new_var[i] != '=')
 	{
 		if (ft_isalnum(new_var[i]) != 1 && new_var[i] != '_')
+		{
+			// if (new_var[i] == '+' && new_var[i + 1] && new_var[i] == '=')
+			// 	return (TRUE);
 			return (FALSE);
+		}
 		i++;
 	}
 	return (TRUE);
@@ -59,6 +63,7 @@ int	export_error_check(t_compound *cmds, char *new_var)
 	{
 		flag = FALSE;
 		print_error("export: ", new_var, "not a valid identifier");
+		cmds->exit_status = 1;
 	}
 	return (flag);
 }

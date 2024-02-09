@@ -30,3 +30,5 @@
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
 
 --pwd check for access --> previous folder delete
+
+--un set "$" segfault

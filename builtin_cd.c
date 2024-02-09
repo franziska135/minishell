@@ -19,7 +19,7 @@
 //fix what happens if error statement is printed
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
-	if (scmd->cmd[1] == NULL)
+	if (scmd->cmd[1] == NULL || ft_strncmp(scmd->cmd[1], "~", 2) == 0)
 	{
 		if (builtin_cd_home(cmds) == FALSE)
 			return (FALSE);

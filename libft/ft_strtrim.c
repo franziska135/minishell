@@ -31,6 +31,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		i;
 	char	*s2;
 
+	if (s1==NULL || !set)
+		return (NULL);
 	s1 = (char *)s1;
 	while (*s1 != '\0' && set_check(*s1, set))
 		s1++;

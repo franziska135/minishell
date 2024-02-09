@@ -19,7 +19,7 @@
 //check_for_n returns index to last occurence of only -n if there are any
 //if i != 0 that means there is at least on -n
 //else just write all cmds
-void	builtin_echo(t_simple *scmd)
+void	builtin_echo(t_compound *cmds, t_simple *scmd)
 {
 	int	i;
 	int	start;
@@ -29,10 +29,10 @@ void	builtin_echo(t_simple *scmd)
 	{
 		i = check_for_n(scmd);
 		if (check_for_only_n(scmd->cmd[i]) == TRUE)
-			builtin_echo_write(scmd, i);
+			builtin_echo_write(cmds, scmd, i);
 		else
 		{
-			builtin_echo_write(scmd, 0);
+			builtin_echo_write(cmds, scmd, 0);
 			write (1, "\n", 1);
 		}
 	}
@@ -40,18 +40,33 @@ void	builtin_echo(t_simple *scmd)
 		write (1, "\n", 1);
 }
 
+void	if_echo_home(t_compound *cmds)
+{
+	t_env	*home;
+
+	home = find_node(cmds, "HOME");
+	if (home != NULL && home->value != NULL)
+		write (1, home->value, ft_strlen(home->value));
+}
+
 //utils function for echo, cuts 25 lines
 //if status = i, then -n was found, no newline at the end
 //if status = 0, no -n and all cmds are written out with nl
-void	builtin_echo_write(t_simple *scmd, int status)
+void	builtin_echo_write(t_compound *cmds, t_simple *scmd, int i)
 {
-	if (scmd->cmd[status + 1])
+	if (scmd->cmd[i + 1])
 	{
-		write (1, scmd->cmd[status + 1], ft_strlen(scmd->cmd[status + 1]));
-		while (scmd->cmd[++status + 1])
+		if (ft_strncmp(scmd->cmd[i + 1], "~", 2) == 0)
+			if_echo_home(cmds);
+		else
+			write (1, scmd->cmd[i + 1], ft_strlen(scmd->cmd[i + 1]));
+		while (scmd->cmd[++i + 1])
 		{
 			write (1, " ", 1);
-			write (1, scmd->cmd[status + 1], ft_strlen(scmd->cmd[status + 1]));
+			if (ft_strncmp(scmd->cmd[i + 1], "~", 2) == 0)
+				if_echo_home(cmds);
+			else
+				write (1, scmd->cmd[i + 1], ft_strlen(scmd->cmd[i + 1]));
 		}
 	}
 }
@@ -87,7 +102,7 @@ int	check_for_only_n(char *str)
 		while (str[i] == 'n')
 			i++;
 	}
-	if (str[i] == '\0')
+	if (str[i] == '\0' && i != 0)
 		return (TRUE);
 	else
 		return (FALSE);

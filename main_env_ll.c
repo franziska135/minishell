@@ -102,7 +102,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	{
 		//correct error code?
 		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
-			return (ft_write_error(NULL, NULL, strerror(errno)), FALSE);
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		i++;
 	}
 	return (1);

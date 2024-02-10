@@ -21,7 +21,7 @@ static int	ft_word_count(char *str, char *flag)
 	word_counter = 0;
 	while (*str)
 	{
-		if (word_begin == 1 && (*str != ' ' || *flag == '0'))
+		if (word_begin == 1 && *str != ' ')
 		{
 			word_counter++;
 			word_begin = 0;

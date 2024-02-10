@@ -25,6 +25,7 @@ int	ft_here_doc(char *delimiter)
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0)
 	{
 		write (fd[1], gnl, ft_strlen(gnl));
+		write (fd[1], "\n", 1);
 		free(gnl);
 		gnl = get_next_line(STDIN_FILENO);
 		if (gnl && gnl[ft_strlen(gnl) - 1] == '\n')

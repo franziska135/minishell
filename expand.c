@@ -81,6 +81,7 @@ static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, i
 		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
 		// check for how many digits;
 		ft_putnbr_fd(flag, fd_flag);
+		ret++;
 	}
 	return (ret);
 }

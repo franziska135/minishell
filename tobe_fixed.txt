@@ -33,5 +33,14 @@
 
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
 
+-- piping leaks sometimes!
+
+--echo 1 "" "" "" "" 2 doesnt print enough spaces
+
+--echo hello world >file creates a file but no redir into it
+
+
+
+
 
 --pwd check for access

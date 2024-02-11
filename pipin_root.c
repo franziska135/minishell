@@ -113,9 +113,21 @@ static int	piping(t_compound *cmds)
 
 int	piping_root(t_compound *cmds)
 {
+	int	initial_stdout;
+
 	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
+		initial_stdout = dup(STDOUT_FILENO);
+		if (cmds->scmd[0].out_fd != 0)
+		{
+			dup2(cmds->scmd[0].out_fd, STDOUT_FILENO);
+			close (cmds->scmd[0].out_fd);
+		}
 		if_builtin_execute(cmds, &cmds->scmd[0]);
+		
+	dup2(initial_stdout, STDOUT_FILENO);
+	close (initial_stdout);
+
 	}
 	else if (!piping(cmds))
 		return (0);

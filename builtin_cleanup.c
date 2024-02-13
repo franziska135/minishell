@@ -51,6 +51,21 @@ void	ft_free_node(t_env *lst)
 	lst = NULL;
 }
 
+void	ft_free_single_node(t_env *node)
+{
+	if (node)
+	{
+		if (node->key)
+			(free(node->key), node->key = NULL);
+		if (node->value)
+			(free(node->value), node->value = NULL);
+		if (node->next)
+			(free(node->next), node->next = NULL);
+		free(node);
+	}
+	node = NULL;
+}
+
 void	free_double_ptr(char **double_ptr)
 {
 	int	i;

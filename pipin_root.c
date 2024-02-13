@@ -28,9 +28,6 @@ static int	is_built_in(char *str)
 		return (TRUE);
 	else if (!ft_strncmp(str, "echo", 5))
 		return (TRUE);
-	//take out!
-	else if (!ft_strncmp(str, "print", 5))
-		return (TRUE);
 	return (FALSE);
 }
 
@@ -50,8 +47,9 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 		{
 			if_builtin_execute(cmds, &cmds->scmd[i]);
 			cleanup_envp_ll(cmds->env_ll);
+			free_double_ptr(cmds->envp);
 			struct_free(*cmds);
-			exit (EXIT_SUCCESS);
+			exit (cmds->exit_status);
 		}
 		path = path_finder(cmds, i);
 		if (!path)
@@ -59,18 +57,19 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			cleanup_envp_ll(cmds->env_ll);
 			free_double_ptr(cmds->envp);
 			struct_free(*cmds);
-			exit (EXIT_FAILURE);
+			cmds->exit_status = 127 << 8;
+			exit (cmds->exit_status);
 		}
 		ft_transfer_ll_to_env_ptr(cmds);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
+		print_error(NULL, path, strerror(errno));
+		cmds->exit_status = 127 << 8;
 	}
-	else
-	{
-		close_fds(cmds, fd);
-		struct_free(*cmds);
-		cleanup_envp_ll(cmds->env_ll);
-	}
-	exit (EXIT_FAILURE);
+	close_fds(cmds, fd);
+	struct_free(*cmds);
+	dpointer_free (cmds->envp);
+	cleanup_envp_ll(cmds->env_ll);
+	exit (cmds->exit_status);
 }
 
 static int	piping(t_compound *cmds)

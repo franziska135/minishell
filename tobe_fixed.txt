@@ -1,21 +1,8 @@
 --all errors should be handled properly
 
 
---A="'ls -s'" 			doesnt return correct error is that ok?
 
-
---clear returns error		TERM prints wrong
-
-
---export | grep a returns error		env works but prints END and START
-
-
---make and doesnt work.
-
-
---heredoc doesnt go to newline.
 --expand inside of hd
-
 
 --cmd not found is not fzsh error.
 
@@ -25,22 +12,26 @@
 
 
 -- space in history -> bash saves commands that start with space	NOTE: my bash doesnt!
---expansion: $"" leads to segmentation fault				NOTE: it doesnt, was it something else?
 
---is_builtin function strncmp with \0
 
 --in is_builtin and if_builtin_execute take the print out, thats just for control
 
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
 
--- piping leaks sometimes!
+
 
 --echo 1 "" "" "" "" 2 doesnt print enough spaces
 
---echo hello world >file creates a file but no redir into it
 
 
 
 
 
 --pwd check for access
+--pwd check for access --> previous folder delete
+
+--un set "$" segfault
+
+--one fd is always open
+
+"" segf also cmds "" segf

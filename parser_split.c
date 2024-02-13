@@ -21,13 +21,19 @@ static int	ft_word_count(char *str, char *flag)
 	word_counter = 0;
 	while (*str)
 	{
-		if (word_begin == 1 && *str != ' ')
+		if (*flag == '3')
+		{
+			word_counter++;
+			word_begin = 1;
+		}
+		else if ((word_begin == 1 && *str != ' ') || (word_begin == 1 && *flag != '0'))
 		{
 			word_counter++;
 			word_begin = 0;
 		}
-		if (*str == ' ' && *flag == '0')
+		else if (*str == ' ' && *flag == '0')
 			word_begin = 1;
+		// else if (*str == ' ' )
 		str++;
 		flag++;
 	}
@@ -71,16 +77,27 @@ char	**expansion_split(char *s, char *flag)
 	{
 		len = 0;
 		i += splus(s, i, flag);
-		if (s[i] == '\0')
-			return (ptr);
 		while ((s[i + len] != ' ' && s[i + len]) || (flag[len + i] != '0' && flag[len + i] != '\0'))
 			len++;
-		ptr[j] = (char *)malloc(sizeof(char) * (len + 1));
-		if (!(ptr[j]))
-			return (ft_free_malloc(ptr, j));
-		ft_strlcpy(ptr[j], s + i, len + 1);
+		if (s[i] == '\0')
+			return (ptr);
+		if (flag[i] == '3')
+		{
+			ptr[j] = (char *)malloc(sizeof(char));
+			if (!(ptr[j]))
+				return (ft_free_malloc(ptr, j));
+			ptr[j][0] = '\0';
+			i++;
+		}
+		else
+		{
+			ptr[j] = (char *)malloc(sizeof(char) * (len + 1));
+			if (!(ptr[j]))
+				return (ft_free_malloc(ptr, j));
+			ft_strlcpy(ptr[j], s + i, len + 1);
+			i += len;			
+		}
 		j++;
-		i += len;
 	}
 	ptr[j] = NULL;
 	return (ptr);

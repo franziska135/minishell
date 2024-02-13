@@ -21,6 +21,7 @@ char	**scmds_expand(t_compound *cmds, char **scmds)
 	char	*gnl_flag;
 	char	**split;
 	char	**split_flag;
+	int 	flag;
 
 	if (pipe(fd) == -1)
 		return (dpointer_free(scmds), NULL);
@@ -29,9 +30,10 @@ char	**scmds_expand(t_compound *cmds, char **scmds)
 	i = 0;
 	while (scmds && scmds[i])
 	{
-		expand_token(cmds, scmds[i], fd, fd_flag);
+		flag = expand_token(cmds, scmds[i], fd, fd_flag);
 		write(fd[1], " ", 1);
-		write(fd_flag[1], "0", 1);
+		// write(fd_flag[1], "0", 1);
+		ft_putnbr_fd(flag, fd_flag[1]);
 		i++;
 	}
 	dpointer_free(scmds);

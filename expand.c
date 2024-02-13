@@ -71,26 +71,31 @@ static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, i
 			return (ret);
 		}
 	}
-	else if (token[0] == '\0')
-	{
-		write(fd, "$", 1);
-		ft_putnbr_fd(flag, fd_flag);
-	}
 	else if (token[0] == '?')
 	{
-		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
+		if (WIFEXITED(cmds->exit_status))
+			ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
+		else
+			write (fd, "0", 1);
 		// check for how many digits;
 		ft_putnbr_fd(flag, fd_flag);
 		ret++;
 	}
+	else if (token[0] == '\0' || flag != 0)
+	{
+		write(fd, "$", 1);
+		ft_putnbr_fd(flag, fd_flag);
+	}
 	return (ret);
 }
 
-void	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
+int	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
 {
 	int		flag;
+	int		empty;
 
 	flag = 0;
+	empty = 0;
 	while (token[0])
 	{
 		if (token[0] == '"' && flag == 0)
@@ -105,11 +110,18 @@ void	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
 		{
 			write(fd[1], token, 1);
 			ft_putnbr_fd(flag, fd_flag[1]);
+			empty = 1;
 		}
 		else
+		{
 			token += (write_expansion(cmds, token, fd[1], fd_flag[1], flag));
+			empty = 1;
+		}
 		token++;
 	}
+	if (empty == 0)
+		return (3);
+	return (0);
 }
 
 

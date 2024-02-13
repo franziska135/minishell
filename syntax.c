@@ -80,21 +80,24 @@ static int	syntax_redir(char *str)
 	return (0);
 }
 
-int	syntax(char *str)
+int	syntax(char *str, t_compound *cmds)
 {
 	if (in_quot(str, ft_strlen(str) - 1))
 	{
 		print_error(NULL, "syntax error", "quote has to close");
+		cmds->exit_status = 2 << 8;
 		return (0);
 	}
 	if (syntax_pipe(str))
 	{
 		print_error(NULL, "syntax error", "pipe(s) is not set correctly");
+		cmds->exit_status = 2 << 8;
 		return (0);
 	}
 	if (syntax_redir(str))
 	{
 		print_error(NULL, "syntax error", "redirection(s) is not valid");
+		cmds->exit_status = 2 << 8;
 		return (0);
 	}
 	return (1);

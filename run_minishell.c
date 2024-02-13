@@ -30,7 +30,8 @@ static int	run_procces(t_compound	*cmds, char *str)
 {
 	char	**tokens;
 
-	if (!syntax(str))
+	
+	if (!syntax(str, cmds))
 		return (free(str), 0);
 	tokens = lexis(str);
 	if (!tokens)
@@ -54,7 +55,18 @@ int	run_minishell(t_compound	*cmds)
 	cmds->exit_status = 0;
 	while (TRUE)
 	{
-		str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
+		//str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
+		if (isatty(fileno(stdin)))
+			str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			str = ft_strtrim(line, "\n");
+			free(line);
+		}
+		if (str == NULL)
+			return (1);
 		if (!all_space(str))
 		{
 			if (str[0] != ' ')
@@ -62,5 +74,5 @@ int	run_minishell(t_compound	*cmds)
 			run_procces(cmds, str);
 		}
 	}
-	return (0);
+	return (1);
 }

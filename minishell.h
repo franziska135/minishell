@@ -77,16 +77,16 @@ typedef struct s_compound_command
 	int			exit_status;
 }	t_compound;
 
-typedef struct s_execute
-{
-	char	**binary_paths;
-}	t_execute;
+// typedef struct s_execute
+// {
+// 	char	**binary_paths;
+// }	t_execute;
 
 // HISTORY
 int		run_minishell(t_compound	*cmds);
 
 // SYNTAX
-int		syntax(char *str);
+int		syntax(char *str, t_compound *cmds);
 
 // LEXIS
 char	**lexis(char *str);
@@ -109,7 +109,7 @@ void	ambiguous(t_compound *cmds, char **tokens);
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
-void	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
+int	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
 char	**expansion_split(char *s, char *flag);
 
 // PIPEX
@@ -136,7 +136,7 @@ t_env	*ft_new_env_node(char *key, char *value, int env_display);
 void	ft_add_last_node(t_env **lst, t_env *new);
 
 //check amt of commands and pipes, children
-void	process_commands(t_execute *execute, t_compound *compound);
+//void	process_commands(t_execute *execute, t_compound *compound);
 int		if_builtin_execute(t_compound *compound, t_simple *simple_command);
 
 //builtins
@@ -148,21 +148,23 @@ int		builtin_cd_back(t_compound *cmds);
 int		builtin_cd_path(t_compound *cmds, t_simple *scmd);
 int		update_env_ll(t_compound *cmds, char *variable, char *new_value);
 void	builtin_env(t_env *head);
-void	builtin_echo(t_simple *s_cmd);
+void	builtin_echo(t_compound *cmds, t_simple *s_cmd);
+void	if_echo_home(t_compound *cmds);
 int		check_for_n(t_simple *s_cmd);
 int		check_for_only_n(char *str);
-void	builtin_echo_write(t_simple *s_cmd, int i);
-void	builtin_unset(t_compound *cmds, t_simple *scmd);
+void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
+int		builtin_unset(t_compound *cmds, t_simple *scmd);
+int	builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
-void	builtin_exit(t_compound *cmds);
+void	builtin_exit(t_compound *cmds, t_simple *scmd);
 
 //export utils
 void	print_export(t_env *head);
-int		save_key_and_value(char **key, char **value, t_simple *scmd);
-int		adapt_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
-int		new_node(t_compound *cmds, t_simple *scmd, char *key, char *value);
+int		save_key_and_value(char **key, char **value, char *current_cmd);
+int		adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value);
+int		new_node(t_compound *cmds, char *current_cmd, char *key, char *value);
 int		equal_sign_and_value(char *cmd1);
-int		export_error_check(t_compound *cmds, t_simple *scmd);
+int		export_error_check(t_compound *cmds, char *new_var);
 char	*save_key(char *cmd1);
 char	*save_value(char *cmd1);
 void	free_export(char *key, char *value);
@@ -173,12 +175,14 @@ int		ft_count_nodes(t_compound *cmds);
 char	*pro_ft_strjoin(char *s1, char *s2);
 void	print_double_ptr(t_compound *cmds);
 
-//cleaning up at error
-void	cleanup(t_execute *execute, t_compound *compound);
+//cleaning up at error and utils
+//void	cleanup(t_execute *execute, t_compound *compound);
 void	cleanup_envp_ll(t_env *env_ll);
 void	free_double_ptr(char **double_ptr);
 void	free_env(t_simple **cmd);
 void	ft_free_node(t_env *lst);
 void	print_error(char *str2, char *str3, char *str4);
+void	ft_free_single_node(t_env *node);
+void	set_status(t_compound *cmds, int i);
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static size_t	tokens_counter(char **tokens)
+size_t	tokens_counter(char **tokens)
 {
 	size_t	i;
 
@@ -22,7 +22,7 @@ static size_t	tokens_counter(char **tokens)
 	return (i);
 }
 
-static char	*find_key(char *token)
+char	*find_key(char *token)
 {
 	size_t	j;
 	char	*str;
@@ -81,7 +81,7 @@ static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, i
 		ft_putnbr_fd(flag, fd_flag);
 		ret++;
 	}
-	else if (token[0] == '\0' || flag != 0)
+	else if ((token[0] != '_' && token[0] != '"' && token[0] != '\'' && !ft_isalpha(token[0])) || flag != 0)
 	{
 		write(fd, "$", 1);
 		ft_putnbr_fd(flag, fd_flag);

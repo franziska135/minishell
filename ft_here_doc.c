@@ -12,7 +12,67 @@
 
 #include "minishell.h"
 
-int	ft_here_doc(char *delimiter)
+
+
+
+static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
+{
+	t_env	*env;
+	char	*key;
+	size_t	i;
+	int		ret;
+
+	str++;
+	ret = 0;
+	key = find_key(str);
+	if (key)
+	{
+		env = find_node(cmds, key);
+		ret = ft_strlen(key);
+		free(key);
+		if (env && env->value)
+		{
+			write(fd, env->value, ft_strlen(env->value));
+			return (ret);
+		}
+	}
+	else if (str[0] == '?')
+	{
+		if (WIFEXITED(cmds->exit_status))
+			ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
+		else
+			write (fd, "0", 1);
+		// check for how many digits;
+		ret++;
+	}
+	else if (str[0] == '\0' || str[0] == '_' || ft_isalpha(str[0]))
+	{
+		write(fd, "$", 1);
+	}
+	return (ret);
+}
+
+static void	expand_hd(char *str, t_compound *cmds, int fd, int expand)
+{
+	if (expand)
+	{
+		while (str && *str)
+		{
+			if (*str != '$')
+			{
+				write (fd, str, 1);
+				str++;
+			}
+			else
+				str += (write_hd_expansion(cmds, str, fd) + 1);
+		}
+	}
+	else
+		write (fd, str, ft_strlen(str));
+	write (fd, "\n", 1);
+}
+
+int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 {
 	int		fd[2];
 	char	*gnl;
@@ -24,8 +84,7 @@ int	ft_here_doc(char *delimiter)
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0)
 	{
-		write (fd[1], gnl, ft_strlen(gnl));
-		write (fd[1], "\n", 1);
+		expand_hd(gnl, cmds, fd[1], expand);
 		free(gnl);
 		gnl = get_next_line(STDIN_FILENO);
 		if (gnl && gnl[ft_strlen(gnl) - 1] == '\n')

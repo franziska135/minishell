@@ -94,7 +94,9 @@ char	**lexis(char *str);
 // PARSER
 char	**parser(t_compound *cmds, char **tokens);
 char	*remove_quotes(char *str);
-int		ft_here_doc(char *delimiter);
+int		ft_here_doc(char *delimiter, t_compound *cmds, int expand);
+char	*find_key(char *token);
+size_t	tokens_counter(char **tokens);
 int		struct_cpy(t_compound *cmds, char **tokens);
 
 // PARSER UTILS
@@ -109,7 +111,7 @@ void	ambiguous(t_compound *cmds, char **tokens);
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
-int	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
+int		expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
 char	**expansion_split(char *s, char *flag);
 
 // PIPEX

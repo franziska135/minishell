@@ -107,10 +107,24 @@ static void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i)
 	}
 }
 
+
+
+static int	if_expand(char *str)
+{
+	while (str && *str)
+	{
+		if (str[0] == '\'' || str[0] == '"')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 static void	redir_hd(t_compound *cmds, char **tokens)
 {
 	size_t	i;
 	int		pipe;
+	int		expand;
 
 	i = 0;
 	pipe = 0;
@@ -123,8 +137,9 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 			if (cmds->scmd[pipe].in_fd)
 				close (cmds->scmd[pipe].in_fd);
 			i++;
+			expand = if_expand(tokens[i]);
 			tokens[i] = remove_quotes(tokens[i]);
-			cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i]);
+			cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i], cmds, expand);
 		}
 		i++;
 	}

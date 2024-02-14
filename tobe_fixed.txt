@@ -20,9 +20,6 @@
 
 
 
---echo 1 "" "" "" "" 2 doesnt print enough spaces
-
-
 
 
 
@@ -30,8 +27,10 @@
 --pwd check for access
 --pwd check for access --> previous folder delete
 
---un set "$" segfault
+--un set "$" segfault						it doesnt
 
---one fd is always open
 
-"" segf also cmds "" segf
+--add \t to all your space searching:(
+
+
+--i should pass you fd from stdout to close it at exit

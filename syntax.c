@@ -40,7 +40,8 @@ static int	syntax_pipe(char *str)
 			if (!in_quot(str, i) && !pipe_argument(str, i))
 				return (1);
 		}
-		if (printable == 0 && ft_isprint(str[i]) && str[i] != ' ' && str[i] != '\t')
+		if (printable == 0 && ft_isprint(str[i])
+			&& str[i] != ' ' && str[i] != '\t')
 			printable = 1;
 		i++;
 	}
@@ -54,7 +55,8 @@ static int	redir_argument(char *str, int i)
 		i++;
 	else if (str[i - 1] == '<' && str[i] == '<')
 		i++;
-	while (i < ft_strlen(str) && str[i] != '<' && str[i] != '>' && str[i] != '|')
+	while (i < ft_strlen(str) && str[i] != '<'
+		&& str[i] != '>' && str[i] != '|')
 	{
 		if (ft_isprint(str[i]) && str[i] != ' ' && str[i] != '\t')
 			return (1);

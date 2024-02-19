@@ -12,31 +12,21 @@
 
 #include "minishell.h"
 
-static int	is_built_in(char *str)
+static void	child_clean(t_compound *cmds, int *fd)
 {
-	if (!str)
-		return (FALSE);
-	if (!ft_strncmp(str, "cd", 3))
-		return (TRUE);
-	else if (!ft_strncmp(str, "export", 7))
-		return (TRUE);
-	else if (!ft_strncmp(str, "unset", 6))
-		return (TRUE);
-	else if (!ft_strncmp(str, "env", 4))
-		return (TRUE);
-	else if (!ft_strncmp(str, "exit", 5))
-		return (TRUE);
-	else if (!ft_strncmp(str, "echo", 5))
-		return (TRUE);
-	return (FALSE);
+	struct_free(*cmds);
+	dpointer_free (cmds->envp);
+	cleanup_envp_ll(cmds->env_ll);
+	exit (cmds->exit_status);
 }
 
-static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
+static int	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 {
 	char	*path;
 
 	close (initial_stdin);
-	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1 && cmds->scmd[i].cmd)
+	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1
+		&& cmds->scmd[i].cmd)
 	{
 		if (cmds->scmd[i].out_fd != 0)
 			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
@@ -44,32 +34,47 @@ static int	child_proccess(t_compound *cmds, int *fd, int i, int initial_stdin)
 			dup2(fd[1], STDOUT_FILENO);
 		close_fds(cmds, fd);
 		if (is_built_in(cmds->scmd[i].cmd[0]))
-		{
-			if_builtin_execute(cmds, &cmds->scmd[i]);
-			cleanup_envp_ll(cmds->env_ll);
-			free_double_ptr(cmds->envp);
-			struct_free(*cmds);
-			exit (cmds->exit_status);
-		}
+			(if_builtin_execute(cmds, &cmds->scmd[i]), child_clean(cmds, fd));
 		path = path_finder(cmds, i);
 		if (!path)
 		{
-			cleanup_envp_ll(cmds->env_ll);
-			free_double_ptr(cmds->envp);
-			struct_free(*cmds);
 			cmds->exit_status = 127 << 8;
-			exit (cmds->exit_status);
+			child_clean(cmds, fd);
 		}
 		ft_transfer_ll_to_env_ptr(cmds);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 		print_error(NULL, path, strerror(errno));
 		cmds->exit_status = 127 << 8;
 	}
-	close_fds(cmds, fd);
-	struct_free(*cmds);
-	dpointer_free (cmds->envp);
-	cleanup_envp_ll(cmds->env_ll);
-	exit (cmds->exit_status);
+	child_clean(cmds, fd);
+}
+
+static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmds->nbr_scmd)
+	{
+		if (pipe(fd) == -1)
+			return (close (std_in), 0);
+		if (cmds->scmd[i].in_fd > 2)
+		{
+			dup2(cmds->scmd[i].in_fd, STDIN_FILENO);
+			close (cmds->scmd[i].in_fd);
+		}
+		*pid = fork();
+		if (*pid == 0)
+			child_process(cmds, fd, i, std_in);
+		close (fd[1]);
+		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
+			dup2(fd[0], STDIN_FILENO);
+		close (fd[0]);
+		if (cmds->scmd[i].out_fd > 2)
+			close (cmds->scmd[i].out_fd);
+		i++;
+	}
+	return (1);
 }
 
 static int	piping(t_compound *cmds)
@@ -81,26 +86,8 @@ static int	piping(t_compound *cmds)
 
 	initial_stdin = dup(STDIN_FILENO);
 	i = 0;
-	while (i < cmds->nbr_scmd)
-	{
-		if (pipe(fd) == -1)
-			return (0);
-		if (cmds->scmd[i].in_fd > 2)
-		{
-			dup2(cmds->scmd[i].in_fd, STDIN_FILENO);
-			close (cmds->scmd[i].in_fd);
-		}
-		pid = fork();
-		if (pid == 0)
-			child_proccess(cmds, fd, i, initial_stdin);
-		close (fd[1]);
-		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
-			dup2(fd[0], STDIN_FILENO);
-		close (fd[0]);
-		if (cmds->scmd[i].out_fd > 2)
-			close (cmds->scmd[i].out_fd);
-		i++;
-	}
+	if (!parent_process(cmds, fd, &pid, initial_stdin))
+		return (0);
 	if (waitpid(pid, &cmds->exit_status, 0) == -1)
 		return (0);
 	dup2(initial_stdin, STDIN_FILENO);
@@ -114,7 +101,9 @@ int	piping_root(t_compound *cmds)
 {
 	int	initial_stdout;
 
-	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
+	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd
+		&& is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1
+		&& cmds->scmd[0].out_fd != -1)
 	{
 		initial_stdout = dup(STDOUT_FILENO);
 		if (cmds->scmd[0].out_fd != 0)
@@ -125,7 +114,6 @@ int	piping_root(t_compound *cmds)
 		if_builtin_execute(cmds, &cmds->scmd[0]);
 		dup2(initial_stdout, STDOUT_FILENO);
 		close (initial_stdout);
-		
 	}
 	else if (!piping(cmds))
 		return (0);

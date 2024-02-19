@@ -98,6 +98,7 @@ int		ft_here_doc(char *delimiter, t_compound *cmds, int expand);
 char	*find_key(char *token);
 size_t	tokens_counter(char **tokens);
 int		struct_cpy(t_compound *cmds, char **tokens);
+int	malloc_struct(t_compound *cmds, char **tokens);
 
 // PARSER UTILS
 int		is_delimiter(char c);
@@ -106,6 +107,8 @@ size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
 void	ambiguous(t_compound *cmds, char **tokens);
+int	ft_word_count(char *str, char *flag);
+char	*create_str(char *s, int *i, int len, char flag);
 
 // 	REDIRECTIONS
 
@@ -132,6 +135,7 @@ void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
 int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
 t_env	*find_node(t_compound *cmds, char *needle);
+int	is_built_in(char *str);
 
 // utils to be deleted
 void	print_struct(t_compound ccmd);

@@ -56,11 +56,10 @@ static char	**tokenizer(char *str)
 	size_t	i;
 	size_t	len;
 
-	len = token_counter(str);
-	tokens = (char **)malloc(sizeof(char *) * (len + 1));
+	tokens = (char **)malloc(sizeof(char *) * (token_counter(str) + 1));
 	if (!tokens)
 		return (NULL);
-	tokens[len] = NULL;
+	tokens[token_counter(str)] = NULL;
 	i = 0;
 	while (*str)
 	{

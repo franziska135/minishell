@@ -12,63 +12,53 @@
 
 #include "minishell.h"
 
-void	dpointer_free(char **str)
+int	ft_word_count(char *str, char *flag)
 {
-	int		i;
+	int	word_counter;
+	int	word_begin;
 
-	i = 0;
-	while (str && str[i])
+	word_begin = 1;
+	word_counter = 0;
+	while (*str)
 	{
-		free(str[i]);
-		i++;
+		if (*flag == '3')
+		{
+			word_counter++;
+			word_begin = 1;
+		}
+		else if ((word_begin == 1 && *str != ' ')
+			|| (word_begin == 1 && *flag != '0'))
+		{
+			word_counter++;
+			word_begin = 0;
+		}
+		else if (*str == ' ' && *flag == '0')
+			word_begin = 1;
+		str++;
+		flag++;
 	}
-	free(str);
+	return (word_counter);
 }
 
-void	struct_free(t_compound cmds)
+char	*create_str(char *s, int *i, int len, char flag)
 {
-	int		i;
+	char	*ptr;
 
-	i = 0;
-	while (i < cmds.nbr_scmd)
+	if (flag == '3')
 	{
-		dpointer_free(cmds.scmd[i].cmd);
-		i++;
+		ptr = (char *)malloc(sizeof(char));
+		if (!(ptr))
+			return (NULL);
+		ptr[0] = '\0';
+		*i += 1;
 	}
-	free(cmds.scmd);
-}
-
-void	struct_nullifier(t_compound *cmds)
-{
-	int		i;
-
-	i = 0;
-	while (i < cmds->nbr_scmd)
+	else
 	{
-		cmds->scmd[i].cmd = NULL;
-		cmds->scmd[i].in_fd = 0;
-		cmds->scmd[i].out_fd = 0;
-		cmds->scmd[i].builtin = 0;
-		i++;
+		ptr = (char *)malloc(sizeof(char) * (len + 1));
+		if (!(ptr))
+			return (NULL);
+		ft_strlcpy(ptr, s + *i, len + 1);
+		*i += len;
 	}
-	cmds->nbr_scmd = 0;
-}
-
-int	is_built_in(char *str)
-{
-	if (!str)
-		return (FALSE);
-	if (!ft_strncmp(str, "cd", 3))
-		return (TRUE);
-	else if (!ft_strncmp(str, "export", 7))
-		return (TRUE);
-	else if (!ft_strncmp(str, "unset", 6))
-		return (TRUE);
-	else if (!ft_strncmp(str, "env", 4))
-		return (TRUE);
-	else if (!ft_strncmp(str, "exit", 5))
-		return (TRUE);
-	else if (!ft_strncmp(str, "echo", 5))
-		return (TRUE);
-	return (FALSE);
+	return (ptr);
 }

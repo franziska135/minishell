@@ -60,6 +60,11 @@ void	ctrlc_handler(int sig)
 	//ioctl(0, TIOCSTI, "\n");
 }
 
+// void	quit_handler(int sig)
+// {
+// 	if 
+// }
+
 int	run_minishell(t_compound	*cmds)
 {
 	HIST_ENTRY	**history_list;
@@ -75,7 +80,6 @@ int	run_minishell(t_compound	*cmds)
 		{
 			cmds->exit_status = 130;
 			g_signal = 0;
-			write (1, "check", 5);
 		}
 		//str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
 		if (isatty(fileno(stdin)))

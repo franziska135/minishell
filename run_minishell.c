@@ -46,27 +46,37 @@ static int	run_procces(t_compound	*cmds, char *str)
 	return (1);
 }
 
-void	handler(int sig)
+void	ctrlc_handler(int sig)
 {
-	write (1, "stop allowed, cleaning started\n", 31);
-	g_running = FALSE;
-	write(1, "Signal handler called, g_running set to FALSE\n",  51);
-	write(1, "EXIT_SUCCESS\n", 13);
-	exit(EXIT_SUCCESS);
+	if (sig == SIGINT)
+	{
+		g_signal = 130;
+		// printf("%d\n", g_signal);
+		write(STDERR_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	//ioctl(0, TIOCSTI, "\n");
 }
 
 int	run_minishell(t_compound	*cmds)
 {
 	HIST_ENTRY	**history_list;
-	struct		sigaction sa;
 	char		*str;
 	int			i;
 
+	signal(SIGQUIT, SIG_IGN);
 	cmds->exit_status = 0;
-	sa.sa_handler = &handler;
-	sigaction(SIGINT, &sa, NULL);
-	while (g_running == TRUE)
+	while (1)
 	{
+		signal(SIGINT, &ctrlc_handler);
+		if (g_signal == 130)
+		{
+			cmds->exit_status = 130;
+			g_signal = 0;
+			write (1, "check", 5);
+		}
 		//str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
 		if (isatty(fileno(stdin)))
 			str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
@@ -78,7 +88,10 @@ int	run_minishell(t_compound	*cmds)
 			free(line);
 		}
 		if (str == NULL)
-			return (1);
+		{
+			cmds->exit_status = 0;
+			break ;
+		}
 		if (!all_space(str))
 		{
 			if (str[0] != ' ')

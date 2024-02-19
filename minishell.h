@@ -48,7 +48,7 @@
 # define ANSI_COLOR_CYAN    "\x1b[36m"
 # define ANSI_COLOR_RESET   "\x1b[0m"
 
-extern int g_running;
+extern int g_signal;
 
 //command table
 typedef struct s_simple_command

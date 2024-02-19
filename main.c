@@ -12,15 +12,16 @@
 
 #include "minishell.h"
 
-int	g_running;
+int	g_signal;
 
 int	main(int ac, char **av, char **envp)
 {
 	t_compound	cmds;
 
-	g_running = TRUE;
 	if (init_env_llist(&cmds, envp) == FALSE)
 		return (FALSE);
 	run_minishell(&cmds);
+	cleanup_envp_ll(cmds.env_ll);
+	free_double_ptr(cmds.envp);
 	return (cmds.exit_status);
 }

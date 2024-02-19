@@ -12,11 +12,13 @@
 
 #include "minishell.h"
 
+int	g_running;
+
 int	main(int ac, char **av, char **envp)
 {
 	t_compound	cmds;
 
-	//correct error if init fails?
+	g_running = TRUE;
 	if (init_env_llist(&cmds, envp) == FALSE)
 		return (FALSE);
 	run_minishell(&cmds);

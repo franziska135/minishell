@@ -12,11 +12,32 @@
 
 #include "minishell.h"
 
+static int	size_of_token(char **tokens, int i)
+{
+	int	j;
+	int	status;
+	int	ret;
+
+	j = 0;
+	ret = 0;
+	status = 0;
+	while (tokens[i][j])
+	{
+		if (!status && (tokens[i][j] != ' ' || !in_quot(tokens[i], j)))
+		{
+			ret++;
+			status = 1;
+		}
+		else if (tokens[i][j] == ' ' && !in_quot(tokens[i], j))
+			status = 0;
+		j++;
+	}
+	return (ret);
+}
+
 static size_t	malloc_size(char **tokens, int i)
 {
 	size_t	len;
-	int		j;
-	int		status;
 
 	len = 0;
 	while (tokens[i])
@@ -26,21 +47,7 @@ static size_t	malloc_size(char **tokens, int i)
 		else if (tokens[i][0] == '>' || tokens[i][0] == '<')
 			i++;
 		else
-		{
-			j = 0;
-			status = 0;
-			while (tokens[i][j])
-			{
-				if (!status && (tokens[i][j] != ' ' || !in_quot(tokens[i], j)))
-				{
-					len ++;
-					status = 1;
-				}
-				else if (tokens[i][j] == ' ' && !in_quot(tokens[i], j))
-					status = 0;
-				j++;
-			}
-		}
+			len += size_of_token(tokens, i);
 		if (tokens[i])
 			i++;
 	}
@@ -80,9 +87,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 {
 	size_t	i;
 	size_t	j;
-	size_t	k;
 	size_t	pipe;
-	char	**str;
 
 	i = 0;
 	j = 0;
@@ -98,7 +103,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 			i++;
 		else if (cmds->scmd[pipe].cmd)
 		{
-			cmds->scmd[pipe].cmd[j] = (char *)malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
+			cmds->scmd[pipe].cmd[j] = (char *) malloc(sizeof(char) * (ft_strlen(tokens[i]) + 1));
 			if (!cmds->scmd[pipe].cmd[j])
 				return (struct_free(*cmds), dpointer_free(tokens), 0);
 			ft_strlcpy(cmds->scmd[pipe].cmd[j], tokens[i], ft_strlen(tokens[i]) + 1);

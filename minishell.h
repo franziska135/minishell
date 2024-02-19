@@ -107,6 +107,13 @@ char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
 void	ambiguous(t_compound *cmds, char **tokens);
 
+// 	REDIRECTIONS
+
+void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i);
+void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i);
+void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i);
+
+
 //  EXPAND
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);

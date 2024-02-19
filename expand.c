@@ -145,7 +145,7 @@ char	**expand_redir(t_compound *cmds, char *token)
 	str = get_next_line(fd[0]);
 	close(fd[0]);
 	if (!str || str[0] == '\0')
-		return (close(fd_flag[0]), fd_flag[1], free(str), NULL);
+		return (close(fd_flag[0]), close(fd_flag[1]), free(str), NULL);
 	flag = get_next_line(fd_flag[0]);
 	close(fd_flag[0]);
 	if (!flag)

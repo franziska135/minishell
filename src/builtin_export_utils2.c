@@ -28,7 +28,6 @@ t_env	*find_node(t_compound *cmds, char *needle)
 			return (haystack);
 		haystack = haystack->next;
 	}
-	//set_status(cmds, 1);
 	return (NULL);
 }
 

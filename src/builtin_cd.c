@@ -117,12 +117,14 @@ int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 	tmp = getcwd(pwd, 100);
 	if (!tmp)
 	{
-		(set_status(cmds, 1),print_error("cd: ", scmd->cmd[1], strerror(errno)));
+		set_status(cmds, 1);
+		print_error("cd: ", scmd->cmd[1], strerror(errno));
 		return (0);
 	}
 	if (chdir(scmd->cmd[1]) == -1)
 	{
-		(set_status(cmds, 1),print_error("cd: ", scmd->cmd[1], strerror(errno)));
+		set_status(cmds, 1);
+		print_error("cd: ", scmd->cmd[1], strerror(errno));
 		return (0);
 	}
 	else

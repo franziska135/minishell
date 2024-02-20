@@ -23,5 +23,5 @@ int	main(int ac, char **av, char **envp)
 	run_minishell(&cmds);
 	cleanup_envp_ll(cmds.env_ll);
 	free_double_ptr(cmds.envp);
-	return (cmds.exit_status);
+	return (WEXITSTATUS(cmds.exit_status));
 }

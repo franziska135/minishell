@@ -15,23 +15,21 @@
 shall not be considered an error and does not cause the shell to
 abort.*/
 
-int	builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle)
+int	builtin_unset_loop(t_compound *cmds, t_env *hay, t_env *tmp, char *needle)
 {
-	while (haystack)
+	while (hay)
 	{
-		if (ft_strncmp(haystack->key, needle,
-				ft_strlen(haystack->key)) == 0)
+		if (ft_strncmp(hay->key, needle,
+				ft_strlen(hay->key)) == 0)
 		{
-			tmp->next = haystack->next;
-			haystack->next = NULL;
-			ft_free_node(haystack);
+			tmp->next = hay->next;
+			hay->next = NULL;
+			ft_free_node(hay);
 			return (0);
 		}
-		tmp = haystack;
-		haystack = haystack->next;
+		tmp = hay;
+		hay = hay->next;
 	}
-	//if at least one var could not be unset
-	//cmds->exit_status = 2;
 	return (0);
 }
 

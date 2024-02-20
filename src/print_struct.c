@@ -35,7 +35,8 @@ void	print_struct(t_compound ccmd)
 		printf("\nPipe %d:\n", i + 1);
 		printf("commands: ");
 		print_dpointer(ccmd.scmd[i].cmd);
-		printf ("in_fd: %d\t\tout_fd:%d\n", ccmd.scmd[i].in_fd, ccmd.scmd[i].out_fd);
+		printf("in_fd: %d\t\tout_fd:%d\n", ccmd.scmd[i].in_fd,
+			ccmd.scmd[i].out_fd);
 		i++;
 	}
 }

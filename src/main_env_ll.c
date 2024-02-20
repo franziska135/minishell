@@ -100,7 +100,6 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		//correct error code?
 		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		i++;

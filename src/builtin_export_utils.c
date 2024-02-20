@@ -42,11 +42,7 @@ int	valid_var_check(char *new_var)
 	while (new_var[i] && new_var[i] != '=')
 	{
 		if (ft_isalnum(new_var[i]) != 1 && new_var[i] != '_')
-		{
-			// if (new_var[i] == '+' && new_var[i + 1] && new_var[i] == '=')
-			// 	return (TRUE);
 			return (FALSE);
-		}
 		i++;
 	}
 	return (TRUE);

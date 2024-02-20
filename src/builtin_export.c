@@ -33,7 +33,6 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
-	//write(1, "node found: \t\t", 14);
 	new_node = find_node(cmds, key);
 	if (equal_sign_and_value(current_cmd) != 0)
 	{
@@ -43,7 +42,6 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 				free(new_node->value);
 			new_node->value = NULL;
 			new_node->env_display = TRUE;
-			//write (1, "existing variable set to null in env and export\n", 48);
 		}
 		else if (equal_sign_and_value(current_cmd) == 2)
 		{
@@ -53,11 +51,8 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 			if (!new_node->value)
 				return (FALSE);
 			new_node->env_display = TRUE;
-			//write (1, "existing variable set to new value in env and export\n", 53);
 		}
 	}
-	//else
-		//write(1, "nothing happened to the existing variable\n", 42);
 	return (TRUE);
 }
 
@@ -68,26 +63,18 @@ int	new_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 {
 	t_env	*new_node;
 
-	//write(1, "node didnt exist yet: \t", 23);
 	new_node = ft_new_env_node(key, NULL, TRUE);
 	if (!new_node)
 		return (FALSE);
 	if (equal_sign_and_value(current_cmd) == 0)
-	{
 		new_node->env_display = FALSE;
-		//write (1, "new empty variable added only to export\n", 40);
-	}
 	if (equal_sign_and_value(current_cmd) == 1)
-	{
 		new_node->value = NULL;
-		//write (1, "new empty variable added to env and export\n", 43);
-	}
 	else if (equal_sign_and_value(current_cmd) == 2)
 	{
 		new_node->value = ft_strdup(value);
 		if (!new_node->value)
 			return (free(new_node->key), FALSE);
-		//write (1, "new full val added to env and export\n", 37);
 	}
 	ft_add_last_node(&cmds->env_ll, new_node);
 	return (TRUE);

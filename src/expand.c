@@ -34,13 +34,13 @@ char	*find_key(char *token)
 	return (str);
 }
 
-int	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
+int	expand_token(t_compound *cmds, char *token, int fd[2][2])
 {
 	int		flag;
-	int		empty;
+	int		e;
 
 	flag = 0;
-	empty = 3;
+	e = 3;
 	while (token[0])
 	{
 		if (token[0] == '"' && flag == 0)
@@ -52,42 +52,48 @@ int	expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag)
 		else if (token[0] == '\'' && flag == 1)
 			flag = 0;
 		else if (flag == 1 || token[0] != '$')
-			(write(fd[1], token, 1), ft_putnbr_fd(flag, fd_flag[1]), empty = 0);
+			(write(fd[0][1], token, 1), ft_putnbr_fd(flag, fd[1][1]), e = 0);
 		else
 		{
-			token += (write_expansion(cmds, token, fd[1], fd_flag[1], flag));
-			empty = 0;
+			token += (write_expansion(cmds, token, fd, flag));
+			e = 0;
 		}
 		token++;
 	}
-	return (empty);
+	return (e);
+}
+
+static int	close_n_read(char **str, char **flag, int fd[2][2])
+{
+	write(fd[0][1], "\0", 1);
+	write(fd[1][1], "\0", 1);
+	close(fd[0][1]);
+	close(fd[1][1]);
+	*str = get_next_line(fd[0][0]);
+	close(fd[0][0]);
+	if (!*str || *str[0] == '\0')
+		return (close(fd[1][0]), free(*str), 0);
+	*flag = get_next_line(fd[1][0]);
+	close(fd[1][0]);
+	if (!*flag)
+		return (free(*str), 0);
+	return (1);
 }
 
 char	**expand_redir(t_compound *cmds, char *token)
 {
 	char	*str;
 	char	*flag;
-	int		fd[2];
-	int		fd_flag[2];
+	int		fd[2][2];
 	char	**split;
 
-	if (pipe(fd) == -1)
+	if (pipe(fd[0]) == -1)
 		return (NULL);
-	if (pipe(fd_flag) == -1)
-		return (close(fd[1]), close(fd[0]), NULL);
-	expand_token(cmds, token, fd, fd_flag);
-	write(fd[1], "\0", 1);
-	write(fd_flag[1], "\0", 1);
-	close(fd[1]);
-	close(fd_flag[1]);
-	str = get_next_line(fd[0]);
-	close(fd[0]);
-	if (!str || str[0] == '\0')
-		return (close(fd_flag[0]), close(fd_flag[1]), free(str), NULL);
-	flag = get_next_line(fd_flag[0]);
-	close(fd_flag[0]);
-	if (!flag)
-		return (free(str), NULL);
+	if (pipe(fd[1]) == -1)
+		return (close(fd[0][1]), close(fd[0][0]), NULL);
+	expand_token(cmds, token, fd);
+	if (!close_n_read(&str, &flag, fd))
+		return (NULL);
 	split = expansion_split(str, flag);
 	free(flag);
 	free(str);

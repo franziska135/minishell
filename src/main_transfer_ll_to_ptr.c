@@ -37,7 +37,6 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 	if (!ptr)
 		return (0);
 	i = 0;
-	//in case errors tbfixed as Gedankentütze: ich hab s1_len -1 rausgenommen
 	while (s1[i] != '\0' && i < s1_len && s1_len != 0)
 	{
 		ptr[i] = s1[i];
@@ -103,7 +102,6 @@ int	ft_transfer_ll_to_env_ptr(t_compound *cmds)
 		{
 			length = pro_ft_strlen(temp->key) + pro_ft_strlen(temp->value);
 			cmds->envp[++i] = pro_ft_strjoin(temp->key, temp->value);
-			//if malloc fails return??
 			if (!cmds->envp[i])
 				return (free_double_ptr(cmds->envp), FALSE);
 		}

@@ -63,7 +63,7 @@ int	export_error_check(t_compound *cmds, char *new_var)
 	{
 		flag = FALSE;
 		print_error("export: ", new_var, "not a valid identifier");
-		cmds->exit_status = 1;
+		set_status(cmds, 1);
 	}
 	return (flag);
 }

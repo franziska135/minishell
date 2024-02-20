@@ -39,7 +39,7 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 	else if (ft_strncmp(scmd->cmd[0], "unset\0", 6) == 0)
 		builtin_unset(cmds, scmd);
 	else if (ft_strncmp(scmd->cmd[0], "env\0", 4) == 0)
-		builtin_env(cmds->env_ll);
+		builtin_env(cmds->env_ll, scmd, cmds);
 	else if (ft_strncmp(scmd->cmd[0], "exit\0", 6) == 0)
 		builtin_exit(cmds, scmd);
 	else

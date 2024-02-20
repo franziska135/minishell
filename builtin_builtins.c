@@ -43,7 +43,8 @@ void	print_error(char *str2, char *str3, char *str4)
 
 void	set_status(t_compound *cmds, int i)
 {
-	cmds->exit_status = i;
+	cmds->exit_status = i << 8;
+	// cmds->exit_status = 0x00010000;
 }
 
 int	exit_error_check(t_compound *cmds, t_simple *scmd)

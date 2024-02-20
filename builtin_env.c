@@ -12,12 +12,17 @@
 
 #include "minishell.h"
 
-void	builtin_env(t_env *head)
+void	builtin_env(t_env *head, t_simple *scmd, t_compound *cmds)
 {
 	t_env	*current;
 
 	current = head;
-	write(1, "\n", 1);
+	if (scmd->cmd[1])
+	{
+		print_error(NULL, scmd->cmd[1], "No such file or directory");
+		set_status(cmds, 127);
+		return ;
+	}
 	while (current)
 	{
 		if (current->env_display == TRUE)
@@ -30,4 +35,5 @@ void	builtin_env(t_env *head)
 		}
 		current = current->next;
 	}
+	set_status(cmds, 0);
 }

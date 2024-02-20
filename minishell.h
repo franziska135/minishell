@@ -126,7 +126,7 @@ void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
 int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
-t_env	*find_node(t_compound *cmds, char *needle);
+//t_env	*find_node(t_compound *cmds, char *needle);
 
 // utils to be deleted
 void	print_struct(t_compound ccmd);

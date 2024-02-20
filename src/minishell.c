@@ -1,42 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_here_doc.c                                      :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzolfagh <zolfagharipour@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 16:12:28 by mzolfagh          #+#    #+#             */
-/*   Updated: 2023/11/27 16:12:30 by mzolfagh         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:58:10 by mzolfagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_dpointer(char **str)
+int	g_signal;
+
+int	main(int ac, char **av, char **envp)
 {
-	int	i;
+	t_compound	cmds;
 
-	i = 0;
-	while (str[i])
-	{
-		printf("[%s]", str[i]);
-		i++;
-	}
-	printf ("\n");
-}
-
-void	print_struct(t_compound ccmd)
-{
-	int	i;
-
-	i = 0;
-	while (i < ccmd.nbr_scmd)
-	{
-		printf("\nPipe %d:\n", i + 1);
-		printf("commands: ");
-		print_dpointer(ccmd.scmd[i].cmd);
-		printf("in_fd: %d\t\tout_fd:%d\n", ccmd.scmd[i].in_fd,
-			ccmd.scmd[i].out_fd);
-		i++;
-	}
+	if (init_env_llist(&cmds, envp) == FALSE)
+		return (FALSE);
+	run_minishell(&cmds);
+	cleanup_envp_ll(cmds.env_ll);
+	free_double_ptr(cmds.envp);
+	return (WEXITSTATUS(cmds.exit_status));
 }

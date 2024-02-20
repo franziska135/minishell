@@ -38,23 +38,22 @@ static char	**read_n_split(int *fd, int *fd_flag)
 
 char	**scmds_expand(t_compound *cmds, char **scmds)
 {
-	int	fd[2];
-	int	fd_flag[2];
+	int	fd[2][2];
 	int	i;
 	int	flag;
 
-	if (pipe(fd) == -1)
+	if (pipe(fd[0]) == -1)
 		return (dpointer_free(scmds), NULL);
-	if (pipe(fd_flag) == -1)
-		return (dpointer_free(scmds), close (fd[0]), close(fd[1]), NULL);
+	if (pipe(fd[1]) == -1)
+		return (dpointer_free(scmds), close (fd[0][0]), close(fd[0][1]), NULL);
 	i = 0;
 	while (scmds && scmds[i])
 	{
-		flag = expand_token(cmds, scmds[i], fd, fd_flag);
-		write(fd[1], " ", 1);
-		ft_putnbr_fd(flag, fd_flag[1]);
+		flag = expand_token(cmds, scmds[i], fd);
+		write(fd[0][1], " ", 1);
+		ft_putnbr_fd(flag, fd[1][1]);
 		i++;
 	}
 	dpointer_free(scmds);
-	return (read_n_split(fd, fd_flag));
+	return (read_n_split(fd[0], fd[1]));
 }

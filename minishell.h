@@ -123,8 +123,8 @@ void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i);
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
-int		expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
-int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, int flag);
+int		expand_token(t_compound *cmds, char *token, int fd[2][2]);
+int	write_expansion(t_compound *cmds, char *token, int fd[2][2], int flag);
 char	**expansion_split(char *s, char *flag);
 
 // PIPEX

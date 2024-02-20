@@ -41,6 +41,17 @@ static char	*path_access(char *path, char *cmd)
 	return (NULL);
 }
 
+static int	isit_path(char *str)
+{
+	while (*str)
+	{
+		if (*str == '/')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
 char	*path_finder(t_compound *cmds, int pipe)
 {
 	t_env	*env;
@@ -49,6 +60,11 @@ char	*path_finder(t_compound *cmds, int pipe)
 		return (NULL);
 	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
 		return (cmds->scmd[pipe].cmd[0]);
+	if (isit_path(cmds->scmd[pipe].cmd[0]))
+	{
+		print_error(NULL, cmds->scmd[pipe].cmd[0], "No such file or directory");
+		return (NULL);
+	}
 	env = find_node(cmds, "PATH");
 	if (env && env->value)
 		return (path_access(env->value, cmds->scmd[pipe].cmd[0]));

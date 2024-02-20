@@ -12,8 +12,29 @@
 
 #include "minishell.h"
 
+int	write_exit_status(int e_status, int fd)
+{
+	int	nbr;
+	int	ret;
 
-
+	nbr = WEXITSTATUS(e_status);
+	ret = 0;
+	if (WIFEXITED(e_status))
+	{
+		ft_putnbr_fd(nbr, fd);
+		while (nbr)
+		{
+			nbr /= 10;
+			ret++;
+		}
+	}
+	else
+	{
+		write (fd, "0", 1);
+		return (1);
+	}
+	return (ret);
+}
 
 static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
 {
@@ -37,18 +58,9 @@ static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
 		}
 	}
 	else if (str[0] == '?')
-	{
-		if (WIFEXITED(cmds->exit_status))
-			ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
-		else
-			write (fd, "0", 1);
-		// check for how many digits;
-		ret++;
-	}
+		ret += write_exit_status(cmds->exit_status, fd);
 	else if (str[0] == '\0' || str[0] == '_' || ft_isalpha(str[0]))
-	{
 		write(fd, "$", 1);
-	}
 	return (ret);
 }
 
@@ -92,6 +104,5 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 	}
 	free(gnl);
 	close (fd[1]);
-
 	return (fd[0]);
 }

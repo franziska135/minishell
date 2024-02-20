@@ -54,7 +54,21 @@ void	struct_nullifier(t_compound *cmds)
 	cmds->nbr_scmd = 0;
 }
 
-void	err_handler(char *str)
+int	is_built_in(char *str)
 {
-	printf("%s\n", str);
+	if (!str)
+		return (FALSE);
+	if (!ft_strncmp(str, "cd", 3))
+		return (TRUE);
+	else if (!ft_strncmp(str, "export", 7))
+		return (TRUE);
+	else if (!ft_strncmp(str, "unset", 6))
+		return (TRUE);
+	else if (!ft_strncmp(str, "env", 4))
+		return (TRUE);
+	else if (!ft_strncmp(str, "exit", 5))
+		return (TRUE);
+	else if (!ft_strncmp(str, "echo", 5))
+		return (TRUE);
+	return (FALSE);
 }

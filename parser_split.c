@@ -12,34 +12,6 @@
 
 #include "minishell.h"
 
-static int	ft_word_count(char *str, char *flag)
-{
-	int	word_counter;
-	int	word_begin;
-
-	word_begin = 1;
-	word_counter = 0;
-	while (*str)
-	{
-		if (*flag == '3')
-		{
-			word_counter++;
-			word_begin = 1;
-		}
-		else if ((word_begin == 1 && *str != ' ') || (word_begin == 1 && *flag != '0'))
-		{
-			word_counter++;
-			word_begin = 0;
-		}
-		else if (*str == ' ' && *flag == '0')
-			word_begin = 1;
-		// else if (*str == ' ' )
-		str++;
-		flag++;
-	}
-	return (word_counter);
-}
-
 static char	**ft_free_malloc(char **ptr, int j)
 {
 	while (--j >= 0)
@@ -58,6 +30,21 @@ static int	splus(char *s, int i, char *flag)
 	return (j);
 }
 
+static char	**init_split(char *s, char *flag, int *i, int *j)
+{
+	char	**ptr;
+
+	*j = 0;
+	*i = 0;
+	if (!s)
+		return (NULL);
+	ptr = (char **)malloc(sizeof(char *) * (ft_word_count(s, flag) + 1));
+	if (!ptr)
+		return (NULL);
+	ptr[ft_word_count(s, flag)] = NULL;
+	return (ptr);
+}
+
 char	**expansion_split(char *s, char *flag)
 {
 	int		i;
@@ -65,38 +52,21 @@ char	**expansion_split(char *s, char *flag)
 	int		j;
 	char	**ptr;
 
-	j = 0;
-	if (!s)
-		return (NULL);
-	ptr = (char **)malloc(sizeof(char *) * (ft_word_count(s, flag) + 1));
+	ptr = init_split(s, flag, &i, &j);
 	if (!ptr)
 		return (NULL);
-	ptr[ft_word_count(s, flag)] = NULL;
-	i = 0;
 	while (s[i])
 	{
 		len = 0;
 		i += splus(s, i, flag);
-		while ((s[i + len] != ' ' && s[i + len]) || (flag[len + i] != '0' && flag[len + i] != '\0'))
+		while ((s[i + len] != ' ' && s[i + len])
+			|| (flag[len + i] != '0' && flag[len + i] != '\0'))
 			len++;
 		if (s[i] == '\0')
 			return (ptr);
-		if (flag[i] == '3')
-		{
-			ptr[j] = (char *)malloc(sizeof(char));
-			if (!(ptr[j]))
-				return (ft_free_malloc(ptr, j));
-			ptr[j][0] = '\0';
-			i++;
-		}
-		else
-		{
-			ptr[j] = (char *)malloc(sizeof(char) * (len + 1));
-			if (!(ptr[j]))
-				return (ft_free_malloc(ptr, j));
-			ft_strlcpy(ptr[j], s + i, len + 1);
-			i += len;			
-		}
+		ptr[j] = create_str(s, &i, len, flag[i]);
+		if (!(ptr[j]))
+			return (ft_free_malloc(ptr, j));
 		j++;
 	}
 	ptr[j] = NULL;

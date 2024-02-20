@@ -100,6 +100,7 @@ int		ft_here_doc(char *delimiter, t_compound *cmds, int expand);
 char	*find_key(char *token);
 size_t	tokens_counter(char **tokens);
 int		struct_cpy(t_compound *cmds, char **tokens);
+int	malloc_struct(t_compound *cmds, char **tokens);
 
 // PARSER UTILS
 int		is_delimiter(char c);
@@ -108,12 +109,22 @@ size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
 void	close_fds(t_compound *cmds, int *fd);
 void	ambiguous(t_compound *cmds, char **tokens);
+int	ft_word_count(char *str, char *flag);
+char	*create_str(char *s, int *i, int len, char flag);
+
+// 	REDIRECTIONS
+
+void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i);
+void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i);
+void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i);
+
 
 //  EXPAND
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);
 char	**scmds_expand(t_compound *cmds, char **scmds);
 int		expand_token(t_compound *cmds, char *token, int *fd, int *fd_flag);
+int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, int flag);
 char	**expansion_split(char *s, char *flag);
 
 // PIPEX
@@ -125,6 +136,7 @@ void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
+int	is_built_in(char *str);
 int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
 //t_env	*find_node(t_compound *cmds, char *needle);
 

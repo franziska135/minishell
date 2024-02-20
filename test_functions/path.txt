@@ -1,1 +1,0 @@
-/nfs/homes/mzolfagh/Common_Core/minishell/test_functions/chdir.c

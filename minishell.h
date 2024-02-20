@@ -48,6 +48,8 @@
 # define ANSI_COLOR_CYAN    "\x1b[36m"
 # define ANSI_COLOR_RESET   "\x1b[0m"
 
+extern int g_signal;
+
 //command table
 typedef struct s_simple_command
 {
@@ -134,9 +136,9 @@ void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
-int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
-t_env	*find_node(t_compound *cmds, char *needle);
 int	is_built_in(char *str);
+int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
+//t_env	*find_node(t_compound *cmds, char *needle);
 
 // utils to be deleted
 void	print_struct(t_compound ccmd);
@@ -161,14 +163,14 @@ int		builtin_cd_dotdot(t_compound *cmds);
 int		builtin_cd_back(t_compound *cmds);
 int		builtin_cd_path(t_compound *cmds, t_simple *scmd);
 int		update_env_ll(t_compound *cmds, char *variable, char *new_value);
-void	builtin_env(t_env *head);
+void	builtin_env(t_env *head, t_simple *scmd, t_compound *cmds);
 void	builtin_echo(t_compound *cmds, t_simple *s_cmd);
 void	if_echo_home(t_compound *cmds);
 int		check_for_n(t_simple *s_cmd);
 int		check_for_only_n(char *str);
 void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
 int		builtin_unset(t_compound *cmds, t_simple *scmd);
-int	builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
+int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
 void	builtin_exit(t_compound *cmds, t_simple *scmd);
 

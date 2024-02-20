@@ -19,13 +19,13 @@
 //fix what happens if error statement is printed
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
-	if (scmd->cmd[1] == NULL || ft_strncmp(scmd->cmd[1], "~", 2) == 0)
+	if (scmd->cmd[1] != NULL && scmd->cmd[2])
+		print_error("cd: ", NULL, "too many arguments");
+	else if (scmd->cmd[1] == NULL || ft_strncmp(scmd->cmd[1], "~", 2) == 0)
 	{
 		if (builtin_cd_home(cmds) == FALSE)
 			return (FALSE);
 	}
-	else if (scmd->cmd[2])
-		print_error("cd: ", NULL, "too many arguments");
 	else if (scmd->cmd[1][0] == '\0')
 		return (TRUE);
 	else if (ft_strncmp(scmd->cmd[1], "..\0", 3) == 0)
@@ -101,6 +101,7 @@ int	builtin_cd_back(t_compound *cmds)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
+		builtin_pwd();
 	}
 	else
 		print_error("cd: ", NULL, "OLDPWD not set");
@@ -116,11 +117,14 @@ int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 	tmp = getcwd(pwd, 100);
 	if (!tmp)
 	{
-		print_error("cd: ", scmd->cmd[1], strerror(errno));
+		(set_status(cmds, 1),print_error("cd: ", scmd->cmd[1], strerror(errno)));
 		return (0);
 	}
 	if (chdir(scmd->cmd[1]) == -1)
-		print_error("cd: ", scmd->cmd[1], strerror(errno));
+	{
+		(set_status(cmds, 1),print_error("cd: ", scmd->cmd[1], strerror(errno)));
+		return (0);
+	}
 	else
 	{
 		if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)

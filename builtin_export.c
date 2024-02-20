@@ -126,10 +126,11 @@ int	builtin_export(t_compound *cmds, t_simple *scmd)
 	key = NULL;
 	value = NULL;
 	i = 1;
+	set_status(cmds, 0);
 	if (!scmd->cmd[1])
 	{
 		print_export(cmds->env_ll);
-		return (FALSE);
+		return (TRUE);
 	}
 	while (scmd->cmd[i])
 	{

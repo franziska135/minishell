@@ -1,0 +1,7 @@
+{
+	<readline leaks, not my responsibility>
+   Memcheck:Leak
+   ...
+   obj:*/libreadline.so.*
+   ...
+}

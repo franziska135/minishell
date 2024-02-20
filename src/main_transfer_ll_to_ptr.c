@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_main.c                                     :+:      :+:    :+:   */
+/*   main_transfer_ll_to_ptr.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2024/02/01 15:24:47 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:27:07 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 	if (!ptr)
 		return (0);
 	i = 0;
-	//in case errors tbfixed as Gedankentütze: ich hab s1_len -1 rausgenommen
 	while (s1[i] != '\0' && i < s1_len && s1_len != 0)
 	{
 		ptr[i] = s1[i];
@@ -103,7 +102,6 @@ int	ft_transfer_ll_to_env_ptr(t_compound *cmds)
 		{
 			length = pro_ft_strlen(temp->key) + pro_ft_strlen(temp->value);
 			cmds->envp[++i] = pro_ft_strjoin(temp->key, temp->value);
-			//if malloc fails return??
 			if (!cmds->envp[i])
 				return (free_double_ptr(cmds->envp), FALSE);
 		}

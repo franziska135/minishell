@@ -1,6 +1,35 @@
 #include "minishell.h"
 
-static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, int flag)
+static int	expand_exit_status(t_compound *cmds, int fd, int fd_flag, int flag)
+{
+	int	ret;
+	int	nbr;
+	int	i;
+
+	i = 0;
+	ret = 0;
+	nbr = WEXITSTATUS(cmds->exit_status);
+	if (WIFEXITED(cmds->exit_status))
+	{
+		ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
+		if (nbr == 0)
+			(ft_putnbr_fd(flag, fd_flag), ret++);
+		while (nbr)
+		{
+			(ft_putnbr_fd(flag, fd_flag), ret++);
+			nbr /= 10;
+		}
+	}
+	else
+	{
+		write (fd, "0", 1);
+		ft_putnbr_fd(flag, fd_flag);
+		ret++;
+	}
+	return (ret);
+}
+
+int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, int flag)
 {
 	t_env	*env;
 	char	*key;
@@ -28,15 +57,7 @@ static int	write_expansion(t_compound *cmds, char *token, int fd, int fd_flag, i
 		}
 	}
 	else if (token[0] == '?')
-	{
-		if (WIFEXITED(cmds->exit_status))
-			ft_putnbr_fd(WEXITSTATUS(cmds->exit_status), fd);
-		else
-			write (fd, "0", 1);
-		// check for how many digits;
-		ft_putnbr_fd(flag, fd_flag);
-		ret++;
-	}
+		ret += expand_exit_status(cmds, fd, fd_flag, flag);
 	else if ((token[0] != '_' && token[0] != '"' && token[0] != '\'' && !ft_isalpha(token[0])) || flag != 0)
 	{
 		write(fd, "$", 1);

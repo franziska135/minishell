@@ -20,7 +20,7 @@ static void	child_clean(t_compound *cmds, int *fd)
 	exit (cmds->exit_status);
 }
 
-static int	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
+static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 {
 	char	*path;
 

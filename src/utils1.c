@@ -70,5 +70,7 @@ int	is_built_in(char *str)
 		return (TRUE);
 	else if (!ft_strncmp(str, "echo", 5))
 		return (TRUE);
+	else if (!ft_strncmp(str, "pwd", 4))
+		return (TRUE);
 	return (FALSE);
 }

@@ -176,6 +176,9 @@ void	builtin_exit(t_compound *cmds, t_simple *scmd);
 
 //export utils
 void	print_export(t_env *head);
+t_env	*find_smallest(t_env *head);
+t_env	*find_target(t_env *head, t_env *last_printed);
+void	builtin_export_print(t_env *next_print);
 int		save_key_and_value(char **key, char **value, char *current_cmd);
 int		adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value);
 int		new_node(t_compound *cmds, char *current_cmd, char *key, char *value);
@@ -200,5 +203,12 @@ void	ft_free_node(t_env *lst);
 void	print_error(char *str2, char *str3, char *str4);
 void	ft_free_single_node(t_env *node);
 void	set_status(t_compound *cmds, int i);
+
+//signals
+void	non_interactive_mode(void);
+void	interactive_mode(void);
+void	backslash_interactive(int signum);
+void	ctrlc_handler(int signum);
+void	ctrlc_interactive(int signum);
 
 #endif

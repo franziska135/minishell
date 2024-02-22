@@ -11,8 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-//returns a pointer to the node storing the key and the variable
-//returns NULL if key not found
+
 t_env	*find_node(t_compound *cmds, char *needle)
 {
 	t_env	*haystack;
@@ -31,10 +30,6 @@ t_env	*find_node(t_compound *cmds, char *needle)
 	return (NULL);
 }
 
-//make sure that nothing gets updated in case the variable doesnt exist
-//check for if new value == NULL;
-////!!!!!CHECK FOR NEW VALUIE == NULL;
-//error if node is unset and not found?
 int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 {
 	t_env	*node;
@@ -76,19 +71,7 @@ void	print_export(t_env *head)
 			return ;
 		last_printed = next_print;
 		if (ft_strncmp(next_print->key, "_", 2) != 0)
-		// {
 			builtin_export_print(next_print);
-			// write (1, "dexlare -x ", 11);
-			// write(1, next_print->key, ft_strlen(next_print->key));
-			// if (next_print->env_display == TRUE)
-			// {
-			// 	(write (1, "=", 1), write (1, "\"", 1));
-			// 	if (next_print->value)
-			// 		write(1, next_print->value, ft_strlen(next_print->value));
-			// 	write (1, "\"", 1);
-			// }
-			// write (1, "\n", 1);
-		// }
 		current = current->next;
 	}
 }

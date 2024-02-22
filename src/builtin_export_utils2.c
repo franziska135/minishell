@@ -63,21 +63,32 @@ int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 void	print_export(t_env *head)
 {
 	t_env	*current;
+	t_env	*next_print;
+	t_env	*last_printed;
 
 	current = head;
+	next_print = NULL;
+	last_printed = NULL;
 	while (current)
 	{
-		write (1, "dexlare -x ", 11);
-		write(1, current->key, ft_strlen(current->key));
-		if (current->env_display == TRUE)
-		{
-			write (1, "=", 1);
-			write (1, "\"", 1);
-			if (current->value)
-				write(1, current->value, ft_strlen(current->value));
-			write (1, "\"", 1);
-		}
-		write (1, "\n", 1);
+		next_print = find_target(head, last_printed);
+		if (!next_print)
+			return ;
+		last_printed = next_print;
+		if (ft_strncmp(next_print->key, "_", 2) != 0)
+		// {
+			builtin_export_print(next_print);
+			// write (1, "dexlare -x ", 11);
+			// write(1, next_print->key, ft_strlen(next_print->key));
+			// if (next_print->env_display == TRUE)
+			// {
+			// 	(write (1, "=", 1), write (1, "\"", 1));
+			// 	if (next_print->value)
+			// 		write(1, next_print->value, ft_strlen(next_print->value));
+			// 	write (1, "\"", 1);
+			// }
+			// write (1, "\n", 1);
+		// }
 		current = current->next;
 	}
 }

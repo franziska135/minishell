@@ -21,7 +21,7 @@ t_env	*find_smallest(t_env *head)
 	smallest = head;
 	while (current)
 	{
-		if (ft_strncmp(current->key, smallest->key, ft_strlen(current->key))
+		if (ft_strncmp(current->key, smallest->key, ft_strlen(smallest->key))
 			< 0)
 			smallest = current;
 		current = current->next;
@@ -29,35 +29,33 @@ t_env	*find_smallest(t_env *head)
 	return (smallest);
 }
 
-t_env	*find_target(t_env *head, t_env *last_printed)
+t_env	*find_target(t_env *head, t_env *last)
 {
-	t_env	*current;
-	t_env	*next_print;
+	t_env	*cur;
+	t_env	*next;
 
-	if (last_printed == NULL)
+	if (last == NULL)
 		return (find_smallest(head));
-	next_print = NULL;
-	current = head;
-	while (current)
+	next = NULL;
+	cur = head;
+	while (cur)
 	{
-		if (ft_strncmp(current->key, last_printed->key, ft_strlen(current->key))
-			> 0)
+		if (ft_strncmp(cur->key, last->key, ft_strlen(cur->key)) > 0)
 		{
-			if (next_print == NULL)
-				next_print = current;
-			else if (ft_strncmp(current->key, next_print->key,
-					ft_strlen(current->key)) < 0 && ft_strncmp(current->key,
-					last_printed->key, ft_strlen(current->key)) > 0)
-				next_print = current;
+			if (next == NULL)
+				next = cur;
+			else if (ft_strncmp(cur->key, next->key, ft_strlen(next->key)) < 0
+				&& ft_strncmp(cur->key, last->key, ft_strlen(cur->key)) > 0)
+				next = cur;
 		}
-		current = current->next;
+		cur = cur->next;
 	}
-	return (next_print);
+	return (next);
 }
 
 void	builtin_export_print(t_env *next_print)
 {
-	write (1, "dexlare -x ", 11);
+	write (1, "declare -x ", 11);
 	write(1, next_print->key, ft_strlen(next_print->key));
 	if (next_print->env_display == TRUE)
 	{

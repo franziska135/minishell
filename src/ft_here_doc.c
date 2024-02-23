@@ -107,7 +107,8 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter, fd);
-	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0)
+	//i added a signal condition here
+	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0 && g_signal != -1)
 	{
 		expand_hd(gnl, cmds, fd[1], expand);
 		free(gnl);

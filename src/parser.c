@@ -37,7 +37,6 @@ char	**parser(t_compound *cmds, char **tokens)
 	tokens = open_redir(cmds, tokens);
 	if (g_signal == -1)
 	{
-		write (2, "check", 6);
 		g_signal = 0;
 		non_interactive_mode();
 		return (free(cmds->scmd), NULL);

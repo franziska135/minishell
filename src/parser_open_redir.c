@@ -43,7 +43,7 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 			i++;
 			expand = if_expand(tokens[i]);
 			tokens[i] = remove_quotes(tokens[i]);
-			cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i], cmds, expand);
+				cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i], cmds, expand);
 		}
 		i++;
 	}
@@ -57,6 +57,7 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
+	printf("signal: %d\n", g_signal);
 	if (!tokens || g_signal == -1)
 		return (NULL);
 	non_interactive_mode();

@@ -21,7 +21,7 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
 	if (scmd->cmd[1] != NULL && scmd->cmd[2])
 		print_error("cd: ", NULL, "too many arguments");
-	else if (scmd->cmd[1] == NULL || ft_strncmp(scmd->cmd[1], "~", 2) == 0)
+	else if (go_back_home(scmd) == TRUE)
 	{
 		if (builtin_cd_home(cmds) == FALSE)
 			return (FALSE);
@@ -33,7 +33,7 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 		if (builtin_cd_dotdot(cmds) == FALSE)
 			return (FALSE);
 	}
-	else if (ft_strncmp(scmd->cmd[1], "-", 1) == 0)
+	else if (ft_strncmp(scmd->cmd[1], "-", 2) == 0)
 	{
 		if (builtin_cd_back(cmds) == FALSE)
 			return (FALSE);
@@ -68,8 +68,6 @@ int	builtin_cd_home(t_compound *cmds)
 	return (TRUE);
 }
 
-//what happens on errors? go back to history promt?
-//what's the error if chdir fails?
 int	builtin_cd_dotdot(t_compound *cmds)
 {
 	char	pwd[100];
@@ -83,8 +81,6 @@ int	builtin_cd_dotdot(t_compound *cmds)
 	return (TRUE);
 }
 
-//what happens on errors? go back to history promt?
-//what's the error if chdir fails?
 int	builtin_cd_back(t_compound *cmds)
 {
 	char	pwd[100];

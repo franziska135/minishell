@@ -14,8 +14,9 @@
 
 void	non_interactive_mode(void)
 {
-	signal(SIGQUIT, &backslash_interactive);
-	signal(SIGINT, &ctrlc_interactive);
+	g_signal = 0;
+	signal(SIGQUIT, &backslash_non_interactive);
+	signal(SIGINT, &ctrlc_non_interactive);
 }
 
 void	interactive_mode(void)
@@ -24,8 +25,27 @@ void	interactive_mode(void)
 	signal(SIGINT, &ctrlc_handler);
 }
 
+void	signal_hd(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &ctrlc_hd);
+}
+
+void	ctrlc_hd(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_signal = -1;
+		write(STDERR_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+
+}
+
 //ctrl \ while prompting
-void	backslash_interactive(int signum)
+void	backslash_non_interactive(int signum)
 {
 	if (signum == SIGQUIT)
 	{
@@ -37,7 +57,7 @@ void	backslash_interactive(int signum)
 }
 
 //ctrl -c while prompting
-void	ctrlc_interactive(int sig)
+void	ctrlc_non_interactive(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -45,6 +65,7 @@ void	ctrlc_interactive(int sig)
 		write(STDERR_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
+		//rl_redisplay();
 	}
 }
 //ctrl -c while a process is running

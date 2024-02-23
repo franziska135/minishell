@@ -158,6 +158,7 @@ int		if_builtin_execute(t_compound *compound, t_simple *simple_command);
 //builtins
 void	builtin_pwd(void);
 int		builtin_cd(t_simple *simple_command, t_compound *cmds);
+int		go_back_home(t_simple *scmd);
 int		builtin_cd_home(t_compound *cmds);
 int		builtin_cd_dotdot(t_compound *cmds);
 int		builtin_cd_back(t_compound *cmds);
@@ -207,8 +208,11 @@ void	set_status(t_compound *cmds, int i);
 //signals
 void	non_interactive_mode(void);
 void	interactive_mode(void);
-void	backslash_interactive(int signum);
+void	backslash_non_interactive(int signum);
 void	ctrlc_handler(int signum);
-void	ctrlc_interactive(int signum);
+void	ctrlc_non_interactive(int signum);
+void	ctrlc_hd(int sig);
+void	signal_hd(void);
+
 
 #endif

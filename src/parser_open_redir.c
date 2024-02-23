@@ -31,7 +31,8 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 
 	i = 0;
 	pipe = 0;
-	while (tokens[i])
+	signal_hd();
+	while (tokens[i] && g_signal != -1)
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))
 			pipe++;
@@ -56,8 +57,9 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
-	if (!tokens)
+	if (!tokens || g_signal == -1)
 		return (NULL);
+	non_interactive_mode();
 	while (tokens[i])
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))

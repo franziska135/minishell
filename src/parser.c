@@ -35,6 +35,13 @@ char	**parser(t_compound *cmds, char **tokens)
 	struct_nullifier(cmds);
 	cmds->nbr_scmd = pipe_count(tokens) + 1;
 	tokens = open_redir(cmds, tokens);
+	if (g_signal == -1)
+	{
+		write (2, "check", 6);
+		g_signal = 0;
+		non_interactive_mode();
+		return (free(cmds->scmd), NULL);
+	}
 	if (!struct_cpy(cmds, tokens))
 		return (0);
 	return (tokens);

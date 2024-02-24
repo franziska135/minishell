@@ -12,7 +12,7 @@
 
 #include "./minishell.h"
 
-static char	*path_access(char *path, char *cmd)
+static char	*path_access(t_compound *cmds, char *path, char *cmd)
 {
 	char	**path_split;
 	char	*tmp;
@@ -37,11 +37,11 @@ static char	*path_access(char *path, char *cmd)
 		j++;
 	}
 	dpointer_free(path_split);
-	print_error(NULL, cmd, "command not found.");
+	(write(2, cmd, ft_strlen(cmd)), write(2, ": command not found\n", 21));
 	return (NULL);
 }
 
-static int	isit_path(char *str)
+int	isit_path(char *str)
 {
 	while (*str)
 	{
@@ -58,6 +58,11 @@ char	*path_finder(t_compound *cmds, int pipe)
 
 	if (!cmds->scmd[pipe].cmd[0])
 		return (NULL);
+	if (!cmds->scmd[pipe].cmd[0][0])
+	{
+		print_error(NULL, "''", "command not found");
+		return (NULL);
+	}
 	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
 		return (cmds->scmd[pipe].cmd[0]);
 	if (isit_path(cmds->scmd[pipe].cmd[0]))
@@ -67,6 +72,6 @@ char	*path_finder(t_compound *cmds, int pipe)
 	}
 	env = find_node(cmds, "PATH");
 	if (env && env->value)
-		return (path_access(env->value, cmds->scmd[pipe].cmd[0]));
+		return (path_access(cmds, env->value, cmds->scmd[pipe].cmd[0]));
 	return (NULL);
 }

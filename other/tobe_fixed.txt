@@ -1,36 +1,20 @@
---all errors should be handled properly
-
-
---cmd not found is not fzsh error.
-
-
 --check for deletion\permission of parent dir
-
-
-
---ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
-
-
-
-
 --pwd check for access
 --pwd check for access --> previous folder delete
 
---add \t to all your space searching:(
 
+-- no env and unset oldpwd segfault
 
---i should pass you fd from stdout to close it at exit
+-- running echo $? after "" has invalid read.
 
 --  check for piping after changing run minishell
 
 ---------	MSTEST		------------
 
--- manually add OLDPWD
-
--- set _=env
-
--- display correct error if command not found
-
 -- signal with \
 
--- imply close(initial_stdout) in exit from pipin_root
+
+
+
+
+----- 	NORM CHECK

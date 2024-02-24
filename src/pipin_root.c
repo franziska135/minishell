@@ -34,17 +34,26 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 			dup2(fd[1], STDOUT_FILENO);
 		close_fds(cmds, fd);
 		if (is_built_in(cmds->scmd[i].cmd[0]))
-			(if_builtin_execute(cmds, &cmds->scmd[i]), child_clean(cmds, fd));
+			(if_builtin_execute(cmds, &cmds->scmd[i], -1), child_clean(cmds, fd));
 		path = path_finder(cmds, i);
 		if (!path)
 		{
-			cmds->exit_status = 127 << 8;
+			cmds->exit_status = 127;
 			child_clean(cmds, fd);
 		}
-		ft_transfer_ll_to_env_ptr(cmds);
+		if (!ft_transfer_ll_to_env_ptr(cmds))
+			exit(1);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
-		print_error(NULL, path, strerror(errno));
-		cmds->exit_status = 127 << 8;
+		if (isit_path(path))
+		{
+			print_error(NULL, path, "is a directory");
+			cmds->exit_status = 126;
+		}
+		else
+		{
+			print_error(NULL, path, strerror(errno));
+			cmds->exit_status = 127;
+		}
 	}
 	child_clean(cmds, fd);
 }
@@ -111,7 +120,7 @@ int	piping_root(t_compound *cmds)
 			dup2(cmds->scmd[0].out_fd, STDOUT_FILENO);
 			close (cmds->scmd[0].out_fd);
 		}
-		if_builtin_execute(cmds, &cmds->scmd[0]);
+		if_builtin_execute(cmds, &cmds->scmd[0], initial_stdout);
 		dup2(initial_stdout, STDOUT_FILENO);
 		close (initial_stdout);
 	}

@@ -20,30 +20,33 @@
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
 	if (scmd->cmd[1] != NULL && scmd->cmd[2])
+	{
 		print_error("cd: ", NULL, "too many arguments");
+		return (set_status(cmds, 1), FALSE);
+	}
 	else if (go_back_home(scmd) == TRUE)
 	{
 		if (builtin_cd_home(cmds) == FALSE)
-			return (FALSE);
+			return (set_status(cmds, 1), FALSE);
 	}
 	else if (scmd->cmd[1][0] == '\0')
-		return (TRUE);
+		return (set_status(cmds, 0), TRUE);
 	else if (ft_strncmp(scmd->cmd[1], "..\0", 3) == 0)
 	{
 		if (builtin_cd_dotdot(cmds) == FALSE)
-			return (FALSE);
+			return (set_status(cmds, 1), FALSE);
 	}
 	else if (ft_strncmp(scmd->cmd[1], "-", 2) == 0)
 	{
 		if (builtin_cd_back(cmds) == FALSE)
-			return (FALSE);
+			return (set_status(cmds, 1), FALSE);
 	}
 	else
 	{
 		if (builtin_cd_path(cmds, scmd) == FALSE)
-			return (FALSE);
+			return (set_status(cmds, 1), FALSE);
 	}
-	return (TRUE);
+	return (set_status(cmds, 0), TRUE);
 }
 
 //what happens on errors? go back to history promt?
@@ -64,7 +67,10 @@ int	builtin_cd_home(t_compound *cmds)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	}
 	else
+	{
 		print_error("cd: ", NULL, "HOME not set");
+		return (FALSE);
+	}
 	return (TRUE);
 }
 
@@ -100,7 +106,10 @@ int	builtin_cd_back(t_compound *cmds)
 		builtin_pwd(cmds);
 	}
 	else
+	{
 		print_error("cd: ", NULL, "OLDPWD not set");
+		return (FALSE);
+	}
 	return (TRUE);
 }
 

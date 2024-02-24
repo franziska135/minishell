@@ -32,7 +32,10 @@ void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i)
 		cmds->scmd[pipe].out_fd
 			= open(*str, O_WRONLY | O_CREAT | O_TRUNC, 0664);
 		if (cmds->scmd[pipe].out_fd == -1)
+		{
+			cmds->exit_status = 1;
 			print_error(NULL, *str, strerror(errno));
+		}
 		dpointer_free(str);
 	}
 }
@@ -56,7 +59,10 @@ void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i)
 	{
 		cmds->scmd[pipe].in_fd = open(*str, O_RDONLY);
 		if (cmds->scmd[pipe].in_fd == -1)
+		{
+			cmds->exit_status = 1;
 			print_error(NULL, *str, strerror(errno));
+		}
 		dpointer_free(str);
 	}
 }
@@ -81,7 +87,10 @@ void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i)
 		cmds->scmd[pipe].out_fd
 			= open(*str, O_WRONLY | O_CREAT | O_APPEND, 0664);
 		if (cmds->scmd[pipe].out_fd == -1)
+		{
+			cmds->exit_status = 1;
 			print_error(NULL, *str, strerror(errno));
+		}
 		dpointer_free(str);
 	}
 }

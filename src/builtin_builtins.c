@@ -50,6 +50,11 @@ void	set_status(t_compound *cmds, int i)
 	cmds->exit_status = i << 8;
 }
 
+int	normalize_exit_code(int number)
+{
+	return (number % 256);
+}
+
 int	exit_error_check(t_compound *cmds, t_simple *scmd)
 {
 	int	i;
@@ -73,21 +78,22 @@ int	exit_error_check(t_compound *cmds, t_simple *scmd)
 	if (scmd->cmd[2])
 	{
 		print_error("exit: ", NULL, "too many arguments");
+		set_status(cmds, 1);
 		return (1);
 	}
 	else
-		return (3);
+		return (normalize_exit_code(ft_atoi(scmd->cmd[1])));
 }
 
-void	builtin_exit(t_compound *cmds, t_simple *scmd)
+void	builtin_exit(t_compound *cmds, t_simple *scmd, int initial_stdout)
 {
 	int	status;
 
 	status = exit_error_check(cmds, scmd);
-	cmds->exit_status = status;
 	cleanup_envp_ll(cmds->env_ll);
 	free_double_ptr(cmds->envp);
 	struct_free(*cmds);
-	//exit code on regular exit?
-	exit(WEXITSTATUS(status));
+	if (initial_stdout != -1)
+		close(initial_stdout);
+	exit(status);
 }

@@ -12,22 +12,57 @@
 
 #include "minishell.h"
 
-void	non_interactive_mode(void)
+// void	backslash_hd(int sig)
+// {
+// 	if (sig == SIGQUIT)
+// 	{
+// 		g_signal = -1;
+// 		printf("no stop");
+// 		ioctl(0, TIOCSTI, "\n");
+// 	}
+// }
+
+void	ctrlc_hd(int sig)
 {
-	g_signal = 0;
-	signal(SIGQUIT, &backslash_non_interactive);
-	signal(SIGINT, &ctrlc_non_interactive);
+	if (sig == SIGINT)
+	{
+		g_signal = -1;
+		ioctl(0, TIOCSTI, "\n");
+	}
 }
 
-void	interactive_mode(void)
+//ctrl \ while prompting
+void	backslash_non_interactive(int signum)
 {
-	g_signal = 0;
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, &ctrlc_handler);
+	if (signum == SIGQUIT)
+	{
+		write (2, "Quit (core dumped)\n", 19);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
 }
 
-void	signal_hd(void)
+//ctrl -c while prompting
+void	ctrlc_non_interactive(int sig)
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, &ctrlc_hd);
+	if (sig == SIGINT)
+	{
+		g_signal = 130;
+		write(STDERR_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
+}
+//ctrl -c while a process is running
+void	ctrlc_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_signal = 130;
+		write(STDERR_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	//ioctl(0, TIOCSTI, "\n");
 }

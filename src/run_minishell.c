@@ -70,10 +70,7 @@ int	run_minishell(t_compound	*cmds)
 			free(line);
 		}
 		if (str == NULL)
-		{
-			// cmds->exit_status = 0;
 			break ;
-		}
 		if (!all_space(str))
 		{
 			add_history(str);

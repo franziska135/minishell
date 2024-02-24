@@ -98,12 +98,25 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	cmds->envp = NULL;
 	cmds->env_ll = NULL;
 	i = 0;
+	if (envp)
+	{
 	while (envp[i])
 	{
 		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		i++;
 	}
-	//new_node = ft_new_env_node("OLDPWD", NULL, FALSE),
+	if (find_node(cmds, "OLDPWD") == NULL)
+	{
+		new_node = ft_new_env_node("OLDPWD", NULL, FALSE);
+		ft_add_last_node(&cmds->env_ll, new_node);
+	}
+	new_node = find_node(cmds, "_");
+	if (new_node)
+	{
+		if (adapt_node(cmds, "_=env", "_", "/usr/bin/env") == FALSE)
+			return (FALSE);
+	}
+	}
 	return (1);
 }

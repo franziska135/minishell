@@ -137,7 +137,7 @@ void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		init_env_llist(t_compound *cmds, char **envp);
 int	is_built_in(char *str);
-int		ft_transfer_ll_to_env_ptr(t_compound *cmds);
+int	isit_path(char *str);
 //t_env	*find_node(t_compound *cmds, char *needle);
 
 // utils to be deleted
@@ -153,7 +153,7 @@ void	ft_add_last_node(t_env **lst, t_env *new);
 
 //check amt of commands and pipes, children
 //void	process_commands(t_execute *execute, t_compound *compound);
-int		if_builtin_execute(t_compound *compound, t_simple *simple_command);
+int		if_builtin_execute(t_compound *compound, t_simple *simple_command, int fd);
 
 //builtins
 void	builtin_pwd(t_compound *cmds);
@@ -173,7 +173,7 @@ void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
 int		builtin_unset(t_compound *cmds, t_simple *scmd);
 int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
-void	builtin_exit(t_compound *cmds, t_simple *scmd);
+void	builtin_exit(t_compound *cmds, t_simple *scmd, int fd);
 
 //export utils
 void	print_export(t_env *head);
@@ -213,6 +213,6 @@ void	ctrlc_handler(int signum);
 void	ctrlc_non_interactive(int signum);
 void	ctrlc_hd(int sig);
 void	signal_hd(void);
-
+void	backslash_hd(int sig);
 
 #endif

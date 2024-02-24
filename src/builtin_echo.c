@@ -25,6 +25,7 @@ void	builtin_echo(t_compound *cmds, t_simple *scmd)
 	int	start;
 
 	i = 0;
+	set_status(cmds, 0);
 	if (scmd->cmd[1])
 	{
 		i = check_for_n(scmd);
@@ -46,7 +47,11 @@ void	if_echo_home(t_compound *cmds)
 
 	home = find_node(cmds, "HOME");
 	if (home != NULL && home->value != NULL)
+	{
 		write (1, home->value, ft_strlen(home->value));
+	}
+	else
+		set_status(cmds, 1);
 }
 
 //utils function for echo, cuts 25 lines

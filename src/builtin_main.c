@@ -20,7 +20,7 @@
 //if PATH is currently unset, value of PATH is empty
 //and function returns nothing
 //export & cd malloc protected
-int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
+int	if_builtin_execute(t_compound *cmds, t_simple *scmd, int initial_stdout)
 {
 	if (ft_strncmp(scmd->cmd[0], "echo\0", 6) == 0)
 		builtin_echo(cmds, scmd);
@@ -41,9 +41,8 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 	else if (ft_strncmp(scmd->cmd[0], "env\0", 4) == 0)
 		builtin_env(cmds->env_ll, scmd, cmds);
 	else if (ft_strncmp(scmd->cmd[0], "exit\0", 6) == 0)
-		builtin_exit(cmds, scmd);
+		builtin_exit(cmds, scmd, initial_stdout);
 	else
 		return (0);
-	ft_transfer_ll_to_env_ptr(cmds);
 	return (cmds->exit_status);
 }

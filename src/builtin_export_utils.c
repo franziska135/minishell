@@ -55,7 +55,13 @@ int	export_error_check(t_compound *cmds, char *new_var)
 
 	i = 0;
 	flag = TRUE;
-	if (valid_var_check(new_var) == FALSE)
+	if (new_var[0] == '-' && new_var[1])
+	{
+		(write(1, "bash : export: -", 17)), (write(1, &new_var[1], 1));
+		write(1, ": invalid option\n", 18);
+		return (set_status(cmds, 2), FALSE);
+	}
+	else if (valid_var_check(new_var) == FALSE)
 	{
 		flag = FALSE;
 		print_error("export: ", new_var, "not a valid identifier");

@@ -57,7 +57,6 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	redir_hd(cmds, tokens);
-	// printf("signal: %d\n", g_signal);
 	if (!tokens || g_signal == -1)
 		return (dpointer_free(tokens), NULL);
 	non_interactive_mode();

@@ -1,9 +1,6 @@
 --all errors should be handled properly
 
 
-
---expand inside of hd
-
 --cmd not found is not fzsh error.
 
 
@@ -11,15 +8,7 @@
 
 
 
--- space in history -> bash saves commands that start with space	NOTE: my bash doesnt!
-
-
---in is_builtin and if_builtin_execute take the print out, thats just for control
-
 --ft_transfer_ll_to_ptr is called before each execv, how to return from this in case of an error?
-
-
-
 
 
 
@@ -27,10 +16,21 @@
 --pwd check for access
 --pwd check for access --> previous folder delete
 
---un set "$" segfault						it doesnt
-
-
 --add \t to all your space searching:(
 
 
 --i should pass you fd from stdout to close it at exit
+
+--  check for piping after changing run minishell
+
+---------	MSTEST		------------
+
+-- manually add OLDPWD
+
+-- set _=env
+
+-- display correct error if command not found
+
+-- signal with \
+
+-- imply close(initial_stdout) in exit from pipin_root

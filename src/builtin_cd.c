@@ -97,7 +97,7 @@ int	builtin_cd_back(t_compound *cmds)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-		builtin_pwd();
+		builtin_pwd(cmds);
 	}
 	else
 		print_error("cd: ", NULL, "OLDPWD not set");

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //what happens on error?
-void	builtin_pwd(void)
+void	builtin_pwd(t_compound *cmds)
 {
 	char	buf[500];
 
@@ -21,9 +21,13 @@ void	builtin_pwd(void)
 	{
 		write(1, buf, ft_strlen(buf));
 		write (1, "\n", 1);
+		cmds->exit_status = 0;
 	}
 	else
+	{
 		print_error(NULL, "pwd", strerror(errno));
+		cmds->exit_status = 2;
+	}
 }
 
 void	print_error(char *str2, char *str3, char *str4)

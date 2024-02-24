@@ -101,19 +101,16 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 		return (-1);
 	// write (1, "> ", 3);
 	gnl = get_next_line(STDIN_FILENO);
-		// gnl = readline("$ ");
 	if (gnl && gnl[ft_strlen(gnl) - 1] == '\n')
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter, fd);
-	//i added a signal condition here
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0 && g_signal != -1)
 	{
 		expand_hd(gnl, cmds, fd[1], expand);
 		free(gnl);
 		// write (1, "> ", 3);
 		gnl = get_next_line(STDIN_FILENO);
-		// gnl = readline("$ ");
 		if (!gnl && errno != ENOMEM)
 		{
 			print_eof_hd(delimiter, fd);

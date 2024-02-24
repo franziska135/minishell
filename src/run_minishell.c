@@ -71,7 +71,7 @@ int	run_minishell(t_compound	*cmds)
 		}
 		if (str == NULL)
 		{
-			cmds->exit_status = 0;
+			// cmds->exit_status = 0;
 			break ;
 		}
 		if (!all_space(str))

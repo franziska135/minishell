@@ -156,7 +156,7 @@ void	ft_add_last_node(t_env **lst, t_env *new);
 int		if_builtin_execute(t_compound *compound, t_simple *simple_command);
 
 //builtins
-void	builtin_pwd(void);
+void	builtin_pwd(t_compound *cmds);
 int		builtin_cd(t_simple *simple_command, t_compound *cmds);
 int		go_back_home(t_simple *scmd);
 int		builtin_cd_home(t_compound *cmds);

@@ -104,5 +104,6 @@ int	init_env_llist(t_compound *cmds, char **envp)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		i++;
 	}
+	//new_node = ft_new_env_node("OLDPWD", NULL, FALSE),
 	return (1);
 }

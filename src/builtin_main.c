@@ -30,7 +30,7 @@ int	if_builtin_execute(t_compound *cmds, t_simple *scmd)
 			return (0);
 	}
 	else if (ft_strncmp(scmd->cmd[0], "pwd\0", 4) == 0)
-		builtin_pwd();
+		builtin_pwd(cmds);
 	else if (ft_strncmp(scmd->cmd[0], "export\0", 7) == 0)
 	{
 		if (builtin_export(cmds, scmd) == FALSE)

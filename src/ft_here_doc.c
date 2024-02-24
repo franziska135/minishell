@@ -86,8 +86,6 @@ static void	expand_hd(char *str, t_compound *cmds, int fd, int expand)
 
 static void	print_eof_hd(char *delim, int *fd)
 {
-	// close (fd[0]);
-	// close (fd[1]);
 	write (2, "\nfzsh: warning: here-document at ", 34);
 	write (2, "line 1 delimited by end-of-file (wanted `", 42);
 	write (2, delim, ft_strlen(delim));
@@ -101,8 +99,9 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 
 	if (pipe(fd) == -1)
 		return (-1);
-	write (1, "> ", 3);
+	// write (1, "> ", 3);
 	gnl = get_next_line(STDIN_FILENO);
+		// gnl = readline("$ ");
 	if (gnl && gnl[ft_strlen(gnl) - 1] == '\n')
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
@@ -112,17 +111,24 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 	{
 		expand_hd(gnl, cmds, fd[1], expand);
 		free(gnl);
-		write (1, "> ", 3);
+		// write (1, "> ", 3);
 		gnl = get_next_line(STDIN_FILENO);
+		// gnl = readline("$ ");
 		if (!gnl && errno != ENOMEM)
 		{
 			print_eof_hd(delimiter, fd);
-			return (0);
+			break;
 		}
-		if (gnl && gnl[ft_strlen(gnl) - 1] == '\n')
+		if (gnl && gnl[ft_strlen(gnl) - 1] == '\n' && g_signal != -1)
 			gnl[ft_strlen(gnl) - 1] = '\0';
 	}
 	free(gnl);
+	if (g_signal == -1)
+	{
+		close (fd[0]);
+		fd[0] = -1;
+	}
 	close (fd[1]);
+	
 	return (fd[0]);
 }

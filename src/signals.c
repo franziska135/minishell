@@ -21,6 +21,7 @@ void	non_interactive_mode(void)
 
 void	interactive_mode(void)
 {
+	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_handler);
 }
@@ -29,6 +30,7 @@ void	signal_hd(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_hd);
+
 }
 
 void	ctrlc_hd(int sig)
@@ -36,10 +38,11 @@ void	ctrlc_hd(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal = -1;
-		write(STDERR_FILENO, "\n", 1);
-		// rl_replace_line("", 0);
+		write(1, "\n", 2);
+		// rl_replace_line("", 1);
 		// rl_on_new_line();
 		// rl_redisplay();
+		ioctl(0, TIOCSTI, "\n");
 	}
 
 }

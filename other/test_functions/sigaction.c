@@ -2,7 +2,7 @@
 
 void	sighandler(int signum)
 {
-	printf("Signal: %d\n", signum);
+	// printf("Signal: %d\n", signum);
 	exit(1);
 }
 

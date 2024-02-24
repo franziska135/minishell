@@ -76,8 +76,7 @@ int	run_minishell(t_compound	*cmds)
 		}
 		if (!all_space(str))
 		{
-			if (str[0] != ' ')
-				add_history(str);
+			add_history(str);
 			run_procces(cmds, str);
 		}
 	}

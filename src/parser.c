@@ -35,8 +35,9 @@ char	**parser(t_compound *cmds, char **tokens)
 	struct_nullifier(cmds);
 	cmds->nbr_scmd = pipe_count(tokens) + 1;
 	tokens = open_redir(cmds, tokens);
-	if (g_signal == -1)
+	if (g_signal == 130)
 	{
+		cmds->exit_status = g_signal;
 		g_signal = 0;
 		non_interactive_mode(cmds);
 		return (free(cmds->scmd), NULL);

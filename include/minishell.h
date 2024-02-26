@@ -205,7 +205,7 @@ void	backslash_non_interactive(int signum);
 void	ctrlc_handler(int signum);
 void	ctrlc_non_interactive(int signum);
 void	ctrlc_hd(int sig);
-void	signal_hd(void);
+void	signal_hd(t_compound *cmds);
 void	backslash_hd(int sig);
 
 #endif

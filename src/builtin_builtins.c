@@ -21,12 +21,12 @@ void	builtin_pwd(t_compound *cmds)
 	{
 		write(1, buf, ft_strlen(buf));
 		write (1, "\n", 1);
-		cmds->exit_status = 0;
+		set_status(cmds, 0);
 	}
 	else
 	{
 		print_error(NULL, "pwd", strerror(errno));
-		cmds->exit_status = 2;
+		set_status(cmds, 2);
 	}
 }
 

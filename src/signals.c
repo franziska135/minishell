@@ -14,21 +14,27 @@
 
 void	non_interactive_mode(t_compound *cmds)
 {
-	// g_signal = 0;
+	if (g_signal != 0)
+		set_status(cmds, g_signal);
+	g_signal = 0;
 	signal(SIGQUIT, &backslash_non_interactive);
 	signal(SIGINT, &ctrlc_non_interactive);
 }
 
 void	interactive_mode(t_compound *cmds)
 {
-	cmds->exit_status = g_signal;
+	if (g_signal != 0)
+		set_status(cmds, g_signal);
 	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_handler);
 }
 
-void	signal_hd(void)
+void	signal_hd(t_compound *cmds)
 {
+	if (g_signal != 0)
+		set_status(cmds, g_signal);
+	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_hd);
 }

@@ -63,6 +63,6 @@ int	builtin_unset(t_compound *cmds, t_simple *scmd)
 			builtin_unset_loop(cmds, haystack, tmp, scmd->cmd[i]);
 		i++;
 	}
-	cmds->exit_status = 0;
+	set_status(cmds, 0);
 	return (cmds->exit_status);
 }

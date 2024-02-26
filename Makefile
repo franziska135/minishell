@@ -27,21 +27,21 @@ OBJS = $(patsubst src/%.c,$(OBJDIR)/%.o,$(SRCS))
 all: $(OBJDIR) $(NAME)
 
 $(NAME): $(OBJS)
-	make --no-print-directory -C ./libft > /dev/null
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) ./libft/libft.a -lreadline
+	@make --no-print-directory -C ./libft > /dev/null
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) ./libft/libft.a -lreadline
 	echo "\033[1;32m\n\n\t\tMINISHELL IS READY TO USE.\n\033[0m"
 
 clean:
-	make --no-print-directory -C ./libft fclean > /dev/null
-	$(RM) $(OBJDIR) $(OBJS)
+	@make --no-print-directory -C ./libft fclean > /dev/null
+	@$(RM) $(OBJDIR) $(OBJS)
 	echo "\033[0;91mCleaning was successful.\033[0m"
 
 $(OBJDIR)/%.o: src/%.c
-	mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@mkdir -p $(OBJDIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 

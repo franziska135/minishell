@@ -53,6 +53,20 @@ void	struct_nullifier(t_compound *cmds)
 	cmds->nbr_scmd = 0;
 }
 
+void	which_error(t_compound *cmds, char *path)
+{
+	if (isit_path(path))
+	{
+		print_error(NULL, path, "is a directory");
+		cmds->exit_status = 126;
+	}
+	else
+	{
+		print_error(NULL, path, strerror(errno));
+		cmds->exit_status = 127;
+	}
+}
+
 int	is_built_in(char *str)
 {
 	if (!str)

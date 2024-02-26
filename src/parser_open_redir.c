@@ -43,7 +43,7 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 			i++;
 			expand = if_expand(tokens[i]);
 			tokens[i] = remove_quotes(tokens[i]);
-				cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i], cmds, expand);
+			cmds->scmd[pipe].in_fd = ft_here_doc(tokens[i], cmds, expand);
 		}
 		i++;
 	}

@@ -16,8 +16,12 @@ void	ctrlc_hd(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_signal = 130;
-		ioctl(0, TIOCSTI, "\n");
+		g_signal = 2;
+		ioctl(1, TIOCSTI, "\n");
+		// write(STDERR_FILENO, "\n", 1);
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// rl_redisplay();
 	}
 }
 
@@ -26,7 +30,7 @@ void	backslash_non_interactive(int signum)
 {
 	if (signum == SIGQUIT)
 	{
-		g_signal = 131;
+		g_signal = 3;
 		write (2, "Quit (core dumped)\n", 19);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -38,7 +42,7 @@ void	ctrlc_non_interactive(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_signal = 130;
+		g_signal = 2;
 		write(STDERR_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -50,7 +54,7 @@ void	ctrlc_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_signal = 130;
+		g_signal = 2;
 		write(STDERR_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

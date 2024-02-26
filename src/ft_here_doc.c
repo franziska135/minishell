@@ -92,7 +92,7 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 	if (pipe(fd) == -1)
 		return (-1);
 	gnl = readline("> ");
-	if (g_signal != 130 && gnl && gnl[ft_strlen(gnl) - 1] == '\n')
+	if (g_signal == 0 && gnl && gnl[ft_strlen(gnl) - 1] == '\n')
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter, fd);

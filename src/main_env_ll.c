@@ -31,17 +31,6 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	return (1);
 }
 
-//finds the '=' delimiter for key and value and splits them apart
-size_t	iterate_ultil_equal(const char *envp_i)
-{
-	int	i;
-
-	i = 0;
-	while (envp_i[i] && envp_i[i] != '=')
-		i++;
-	return (i);
-}
-
 int	ft_init_ll_loop(t_compound *cmds, char **envp, t_env *new_node, int i)
 {
 	char	*key;
@@ -89,6 +78,28 @@ int	initiate_static_env_variables2(t_compound *cmds)
 	return (TRUE);
 }
 
+int	initiate_static_env_variables3(t_compound *cmds)
+{
+	t_env	*new_node;
+	int		number;
+
+	new_node = find_node(cmds, "SHLVL");
+	if (new_node)
+	{
+		number = ft_atoi(new_node->value) + 1;
+		if (adapt_node(cmds, "SHLVL=1", "SHLVL", ft_itoa(number)) == FALSE)
+			return (FALSE);
+	}
+	else
+	{
+		new_node = ft_new_env_node("SHLVL", "1", TRUE);
+		if (!new_node)
+			return (FALSE);
+		ft_add_last_node(&cmds->env_ll, new_node);
+	}
+	return (TRUE);
+}
+
 //in case envp -i (no env), these var are set
 int	initiate_static_env_variables(t_compound *cmds)
 {
@@ -105,6 +116,8 @@ int	initiate_static_env_variables(t_compound *cmds)
 	if (find_node(cmds, "PWD") == NULL)
 		update_env_ll(cmds, "PWD", getcwd(pwd, 100));
 	if (initiate_static_env_variables2(cmds) == FALSE)
+		return (FALSE);
+	if (initiate_static_env_variables3(cmds) == FALSE)
 		return (FALSE);
 	return (TRUE);
 }

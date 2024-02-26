@@ -144,11 +144,14 @@ void	err_handler(char *str);
 int		init_env_llist(t_compound *cmds, char **envp);
 int		initiate_static_env_variables(t_compound *cmds);
 int		initiate_static_env_variables2(t_compound *cmds);
+int		sinitiate_static_env_variables3(t_compound *cmds);
 void	free_node(void *node);
 t_env	*find_node(t_compound *cmds, char *needle);
 t_env	*ft_new_env_node(char *key, char *value, int env_display);
 void	ft_add_last_node(t_env **lst, t_env *new);
 int		ft_init_ll_loop(t_compound *cmds, char **envp, t_env *new_node, int i);
+size_t	iterate_ultil_equal(const char *envp_i);
+
 
 //BUILTIN
 int		if_builtin_execute(t_compound *compound, t_simple *simple_command, int fd);

@@ -49,3 +49,14 @@ void	ft_add_last_node(t_env **lst, t_env *new_node)
 		tmp->next = new_node;
 	}
 }
+
+//finds the '=' delimiter for key and value and splits them apart
+size_t	iterate_ultil_equal(const char *envp_i)
+{
+	int	i;
+
+	i = 0;
+	while (envp_i[i] && envp_i[i] != '=')
+		i++;
+	return (i);
+}

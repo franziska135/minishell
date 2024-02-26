@@ -12,10 +12,14 @@
 
 #include "minishell.h"
 
+//SIGINT = 2
+//SIGQUOT = 3
 void	non_interactive_mode(t_compound *cmds)
 {
-	if (g_signal != 0)
-		set_status(cmds, g_signal);
+	if (g_signal == 2)
+		set_status(cmds, 130);
+	else if (g_signal == 3)
+		set_status(cmds, 131);
 	g_signal = 0;
 	signal(SIGQUIT, &backslash_non_interactive);
 	signal(SIGINT, &ctrlc_non_interactive);
@@ -23,8 +27,10 @@ void	non_interactive_mode(t_compound *cmds)
 
 void	interactive_mode(t_compound *cmds)
 {
-	if (g_signal != 0)
-		set_status(cmds, g_signal);
+	if (g_signal == 2)
+		set_status(cmds, 130);
+	else if (g_signal == 3)
+		set_status(cmds, 131);
 	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_handler);
@@ -32,8 +38,10 @@ void	interactive_mode(t_compound *cmds)
 
 void	signal_hd(t_compound *cmds)
 {
-	if (g_signal != 0)
-		set_status(cmds, g_signal);
+	if (g_signal == 2)
+		set_status(cmds, 130);
+	else if (g_signal == 3)
+		set_status(cmds, 131);
 	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_hd);

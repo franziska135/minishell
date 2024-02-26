@@ -58,7 +58,7 @@ static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
 		}
 	}
 	else if (str[0] == '?')
-		ret += write_exit_status(cmds->exit_status, fd);
+		ret += (write_exit_status(cmds->exit_status, fd) + 1);
 	else if (str[0] == '\0' || str[0] == '_' || ft_isalpha(str[0]))
 		write(fd, "$", 1);
 	return (ret);
@@ -91,9 +91,8 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 
 	if (pipe(fd) == -1)
 		return (-1);
-	// gnl = get_next_line(STDIN_FILENO);
 	gnl = readline("> ");
-	if (g_signal == 0 && gnl[ft_strlen(gnl) - 1] == '\n')
+	if (g_signal != -1 && gnl && gnl[ft_strlen(gnl) - 1] == '\n')
 		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter, fd);
@@ -102,7 +101,6 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 	{
 		(expand_hd(gnl, cmds, fd[1], expand), free(gnl));
 		gnl = readline("> ");
-		// gnl = get_next_line(STDIN_FILENO);
 		if (!gnl && errno != ENOMEM)
 		{
 			print_eof_hd(delimiter, fd);

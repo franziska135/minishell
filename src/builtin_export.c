@@ -103,7 +103,7 @@ int	export_loop(t_compound *cmds, char *key, char *value, char *current_cmd)
 }
 
 //if variable exists the node is amended
-//if variable does not exists its created
+//if variable does not exists it is created
 int	builtin_export(t_compound *cmds, t_simple *scmd)
 {
 	char	*key;

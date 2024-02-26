@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-//what happens on error?
 void	builtin_pwd(t_compound *cmds)
 {
 	char	buf[500];

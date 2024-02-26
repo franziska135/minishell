@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*Unsetting a variable or function that was not previously set
-shall not be considered an error and does not cause the shell to
-abort.*/
 
 int	builtin_unset_loop(t_compound *cmds, t_env *hay, t_env *tmp, char *needle)
 {

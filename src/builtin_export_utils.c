@@ -92,7 +92,6 @@ char	*save_key(char *cmd1)
 	return (key);
 }
 
-//function is just called after a check whether a value exists
 char	*save_value(char *cmd1)
 {
 	int		i;

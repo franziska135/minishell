@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-//this function returns 1 if a builtin matched
-//0 if no builtin matched
-//open issues:
-//valgrind for cd, pwd, env, echo, unset okay
-//restructure export
-//if PATH is currently unset, value of PATH is empty
-//and function returns nothing
-//export & cd malloc protected
 int	if_builtin_execute(t_compound *cmds, t_simple *scmd, int initial_stdout)
 {
 	if (ft_strncmp(scmd->cmd[0], "echo\0", 6) == 0)

@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-//if one -n before string argument: no newline
-//infinite amt of -n possible
-//once anything not following the structure -nnn... is found: string printed
-
-//check_for_n returns index to last occurence of only -n if there are any
-//if i != 0 that means there is at least on -n
-//else just write all cmds
 void	builtin_echo(t_compound *cmds, t_simple *scmd)
 {
 	int	i;
@@ -54,9 +47,6 @@ void	if_echo_home(t_compound *cmds)
 		set_status(cmds, 1);
 }
 
-//utils function for echo, cuts 25 lines
-//if status = i, then -n was found, no newline at the end
-//if status = 0, no -n and all cmds are written out with nl
 void	builtin_echo_write(t_compound *cmds, t_simple *scmd, int i)
 {
 	if (scmd->cmd[i + 1])

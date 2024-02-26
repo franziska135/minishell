@@ -12,15 +12,16 @@
 
 #include "minishell.h"
 
-void	non_interactive_mode(void)
+void	non_interactive_mode(t_compound *cmds)
 {
-	g_signal = 0;
+	// g_signal = 0;
 	signal(SIGQUIT, &backslash_non_interactive);
 	signal(SIGINT, &ctrlc_non_interactive);
 }
 
-void	interactive_mode(void)
+void	interactive_mode(t_compound *cmds)
 {
+	cmds->exit_status = g_signal;
 	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_handler);

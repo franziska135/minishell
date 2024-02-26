@@ -59,7 +59,7 @@ char	**open_redir(t_compound *cmds, char **tokens)
 	redir_hd(cmds, tokens);
 	if (!tokens || g_signal == -1)
 		return (dpointer_free(tokens), NULL);
-	non_interactive_mode();
+	non_interactive_mode(cmds);
 	while (tokens[i])
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))

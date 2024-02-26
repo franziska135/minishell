@@ -29,7 +29,7 @@ static int	run_procces(t_compound	*cmds, char *str)
 {
 	char	**tokens;
 
-	non_interactive_mode();
+	non_interactive_mode(cmds);
 	if (!syntax(str, cmds))
 		return (free(str), 0);
 	tokens = lexis(str);
@@ -54,12 +54,7 @@ int	run_minishell(t_compound	*cmds)
 	cmds->exit_status = 0;
 	while (1)
 	{
-		interactive_mode();
-		if (g_signal == 130)
-		{
-			cmds->exit_status = 130;
-			g_signal = 0;
-		}
+		interactive_mode(cmds);
 		if (isatty(fileno(stdin)))
 			str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
 		else
@@ -71,6 +66,13 @@ int	run_minishell(t_compound	*cmds)
 		}
 		if (str == NULL)
 			break ;
+		if (g_signal == 130)
+		{
+			write (1, "check", 6);
+			cmds->exit_status = 130;
+			write (1, ft_itoa(cmds->exit_status), 5);
+			g_signal = 0;
+		}
 		if (!all_space(str))
 		{
 			add_history(str);

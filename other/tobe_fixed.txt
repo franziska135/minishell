@@ -8,13 +8,10 @@
 
 --//check the buffer size of pwd[]
 
+exit codes on signal
 
 ---------	MSTEST		------------
 
 -- signal with \
-
-
-
-
 
 ----- 	NORM CHECK

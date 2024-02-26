@@ -38,7 +38,7 @@ char	**parser(t_compound *cmds, char **tokens)
 	if (g_signal == -1)
 	{
 		g_signal = 0;
-		non_interactive_mode();
+		non_interactive_mode(cmds);
 		return (free(cmds->scmd), NULL);
 	}
 	if (!struct_cpy(cmds, tokens))

@@ -199,8 +199,8 @@ void	ft_free_single_node(t_env *node);
 void	set_status(t_compound *cmds, int i);
 
 //SIGNALS
-void	non_interactive_mode(void);
-void	interactive_mode(void);
+void	non_interactive_mode(t_compound *cmds);
+void	interactive_mode(t_compound *cmds);
 void	backslash_non_interactive(int signum);
 void	ctrlc_handler(int signum);
 void	ctrlc_non_interactive(int signum);

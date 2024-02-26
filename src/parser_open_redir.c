@@ -32,7 +32,7 @@ static void	redir_hd(t_compound *cmds, char **tokens)
 	i = 0;
 	pipe = 0;
 	signal_hd(cmds);
-	while (tokens[i] && g_signal != 0)
+	while (tokens[i] && g_signal == 0)
 	{
 		if (!ft_strncmp(tokens[i], "|", 2))
 			pipe++;

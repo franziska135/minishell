@@ -59,6 +59,7 @@ int	builtin_cd_home(t_compound *cmds)
 	node = find_node(cmds, "HOME");
 	if (node != NULL && node->value != NULL)
 	{
+		write (1, "check", 5);
 		if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)
@@ -98,7 +99,7 @@ int	builtin_cd_back(t_compound *cmds)
 	{
 		tmp = getcwd(pwd, 100);
 		if (chdir(node->value) == -1)
-			return (print_error("cd: ", "-: ", strerror(errno)), FALSE);
+			return (print_error("cd: ", node->value, strerror(errno)), FALSE);
 		if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)

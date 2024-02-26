@@ -2,6 +2,7 @@
 --pwd check for access
 --pwd check for access --> previous folder delete
 
+--error messages for cmd not found
 
 -- no env and unset oldpwd segfault
 

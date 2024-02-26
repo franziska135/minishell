@@ -39,10 +39,12 @@ int	update_env_ll(t_compound *cmds, char *variable, char *new_value)
 		node = find_node(cmds, variable);
 		if (node)
 		{
-			free(node->value);
+			if (node->value)
+				free(node->value);
 			node->value = ft_strdup(new_value);
 			if (!node->value)
 				return (FALSE);
+			node->env_display = TRUE;
 		}
 		else if (!node)
 		{

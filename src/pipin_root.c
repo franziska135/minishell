@@ -12,8 +12,10 @@
 
 #include "minishell.h"
 
-static void	child_clean(t_compound *cmds, int *fd)
+static void	clean_ch(t_compound *cmds, int *fd)
 {
+	close (fd[0]);
+	close (fd[1]);
 	struct_free(*cmds);
 	dpointer_free (cmds->envp);
 	cleanup_envp_ll(cmds->env_ll);
@@ -34,28 +36,19 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 			dup2(fd[1], STDOUT_FILENO);
 		close_fds(cmds, fd);
 		if (is_built_in(cmds->scmd[i].cmd[0]))
-			(if_builtin_execute(cmds, &cmds->scmd[i], -1), child_clean(cmds, fd));
+			(if_builtin_execute(cmds, &cmds->scmd[i], -1), clean_ch(cmds, fd));
 		path = path_finder(cmds, i);
 		if (!path)
 		{
 			cmds->exit_status = 127;
-			child_clean(cmds, fd);
+			clean_ch(cmds, fd);
 		}
 		if (!ft_transfer_ll_to_env_ptr(cmds))
 			exit(1);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
-		if (isit_path(path))
-		{
-			print_error(NULL, path, "is a directory");
-			cmds->exit_status = 126;
-		}
-		else
-		{
-			print_error(NULL, path, strerror(errno));
-			cmds->exit_status = 127;
-		}
+		which_error(cmds, path);
 	}
-	child_clean(cmds, fd);
+	clean_ch(cmds, fd);
 }
 
 static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)

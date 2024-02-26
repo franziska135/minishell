@@ -129,6 +129,8 @@ void	struct_free(t_compound cmds);
 void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		is_built_in(char *str);
+void	which_error(t_compound *cmds, char *path);
+void	print_eof_hd(char *delim, int *fd);
 int		isit_path(char *str);
 //t_env	*find_node(t_compound *cmds, char *needle);
 

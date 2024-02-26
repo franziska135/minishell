@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-//SIGINT = 2
-//SIGQUOT = 3
 void	non_interactive_mode(t_compound *cmds)
 {
 	if (g_signal == 2)

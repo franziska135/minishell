@@ -18,10 +18,6 @@ void	ctrlc_hd(int sig)
 	{
 		g_signal = 2;
 		ioctl(1, TIOCSTI, "\n");
-		// write(STDERR_FILENO, "\n", 1);
-		// rl_replace_line("", 0);
-		// rl_on_new_line();
-		// rl_redisplay();
 	}
 }
 

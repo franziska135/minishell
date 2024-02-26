@@ -1,51 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_builtins.c                                 :+:      :+:    :+:   */
+/*   main_env_ll.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmarggra <fmarggra@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:10:22 by fmarggra          #+#    #+#             */
-/*   Updated: 2024/02/20 16:25:26 by fmarggra         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:26:53 by fmarggra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//what happens on error?
-void	builtin_pwd(t_compound *cmds)
+t_env	*ft_new_env_node(char *key, char *value, int env_display)
 {
-	char	buf[500];
+	t_env	*ptr;
 
-	if (getcwd(buf, 500) != NULL)
+	ptr = (t_env *)malloc(sizeof(t_env));
+	if (!(ptr))
+		return (NULL);
+	ptr->key = ft_strdup(key);
+	if (!ptr->key)
+		return (free(ptr), NULL);
+	if (value)
 	{
-		write(1, buf, ft_strlen(buf));
-		write (1, "\n", 1);
-		cmds->exit_status = 0;
+		ptr->value = ft_strdup(value);
+		if (!ptr->value)
+			return (free(ptr->key), free(ptr), NULL);
 	}
 	else
-	{
-		print_error(NULL, "pwd", strerror(errno));
-		cmds->exit_status = 2;
-	}
+		ptr->value = NULL;
+	ptr->env_display = env_display;
+	ptr->next = NULL;
+	return (ptr);
 }
 
-void	print_error(char *str2, char *str3, char *str4)
+void	ft_add_last_node(t_env **lst, t_env *new_node)
 {
-	write (2, "fzsh: ", 6);
-	if (str2)
-		write (2, str2, ft_strlen(str2));
-	if (str3)
-	{
-		write (2, str3, ft_strlen(str3));
-		write (2, ": ", 2);
-	}
-	if (str4)
-		write (2, str4, ft_strlen(str4));
-	write (2, "\n", 1);
-}
+	t_env	*tmp;
 
-void	set_status(t_compound *cmds, int i)
-{
-	cmds->exit_status = i << 8;
+	tmp = *lst;
+	if (*lst == NULL)
+		*lst = new_node;
+	else
+	{
+		while (tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = new_node;
+	}
 }

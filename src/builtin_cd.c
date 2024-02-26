@@ -12,18 +12,10 @@
 
 #include "minishell.h"
 
-//at some point: check if PWd/OLDPWD is updated correctly
-//check the buffer size of pwd[]
-//find_needle & update blah do NOTHING, if anything is NULL/not found
-//but what happens with chdir and getcwd?
-//fix what happens if error statement is printed
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
-	if (scmd->cmd[1] != NULL && scmd->cmd[2])
-	{
-		print_error("cd: ", NULL, "too many arguments");
+	if (cd_error_check(scmd) == FALSE)
 		return (set_status(cmds, 1), FALSE);
-	}
 	else if (go_back_home(scmd) == TRUE)
 	{
 		if (builtin_cd_home(cmds) == FALSE)
@@ -49,8 +41,6 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 	return (set_status(cmds, 0), TRUE);
 }
 
-//what happens on errors? go back to history promt?
-//what's the error if chdir fails?
 int	builtin_cd_home(t_compound *cmds)
 {
 	t_env	*node;
@@ -59,7 +49,6 @@ int	builtin_cd_home(t_compound *cmds)
 	node = find_node(cmds, "HOME");
 	if (node != NULL && node->value != NULL)
 	{
-		write (1, "check", 5);
 		if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)

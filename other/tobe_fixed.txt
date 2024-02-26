@@ -2,13 +2,12 @@
 --pwd check for access
 --pwd check for access --> previous folder delete
 
---error messages for cmd not found
-
--- no env and unset oldpwd segfault
-
 -- running echo $? after "" has invalid read.
 
 --  check for piping after changing run minishell
+
+--//check the buffer size of pwd[]
+
 
 ---------	MSTEST		------------
 

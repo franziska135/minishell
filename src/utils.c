@@ -48,7 +48,6 @@ void	struct_nullifier(t_compound *cmds)
 		cmds->scmd[i].cmd = NULL;
 		cmds->scmd[i].in_fd = 0;
 		cmds->scmd[i].out_fd = 0;
-		cmds->scmd[i].builtin = 0;
 		i++;
 	}
 	cmds->nbr_scmd = 0;

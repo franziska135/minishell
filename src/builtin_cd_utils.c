@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+int	cd_error_check(t_simple *scmd)
+{
+	if (scmd->cmd[1] != NULL && scmd->cmd[2])
+	{
+		print_error("cd: ", NULL, "too many arguments");
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 int	go_back_home(t_simple *scmd)
 {
 	if (scmd->cmd[1] == NULL)

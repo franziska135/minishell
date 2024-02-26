@@ -12,47 +12,26 @@
 
 #include "minishell.h"
 
-//add checks for key/value = NULL -> what would that mean?
-//if one of them null, no variable value??
-t_env	*ft_new_env_node(char *key, char *value, int env_display)
+//creates a copy of envp stored in a linked list
+int	init_env_llist(t_compound *cmds, char **envp)
 {
-	t_env	*ptr;
+	t_env	*new_node;
+	int		i;
 
-	ptr = (t_env *)malloc(sizeof(t_env));
-	if (!(ptr))
-		return (NULL);
-	ptr->key = ft_strdup(key);
-	if (!ptr->key)
-		return (free(ptr), NULL);
-	if (value)
+	cmds->envp = NULL;
+	cmds->env_ll = NULL;
+	i = 0;
+	while (envp[i])
 	{
-		ptr->value = ft_strdup(value);
-		if (!ptr->value)
-			return (free(ptr->key), free(ptr), NULL);
+		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
+		i++;
 	}
-	else
-		ptr->value = NULL;
-	ptr->env_display = env_display;
-	ptr->next = NULL;
-	return (ptr);
+	initiate_static_env_variables(cmds);
+	return (1);
 }
 
-void	ft_add_last_node(t_env **lst, t_env *new_node)
-{
-	t_env	*tmp;
-
-	tmp = *lst;
-	if (*lst == NULL)
-		*lst = new_node;
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = new_node;
-	}
-}
-
-//find the = delimiter for key and value to split them
+//finds the '=' delimiter for key and value and splits them apart
 size_t	iterate_ultil_equal(const char *envp_i)
 {
 	int	i;
@@ -89,20 +68,11 @@ int	ft_init_ll_loop(t_compound *cmds, char **envp, t_env *new_node, int i)
 	return (TRUE);
 }
 
-int	initiate_static_env_variables(t_compound *cmds)
+//in case envp -i (no env), these var are set
+int	initiate_static_env_variables2(t_compound *cmds)
 {
 	t_env	*new_node;
-	char	pwd[100];
 
-	if (find_node(cmds, "OLDPWD") == NULL)
-	{
-		new_node = ft_new_env_node("OLDPWD", NULL, FALSE);
-		if (!new_node)
-			return (FALSE);
-		ft_add_last_node(&cmds->env_ll, new_node);
-	}
-	if (find_node(cmds, "PWD") == NULL)
-		update_env_ll(cmds, "PWD", getcwd(pwd, 100));
 	new_node = find_node(cmds, "_");
 	if (new_node)
 	{
@@ -119,21 +89,22 @@ int	initiate_static_env_variables(t_compound *cmds)
 	return (TRUE);
 }
 
-//a copy of the environment stored in a linked list
-int	init_env_llist(t_compound *cmds, char **envp)
+//in case envp -i (no env), these var are set
+int	initiate_static_env_variables(t_compound *cmds)
 {
 	t_env	*new_node;
-	int		i;
+	char	pwd[100];
 
-	cmds->envp = NULL;
-	cmds->env_ll = NULL;
-	i = 0;
-	while (envp[i])
+	if (find_node(cmds, "OLDPWD") == NULL)
 	{
-		if (ft_init_ll_loop(cmds, envp, new_node, i) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-		i++;
+		new_node = ft_new_env_node("OLDPWD", NULL, FALSE);
+		if (!new_node)
+			return (FALSE);
+		ft_add_last_node(&cmds->env_ll, new_node);
 	}
-	initiate_static_env_variables(cmds);
-	return (1);
+	if (find_node(cmds, "PWD") == NULL)
+		update_env_ll(cmds, "PWD", getcwd(pwd, 100));
+	if (initiate_static_env_variables2(cmds) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }

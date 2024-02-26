@@ -17,15 +17,13 @@ abort.*/
 
 int	builtin_unset_loop(t_compound *cmds, t_env *hay, t_env *tmp, char *needle)
 {
-	//needle = OLDPWD
-	//hay = head
 	if (hay && ft_strncmp(hay->key, needle, ft_strlen(hay->key)) == 0)
 	{
-        cmds->env_ll = hay->next;
-        hay->next = NULL;
-        ft_free_node(hay);
-        return 0;
-    }
+		cmds->env_ll = hay->next;
+		hay->next = NULL;
+		ft_free_node(hay);
+		return (0);
+	}
 	while (hay)
 	{
 		if (ft_strncmp(hay->key, needle, ft_strlen(hay->key)) == 0)

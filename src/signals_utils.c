@@ -12,16 +12,6 @@
 
 #include "minishell.h"
 
-// void	backslash_hd(int sig)
-// {
-// 	if (sig == SIGQUIT)
-// 	{
-// 		g_signal = -1;
-// 		printf("no stop");
-// 		ioctl(0, TIOCSTI, "\n");
-// 	}
-// }
-
 void	ctrlc_hd(int sig)
 {
 	if (sig == SIGINT)
@@ -31,7 +21,7 @@ void	ctrlc_hd(int sig)
 	}
 }
 
-//ctrl \ while prompting
+//ctrl \ while a process is running
 void	backslash_non_interactive(int signum)
 {
 	if (signum == SIGQUIT)
@@ -54,6 +44,7 @@ void	ctrlc_non_interactive(int sig)
 		rl_on_new_line();
 	}
 }
+
 //ctrl -c while a process is running
 void	ctrlc_handler(int sig)
 {
@@ -65,5 +56,4 @@ void	ctrlc_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	//ioctl(0, TIOCSTI, "\n");
 }

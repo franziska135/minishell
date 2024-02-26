@@ -23,7 +23,7 @@ void	print_eof_hd(char *delim, int *fd)
 void	finish_hd(char *gnl, int fd[2])
 {
 	free(gnl);
-	if (g_signal == -1)
+	if (g_signal != 0)
 	{
 		close (fd[0]);
 		fd[0] = -1;

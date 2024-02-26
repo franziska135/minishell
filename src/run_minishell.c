@@ -54,7 +54,6 @@ int	run_minishell(t_compound	*cmds)
 	cmds->exit_status = 0;
 	while (1)
 	{
-		g_signal = 0;
 		interactive_mode(cmds);
 		if (isatty(fileno(stdin)))
 			str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");

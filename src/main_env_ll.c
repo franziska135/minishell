@@ -82,13 +82,16 @@ int	initiate_static_env_variables3(t_compound *cmds)
 {
 	t_env	*new_node;
 	int		number;
+	char	*number2;
 
 	new_node = find_node(cmds, "SHLVL");
 	if (new_node)
 	{
 		number = ft_atoi(new_node->value) + 1;
-		if (adapt_node(cmds, "SHLVL=1", "SHLVL", ft_itoa(number)) == FALSE)
-			return (FALSE);
+		number2 = ft_itoa(number);
+		if (adapt_node(cmds, "SHLVL=1", "SHLVL", number2) == FALSE)
+			return (free (number2), FALSE);
+		free (number2);
 	}
 	else
 	{

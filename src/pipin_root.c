@@ -45,6 +45,7 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 		}
 		if (!ft_transfer_ll_to_env_ptr(cmds))
 			exit(1);
+		close (fd[0]);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 		which_error(cmds, path);
 	}
@@ -74,6 +75,8 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 		close (fd[0]);
 		if (cmds->scmd[i].out_fd > 2)
 			close (cmds->scmd[i].out_fd);
+		if (i < cmds->nbr_scmd -1)
+			wait(NULL);
 		i++;
 	}
 	return (1);
@@ -108,6 +111,8 @@ int	piping_root(t_compound *cmds)
 		&& cmds->scmd[0].out_fd != -1)
 	{
 		initial_stdout = dup(STDOUT_FILENO);
+		if (cmds->scmd[0].in_fd > 2)
+			close (cmds->scmd[0].in_fd);
 		if (cmds->scmd[0].out_fd != 0)
 		{
 			dup2(cmds->scmd[0].out_fd, STDOUT_FILENO);

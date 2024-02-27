@@ -92,8 +92,6 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 	if (pipe(fd) == -1)
 		return (-1);
 	gnl = readline("> ");
-	if (g_signal == 0 && gnl && gnl[ft_strlen(gnl) - 1] == '\n')
-		gnl[ft_strlen(gnl) - 1] = '\0';
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter, fd);
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0
@@ -106,8 +104,6 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 			print_eof_hd(delimiter, fd);
 			break ;
 		}
-		if (gnl && gnl[ft_strlen(gnl) - 1] == '\n' && g_signal == 0)
-			gnl[ft_strlen(gnl) - 1] = '\0';
 	}
 	finish_hd(gnl, fd);
 	return (fd[0]);

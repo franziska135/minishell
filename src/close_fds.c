@@ -25,9 +25,4 @@ void	close_fds(t_compound *cmds, int *fd)
 			close (cmds->scmd[i].out_fd);
 		i++;
 	}
-	if (fd)
-	{
-		close (fd[0]);
-		close (fd[1]);
-	}
 }

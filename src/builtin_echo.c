@@ -27,7 +27,7 @@ void	builtin_echo(t_compound *cmds, t_simple *scmd)
 		else
 		{
 			builtin_echo_write(cmds, scmd, 0);
-			write (1, "\n", 1);
+			write (10, "\n", 1);
 		}
 	}
 	else

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	ft_nlen(int n)
+static int	ft_nlen(long int n)
 {
 	int		i;
 
@@ -27,7 +27,7 @@ static int	ft_nlen(int n)
 	return (i);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long int n)
 {
 	long int	ncpy;
 	char		*nbr;

@@ -173,7 +173,9 @@ void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
 int		builtin_unset(t_compound *cmds, t_simple *scmd);
 int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
-void	builtin_exit(t_compound *cmds, t_simple *scmd, int fd);
+int		builtin_exit(t_compound *cmds, t_simple *scmd, int fd);
+int		too_many_arg(t_compound *cmds, t_simple *scmd);
+int		is_digit_within_long_max(t_compound *cmds, t_simple *scmd, int i);
 
 //UTILS EXPORT
 void	print_export(t_env *head);

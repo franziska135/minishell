@@ -40,7 +40,7 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 
-int		ft_atoi(const char *nptr);
+long int	ft_atoi(const char *nptr);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isascii(int c);
@@ -54,7 +54,7 @@ int		ft_tolower(int c);
 int		ft_lstsize(t_list *lst);
 int		ft_printf(const char *format, ...);
 
-char	*ft_itoa(int n);
+char	*ft_itoa(long int n);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strdup(const char *s);

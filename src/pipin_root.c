@@ -46,6 +46,7 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 		if (!ft_transfer_ll_to_env_ptr(cmds))
 			exit(1);
 		close (fd[0]);
+		close (fd[1]);
 		execve(path, cmds->scmd[i].cmd, cmds->envp);
 		which_error(cmds, path);
 	}

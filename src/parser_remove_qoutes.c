@@ -33,7 +33,7 @@ static size_t	qout_counter(char *str)
 			qout = 2;
 			nbr_qouts++;
 		}
-		else if (str[i] == '\'' && qout == 1 || str[i] == '"' && qout == 2)
+		else if ((str[i] == '\'' && qout == 1) || (str[i] == '"' && qout == 2))
 			qout = 0;
 		i++;
 	}

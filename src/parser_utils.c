@@ -22,7 +22,6 @@ int	is_delimiter(char c)
 int	in_quot(char *str, size_t n)
 {
 	size_t	i;
-	size_t	j;
 	int		res;
 
 	i = 0;

@@ -47,9 +47,7 @@ static int	run_procces(t_compound	*cmds, char *str)
 
 int	run_minishell(t_compound	*cmds)
 {
-	HIST_ENTRY	**history_list;
 	char		*str;
-	int			i;
 
 	cmds->exit_status = 0;
 	while (1)

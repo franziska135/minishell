@@ -15,7 +15,6 @@
 void	builtin_echo(t_compound *cmds, t_simple *scmd)
 {
 	int	i;
-	int	start;
 
 	i = 0;
 	set_status(cmds, 0);

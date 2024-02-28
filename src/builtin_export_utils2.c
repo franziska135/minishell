@@ -15,7 +15,6 @@
 t_env	*find_node(t_compound *cmds, char *needle)
 {
 	t_env	*haystack;
-	char	*str;
 	size_t	h_length;
 
 	h_length = 0;

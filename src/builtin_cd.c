@@ -115,9 +115,7 @@ int	builtin_cd_back(t_compound *cmds)
 
 int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 {
-	t_env	*node;
 	char	pwd[500];
-	char	*tmp;
 	char	*storage;
 
 	storage = getcwd(pwd, 500);

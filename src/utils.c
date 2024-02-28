@@ -27,7 +27,7 @@ void	dpointer_free(char **str)
 
 void	struct_free(t_compound cmds)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
 	while (i < cmds.nbr_scmd)
@@ -40,7 +40,7 @@ void	struct_free(t_compound cmds)
 
 void	struct_nullifier(t_compound *cmds)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
 	while (i < cmds->nbr_scmd)

@@ -28,7 +28,7 @@ char	*pro_ft_strjoin(char *s1, char *s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
-	int		i;
+	size_t	i;
 	char	*ptr;
 
 	s1_len = pro_ft_strlen(s1);

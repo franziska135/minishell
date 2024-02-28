@@ -69,8 +69,6 @@ void	builtin_export_print(t_env *next_print)
 
 void	check_pwd_display(t_env *node)
 {
-	char	*value;
-
 	if (!node->value)
 		node->env_display = FALSE;
 	else if (node->value)

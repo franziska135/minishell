@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	clean_ch(t_compound *cmds, int *fd)
+static void	cl_ch(t_compound *cmds, int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
@@ -22,7 +22,7 @@ static void	clean_ch(t_compound *cmds, int *fd)
 	exit(cmds->exit_status);
 }
 
-static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
+static void	child_process(t_compound *cmds, int *fd, size_t i, int initial_stdin)
 {
 	char	*path;
 
@@ -34,32 +34,32 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
 		else if (i != cmds->nbr_scmd - 1)
 			dup2(fd[1], STDOUT_FILENO);
-		close_fds(cmds, fd);
+		close_fds(cmds);
 		if (is_built_in(cmds->scmd[i].cmd[0]))
-			(if_builtin_execute(cmds, &cmds->scmd[i], -1, fd), clean_ch(cmds, fd));
+			(if_builtin_execute(cmds, &cmds->scmd[i], -1, fd), cl_ch(cmds, fd));
 		path = path_finder(cmds, i);
 		if (!path)
 		{
 			cmds->exit_status = 127;
-			clean_ch(cmds, fd);
+			cl_ch(cmds, fd);
 		}
 		if (!ft_transfer_ll_to_env_ptr(cmds))
 			exit(1);
 		(close(fd[0]), close(fd[1]));
 		(execve(path, cmds->scmd[i].cmd, cmds->envp), which_error(cmds, path));
 	}
-	clean_ch(cmds, fd);
+	cl_ch(cmds, fd);
 }
 
 static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < cmds->nbr_scmd)
 	{
 		if (pipe(fd) == -1)
-			return (close_fds(cmds, fd), close(std_in), 0);
+			return (close_fds(cmds), close(std_in), 0);
 		if (cmds->scmd[i].in_fd > 2)
 			(dup2(cmds->scmd[i].in_fd, 0), close(cmds->scmd[i].in_fd));
 		pid[i] = fork();
@@ -80,10 +80,10 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 
 static int	piping(t_compound *cmds)
 {
-	int	fd[2];
-	int	i;
-	int	pid[1024];
-	int	initial_stdin;
+	int		fd[2];
+	size_t	i;
+	int		pid[1024];
+	int		initial_stdin;
 
 	initial_stdin = dup(STDIN_FILENO);
 	if (!parent_process(cmds, fd, pid, initial_stdin))

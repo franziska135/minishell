@@ -55,7 +55,7 @@ int	run_minishell(t_compound	*cmds)
 	while (1)
 	{
 		interactive_mode(cmds);
-		str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m 🐋 ");
+		str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m 🐋 \x1b[0m ");
 		if (str == NULL)
 			break ;
 		if (!all_space(str))

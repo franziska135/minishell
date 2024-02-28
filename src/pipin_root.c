@@ -59,13 +59,12 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 	while (i < cmds->nbr_scmd)
 	{
 		if (pipe(fd) == -1)
-			return (close(std_in), 0);
+			return (close_fds(cmds, fd), close(std_in), 0);
 		if (cmds->scmd[i].in_fd > 2)
-		{
-			dup2(cmds->scmd[i].in_fd, STDIN_FILENO);
-			close(cmds->scmd[i].in_fd);
-		}
+			(dup2(cmds->scmd[i].in_fd, 0), close(cmds->scmd[i].in_fd));
 		pid[i] = fork();
+		if (pid[i] == -1)
+			return (fork_fail(cmds, fd, std_in), 0);
 		if (pid[i] == 0)
 			child_process(cmds, fd, i, std_in);
 		close(fd[1]);
@@ -76,7 +75,6 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 			close(cmds->scmd[i].out_fd);
 		i++;
 	}
-	i = 0;
 	return (1);
 }
 
@@ -89,7 +87,7 @@ static int	piping(t_compound *cmds)
 
 	initial_stdin = dup(STDIN_FILENO);
 	if (!parent_process(cmds, fd, pid, initial_stdin))
-		return (0);
+		return (struct_free(*cmds), 0);
 	dup2(initial_stdin, STDIN_FILENO);
 	close(initial_stdin);
 	close(fd[0]);

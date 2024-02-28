@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -g -I include/
+CFLAGS = -Wall -Wextra -Werror -g -I include/
 RM = rm -rf
 # ***************************************************************************
 

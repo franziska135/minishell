@@ -132,6 +132,8 @@ int		is_built_in(char *str);
 void	which_error(t_compound *cmds, char *path);
 void	print_eof_hd(char *delim, int *fd);
 void	finish_hd(char *gnl, int fd[2]);
+void	fork_fail(t_compound *cmds, int *fd, int initial_stdin);
+int	parent_fail(t_compound *cmds, int fd[2], int in_std);
 int		isit_path(char *str);
 //t_env	*find_node(t_compound *cmds, char *needle);
 

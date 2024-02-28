@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*path_access(t_compound *cmds, char *path, char *cmd)
+static char	*path_access(char *path, char *cmd)
 {
 	char	**path_split;
 	char	*tmp;
@@ -72,6 +72,6 @@ char	*path_finder(t_compound *cmds, int pipe)
 	}
 	env = find_node(cmds, "PATH");
 	if (env && env->value)
-		return (path_access(cmds, env->value, cmds->scmd[pipe].cmd[0]));
+		return (path_access(env->value, cmds->scmd[pipe].cmd[0]));
 	return (NULL);
 }

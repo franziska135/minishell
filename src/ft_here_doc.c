@@ -40,7 +40,6 @@ static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
 {
 	t_env	*env;
 	char	*key;
-	size_t	i;
 	int		ret;
 
 	str++;
@@ -93,7 +92,7 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 		return (-1);
 	gnl = readline("> ");
 	if (!gnl && errno != ENOMEM)
-		print_eof_hd(delimiter, fd);
+		print_eof_hd(delimiter);
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0
 		&& g_signal == 0)
 	{
@@ -101,7 +100,7 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 		gnl = readline("> ");
 		if (!gnl && errno != ENOMEM)
 		{
-			print_eof_hd(delimiter, fd);
+			print_eof_hd(delimiter);
 			break ;
 		}
 	}

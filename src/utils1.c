@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	print_eof_hd(char *delim, int *fd)
+void	print_eof_hd(char *delim)
 {
 	write (2, "fzsh: warning: here-document at ", 34);
 	write (2, "line 1 delimited by end-of-file (wanted `", 42);
@@ -43,7 +43,7 @@ int	parent_fail(t_compound *cmds, int fd[2], int in_std)
 
 void	fork_fail(t_compound *cmds, int *fd, int initial_stdin)
 {
-	close_fds(cmds, fd);
+	close_fds(cmds);
 	close(fd[0]);
 	close(fd[1]);
 	close(initial_stdin);

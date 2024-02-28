@@ -54,7 +54,6 @@ static char	**tokenizer(char *str)
 {
 	char	**tokens;
 	size_t	i;
-	size_t	len;
 
 	tokens = (char **)malloc(sizeof(char *) * (token_counter(str) + 1));
 	if (!tokens)

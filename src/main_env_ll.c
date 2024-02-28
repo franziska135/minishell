@@ -20,6 +20,7 @@ int	init_env_llist(t_compound *cmds, char **envp)
 
 	cmds->envp = NULL;
 	cmds->env_ll = NULL;
+	new_node = NULL;
 	i = 0;
 	while (envp[i])
 	{

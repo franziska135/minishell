@@ -65,6 +65,7 @@ int	builtin_unset(t_compound *cmds, t_simple *scmd)
 
 	i = 1;
 	needle = NULL;
+	tmp = NULL;
 	if (!scmd->cmd[1])
 		return (set_status(cmds, 0), 0);
 	if (scmd->cmd[1][0] == '-' && scmd->cmd[1][1])

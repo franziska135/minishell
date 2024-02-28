@@ -108,7 +108,11 @@ int	builtin_cd_back(t_compound *cmds)
 int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 {
 	char	pwd[500];
-	
+	char	*storage;
+
+	storage = getcwd(pwd, 500);
+	if (!storage)
+		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	if (chdir(scmd->cmd[1]) == -1)
 		return (print_error("cd: ", scmd->cmd[1], strerror(errno)), FALSE);
 	if (update_oldpwd(cmds, cmds->pwd) == FALSE)

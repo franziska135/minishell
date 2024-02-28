@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void	close_fds(t_compound *cmds, int *fd)
+void	close_fds(t_compound *cmds)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < cmds->nbr_scmd)

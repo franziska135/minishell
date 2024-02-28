@@ -31,12 +31,12 @@ int	exit_error_check(t_compound *cmds, t_simple *scmd)
 	}
 	if (scmd->cmd[1][0] == '-' || scmd->cmd[1][0] == '+')
 		i++;
-	if (is_digit_within_long_max(cmds, scmd, i) == FALSE)
+	if (is_digit_within_long_max(scmd, i) == FALSE)
 		return (set_status(cmds, 2), 2);
 	return (normalize_exit_code(ft_atoi(scmd->cmd[1])));
 }
 
-int	is_digit_within_long_max(t_compound *cmds, t_simple *scmd, int i)
+int	is_digit_within_long_max(t_simple *scmd, int i)
 {
 	while (scmd->cmd[1][i])
 	{

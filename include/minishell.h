@@ -102,7 +102,7 @@ int		is_delimiter(char c);
 int		in_quot(char *str, size_t n);
 size_t	token_counter(char *str);
 char	**open_redir(t_compound *cmds, char **tokens);
-void	close_fds(t_compound *cmds, int *fd);
+void	close_fds(t_compound *cmds);
 void	ambiguous(t_compound *cmds, char **tokens);
 int		ft_word_count(char *str, char *flag);
 char	*create_str(char *s, int *i, int len, char flag);
@@ -131,10 +131,10 @@ void	dpointer_free(char **str);
 void	struct_nullifier(t_compound *cmds);
 int		is_built_in(char *str);
 void	which_error(t_compound *cmds, char *path);
-void	print_eof_hd(char *delim, int *fd);
+void	print_eof_hd(char *delim);
 void	finish_hd(char *gnl, int fd[2]);
 void	fork_fail(t_compound *cmds, int *fd, int initial_stdin);
-int	parent_fail(t_compound *cmds, int fd[2], int in_std);
+int		parent_fail(t_compound *cmds, int fd[2], int in_std);
 int		isit_path(char *str);
 //t_env	*find_node(t_compound *cmds, char *needle);
 
@@ -172,7 +172,7 @@ int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *nee
 int		builtin_export(t_compound *cmds, t_simple *scmd);
 int		builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2]);
 int		too_many_arg(t_compound *cmds, t_simple *scmd);
-int		is_digit_within_long_max(t_compound *cmds, t_simple *scmd, int i);
+int		is_digit_within_long_max(t_simple *scmd, int i);
 
 //UTILS CD
 void	set_flag_pwd(t_compound *cmds);

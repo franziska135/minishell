@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	pipe_argument(char *str, int i)
+static int	pipe_argument(char *str, size_t i)
 {
 	i++;
 	while (i < ft_strlen(str) && str[i] != '|')
@@ -48,7 +48,7 @@ static int	syntax_pipe(char *str)
 	return (0);
 }
 
-static int	redir_argument(char *str, int i)
+static int	redir_argument(char *str, size_t i)
 {
 	i++;
 	if (str[i - 1] == '>' && (str[i] == '>' || str[i] == '|'))

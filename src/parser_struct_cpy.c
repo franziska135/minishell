@@ -54,8 +54,7 @@ static int	write_struct(t_compound *cmds, char **tokens)
 
 int	struct_cpy(t_compound *cmds, char **tokens)
 {
-	int	i;
-	int	j;
+	size_t	i;
 
 	if (!malloc_struct(cmds, tokens))
 	{

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void clean_ch(t_compound *cmds, int *fd)
+static void	clean_ch(t_compound *cmds, int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
@@ -22,12 +22,13 @@ static void clean_ch(t_compound *cmds, int *fd)
 	exit(cmds->exit_status);
 }
 
-static void child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
+static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 {
-	char *path;
+	char	*path;
 
 	close(initial_stdin);
-	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1 && cmds->scmd[i].cmd)
+	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1
+		&& cmds->scmd[i].cmd)
 	{
 		if (cmds->scmd[i].out_fd != 0)
 			dup2(cmds->scmd[i].out_fd, STDOUT_FILENO);
@@ -44,17 +45,15 @@ static void child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 		}
 		if (!ft_transfer_ll_to_env_ptr(cmds))
 			exit(1);
-		close(fd[0]);
-		close(fd[1]);
-		execve(path, cmds->scmd[i].cmd, cmds->envp);
-		which_error(cmds, path);
+		(close(fd[0]), close(fd[1]));
+		(execve(path, cmds->scmd[i].cmd, cmds->envp), which_error(cmds, path));
 	}
 	clean_ch(cmds, fd);
 }
 
-static int parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
+static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < cmds->nbr_scmd)
@@ -81,21 +80,21 @@ static int parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 	return (1);
 }
 
-static int piping(t_compound *cmds)
+static int	piping(t_compound *cmds)
 {
-	int fd[2];
-	int i;
-	int pid[1024];
-	int initial_stdin;
+	int	fd[2];
+	int	i;
+	int	pid[1024];
+	int	initial_stdin;
 
 	initial_stdin = dup(STDIN_FILENO);
-	i = 0;
 	if (!parent_process(cmds, fd, pid, initial_stdin))
 		return (0);
 	dup2(initial_stdin, STDIN_FILENO);
 	close(initial_stdin);
 	close(fd[0]);
 	close(fd[1]);
+	i = 0;
 	while (i < cmds->nbr_scmd -1)
 	{
 		if (waitpid(pid[i], NULL, 0) == -1)
@@ -107,11 +106,13 @@ static int piping(t_compound *cmds)
 	return (1);
 }
 
-int piping_root(t_compound *cmds)
+int	piping_root(t_compound *cmds)
 {
-	int initial_stdout;
+	int	initial_stdout;
 
-	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd && is_built_in(cmds->scmd[0].cmd[0]) && cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
+	if (cmds->nbr_scmd == 1 && cmds->scmd[0].cmd
+		&& is_built_in(cmds->scmd[0].cmd[0])
+		&& cmds->scmd[0].in_fd != -1 && cmds->scmd[0].out_fd != -1)
 	{
 		initial_stdout = dup(STDOUT_FILENO);
 		if (cmds->scmd[0].in_fd > 2)

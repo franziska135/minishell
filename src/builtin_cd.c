@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-void	set_flag_pwd(t_compound *cmds)
-{
-	t_env	*node;
-
-	node = find_node(cmds, "PWD");
-	if (node)
-	{
-		if (node->env_display == 3)
-			node->env_display = 2;
-	}
-}
-
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
 	if (cd_error_check(scmd) == FALSE)
@@ -51,56 +39,6 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 			return (set_status(cmds, 1), FALSE);
 	}
 	return (set_flag_pwd(cmds), set_status(cmds, 0), TRUE);
-}
-
-void	update_env_ll_oldpwd(t_compound *cmds)
-{
-	t_env	*node;
-
-	node = find_node(cmds, "OLDPWD");
-	if (node->value)
-		free(node->value);
-	node->value = NULL;
-	node->env_display = FALSE;
-}
-
-int	update_oldpwd(t_compound *cmds, char *storage)
-{
-	t_env	*node;
-	char	*dup_pwd;
-
-	node = find_node(cmds, "OLDPWD");
-	if (!node)
-		return (TRUE);
-	node = find_node(cmds, "PWD");
-	if (node && node->env_display == 2)
-	{
-		if (update_env_ll(cmds, "OLDPWD", storage) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-	}
-	else if (!node->value || node->env_display == 3)
-		update_env_ll_oldpwd(cmds);
-	else if (node->value != NULL || node->env_display < 1)
-	{
-		dup_pwd = ft_strdup(node->value);
-		if (update_env_ll(cmds, "OLDPWD", dup_pwd) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), free(dup_pwd), FALSE);
-		free(dup_pwd);
-	}
-	return (TRUE);
-}
-
-int	update_pwd(t_compound *cmds, char *new_value)
-{
-	t_env	*pwd;
-
-	pwd = find_node(cmds, "PWD");
-	if (pwd != NULL && pwd->env_display < 2)
-	{
-		if (update_env_ll(cmds, "PWD", new_value) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-	}
-	return (TRUE);
 }
 
 int	builtin_cd_home(t_compound *cmds)

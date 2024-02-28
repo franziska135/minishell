@@ -14,7 +14,7 @@
 
 int	pwd_unset(t_compound *cmds, char *needle)
 {
-	t_env *node;
+	t_env	*node;
 
 	if (ft_strncmp(needle, "PWD", 4) == 0)
 	{

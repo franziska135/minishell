@@ -20,7 +20,7 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
-long int ft_atoi(const char *nptr)
+long int	ft_atoi(const char *nptr)
 {
 	int			i;
 	long int	result;

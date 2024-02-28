@@ -157,12 +157,6 @@ size_t	iterate_ultil_equal(const char *envp_i);
 int		if_builtin_execute(t_compound *compound, t_simple *simple_command, int fd);
 void	builtin_pwd(t_compound *cmds);
 int		builtin_cd(t_simple *simple_command, t_compound *cmds);
-int		go_back_home(t_simple *scmd);
-int		cd_error_check(t_simple *scmd);
-int		builtin_cd_home(t_compound *cmds);
-int		builtin_cd_dotdot(t_compound *cmds);
-int		builtin_cd_back(t_compound *cmds);
-int		builtin_cd_path(t_compound *cmds, t_simple *scmd);
 int		update_env_ll(t_compound *cmds, char *variable, char *new_value);
 void	builtin_env(t_env *head, t_simple *scmd, t_compound *cmds);
 void	builtin_echo(t_compound *cmds, t_simple *s_cmd);
@@ -176,6 +170,17 @@ int		builtin_export(t_compound *cmds, t_simple *scmd);
 int		builtin_exit(t_compound *cmds, t_simple *scmd, int fd);
 int		too_many_arg(t_compound *cmds, t_simple *scmd);
 int		is_digit_within_long_max(t_compound *cmds, t_simple *scmd, int i);
+
+//UTILS CD
+void	set_flag_pwd(t_compound *cmds);
+int		go_back_home(t_simple *scmd);
+int		cd_error_check(t_simple *scmd);
+int		builtin_cd_home(t_compound *cmds);
+int		builtin_cd_dotdot(t_compound *cmds);
+int		builtin_cd_back(t_compound *cmds);
+int		builtin_cd_path(t_compound *cmds, t_simple *scmd);
+int		update_oldpwd(t_compound *cmds, char *storage);
+int		update_pwd(t_compound *cmds, char *new_value);
 
 //UTILS EXPORT
 void	print_export(t_env *head);

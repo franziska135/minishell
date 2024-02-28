@@ -73,7 +73,7 @@ void	print_export(t_env *head)
 			return ;
 		last_printed = next_print;
 		if (ft_strncmp(next_print->key, "_", 2) != 0
-				&& next_print->env_display < 2)
+			&& next_print->env_display < 2)
 			builtin_export_print(next_print);
 		current = current->next;
 	}

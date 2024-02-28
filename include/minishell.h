@@ -156,7 +156,7 @@ size_t	iterate_ultil_equal(const char *envp_i);
 
 
 //BUILTIN
-int		if_builtin_execute(t_compound *compound, t_simple *simple_command, int fd);
+int		if_builtin_execute(t_compound *cmds, t_simple *scmd, int fdout, int fd[2]);
 void	builtin_pwd(t_compound *cmds);
 int		builtin_cd(t_simple *simple_command, t_compound *cmds);
 int		update_env_ll(t_compound *cmds, char *variable, char *new_value);
@@ -169,7 +169,7 @@ void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
 int		builtin_unset(t_compound *cmds, t_simple *scmd);
 int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
-int		builtin_exit(t_compound *cmds, t_simple *scmd, int fd);
+int		builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2]);
 int		too_many_arg(t_compound *cmds, t_simple *scmd);
 int		is_digit_within_long_max(t_compound *cmds, t_simple *scmd, int i);
 

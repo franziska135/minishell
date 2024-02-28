@@ -61,7 +61,7 @@ int	too_many_arg(t_compound *cmds, t_simple *scmd)
 	return (TRUE);
 }
 
-int	builtin_exit(t_compound *cmds, t_simple *scmd, int initial_stdout)
+int	builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2])
 {
 	int	status;
 
@@ -72,7 +72,12 @@ int	builtin_exit(t_compound *cmds, t_simple *scmd, int initial_stdout)
 	cleanup_envp_ll(cmds->env_ll);
 	free_double_ptr(cmds->envp);
 	struct_free(*cmds);
-	if (initial_stdout != -1)
-		close(initial_stdout);
-	exit(status);
+	if (fdout != -1)
+		close(fdout);
+	if (fd != NULL)
+	{
+		close (fd[0]);
+		close (fd[0]);
+	}
+	exit(status);ma
 }

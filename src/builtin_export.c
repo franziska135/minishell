@@ -25,6 +25,20 @@ int	save_key_and_value(char **key, char **value, char *current_cmd)
 	}
 	return (TRUE);
 }
+void	check_pwd_display(t_env *node)
+{
+	char	pwd[500];
+	char	*value;
+
+	value = getcwd(pwd, 500);
+	if (node->env_display == 2)
+	{
+		if (node->value)
+				free(node->value);
+		node->value = ft_strdup(value);
+	}
+		node->env_display = TRUE;
+}
 
 //if there is an equal sign but no value, variable is set to null
 //if there is an equal sign and value, variable is set to value
@@ -53,6 +67,8 @@ int	adapt_node(t_compound *cmds, char *current_cmd, char *key, char *value)
 			new_node->env_display = TRUE;
 		}
 	}
+	else if (ft_strncmp(new_node->key, "PWD", 4) == 0)
+		check_pwd_display(new_node);
 	return (TRUE);
 }
 

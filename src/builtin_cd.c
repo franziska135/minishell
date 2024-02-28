@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+void	set_flag_pwd(t_compound *cmds)
+{
+	t_env	*node;
+
+	node = find_node(cmds, "PWD");
+	if (node)
+	{
+		if (node->env_display == 3)
+			node->env_display = 2;
+	}
+}
+
 int	builtin_cd(t_simple *scmd, t_compound *cmds)
 {
 	if (cd_error_check(scmd) == FALSE)
@@ -38,22 +50,76 @@ int	builtin_cd(t_simple *scmd, t_compound *cmds)
 		if (builtin_cd_path(cmds, scmd) == FALSE)
 			return (set_status(cmds, 1), FALSE);
 	}
-	return (set_status(cmds, 0), TRUE);
+	return (set_flag_pwd(cmds), set_status(cmds, 0), TRUE);
+}
+
+void	update_env_ll_oldpwd(t_compound *cmds)
+{
+	t_env	*node;
+
+	node = find_node(cmds, "OLDPWD");
+	if (node->value)
+		free(node->value);
+	node->value = NULL;
+	node->env_display = FALSE;
+}
+
+int	update_oldpwd(t_compound *cmds, char *storage)
+{
+	t_env	*node;
+	char	*dup_pwd;
+
+	node = find_node(cmds, "OLDPWD");
+	if (!node)
+		return (TRUE);
+	node = find_node(cmds, "PWD");
+	if (node && node->env_display == 2)
+	{
+		if (update_env_ll(cmds, "OLDPWD", storage) == FALSE)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
+	}
+	else if (!node->value || node->env_display == 3)
+		update_env_ll_oldpwd(cmds);
+	else if (node->value != NULL || node->env_display < 1)
+	{
+		dup_pwd = ft_strdup(node->value);
+		if (update_env_ll(cmds, "OLDPWD", dup_pwd) == FALSE)
+			return (print_error(NULL, NULL, strerror(errno)), free(dup_pwd), FALSE);
+		free(dup_pwd);
+	}
+	return (TRUE);
+}
+
+int	update_pwd(t_compound *cmds, char *new_value)
+{
+	t_env	*pwd;
+
+	pwd = find_node(cmds, "PWD");
+	if (pwd != NULL && pwd->env_display < 2)
+	{
+		if (update_env_ll(cmds, "PWD", new_value) == FALSE)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
+	}
+	return (TRUE);
 }
 
 int	builtin_cd_home(t_compound *cmds)
 {
 	t_env	*node;
-	char	pwd[100];
+	char	pwd[500];
+	char	*storage;
 
 	node = find_node(cmds, "HOME");
 	if (node != NULL && node->value != NULL)
 	{
-		if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
+		storage = getcwd(pwd, 500);
+		if (!storage)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)
 			return (print_error("cd: ", node->value, strerror(errno)), FALSE);
-		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+		if (update_oldpwd(cmds, storage) == FALSE)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
+		if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	}
 	else
@@ -67,12 +133,16 @@ int	builtin_cd_home(t_compound *cmds)
 int	builtin_cd_dotdot(t_compound *cmds)
 {
 	char	pwd[100];
+	char	*storage;
 
-	if (update_env_ll(cmds, "OLDPWD", getcwd(pwd, 100)) == FALSE)
+	storage = getcwd(pwd, 500);
+	if (!storage)
 		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	if (chdir("..") == -1)
 		return (print_error("cd: ", "..: ", strerror(errno)), FALSE);
-	if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+	if (update_oldpwd(cmds, storage) == FALSE)
+		return (print_error(NULL, NULL, strerror(errno)), FALSE);
+	if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	return (TRUE);
 }
@@ -81,17 +151,19 @@ int	builtin_cd_back(t_compound *cmds)
 {
 	char	pwd[100];
 	t_env	*node;
-	char	*tmp;
+	char	*storage;
 
 	node = find_node(cmds, "OLDPWD");
 	if (node != NULL && node->value != NULL)
 	{
-		tmp = getcwd(pwd, 100);
+		storage = getcwd(pwd, 500);
+		if (!storage)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)
 			return (print_error("cd: ", node->value, strerror(errno)), FALSE);
-		if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)
+		if (update_oldpwd(cmds, storage) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
+		if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		builtin_pwd(cmds);
 	}
@@ -108,26 +180,16 @@ int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 	t_env	*node;
 	char	pwd[100];
 	char	*tmp;
+	char	*storage;
 
-	tmp = getcwd(pwd, 100);
-	if (!tmp)
-	{
-		set_status(cmds, 1);
-		print_error("cd: ", scmd->cmd[1], strerror(errno));
-		return (0);
-	}
+	storage = getcwd(pwd, 500);
+	if (!storage)
+		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	if (chdir(scmd->cmd[1]) == -1)
-	{
-		set_status(cmds, 1);
-		print_error("cd: ", scmd->cmd[1], strerror(errno));
-		return (0);
-	}
-	else
-	{
-		if (update_env_ll(cmds, "OLDPWD", tmp) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-		if (update_env_ll(cmds, "PWD", getcwd(pwd, 100)) == FALSE)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
-	}
+		return (print_error("cd: ", scmd->cmd[1], strerror(errno)), FALSE);
+	if (update_oldpwd(cmds, storage) == FALSE)
+		return (print_error(NULL, NULL, strerror(errno)), FALSE);
+	if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
+		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	return (TRUE);
 }

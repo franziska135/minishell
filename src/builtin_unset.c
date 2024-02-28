@@ -12,8 +12,25 @@
 
 #include "minishell.h"
 
+int	pwd_unset(t_compound *cmds, char *needle)
+{
+	t_env *node;
+
+	if (ft_strncmp(needle, "PWD", 4) == 0)
+	{
+		node = find_node(cmds, needle);
+		if (!node)
+			return (FALSE);
+		node->env_display = 3;
+		return (TRUE);
+	}
+	return (FALSE);
+}
+
 int	builtin_unset_loop(t_compound *cmds, t_env *hay, t_env *tmp, char *needle)
 {
+	if (pwd_unset(cmds, needle) == TRUE)
+		return (1);
 	if (hay && ft_strncmp(hay->key, needle, ft_strlen(hay->key)) == 0)
 	{
 		cmds->env_ll = hay->next;

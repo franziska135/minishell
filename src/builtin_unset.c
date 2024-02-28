@@ -22,6 +22,9 @@ int	pwd_unset(t_compound *cmds, char *needle)
 		if (!node)
 			return (FALSE);
 		node->env_display = 3;
+		if (node->value)
+			free(node->value);
+		node->value = NULL;
 		return (TRUE);
 	}
 	return (FALSE);

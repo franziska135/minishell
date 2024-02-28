@@ -17,7 +17,7 @@ SRCS = 	src/builtin_builtins.c src/expand.c src/parser_split.c\
 		src/builtin_export_utils.c src/parser_open_redir.c src/utils1.c\
 		src/builtin_main.c src/parser_redir.c src/utils.c src/builtin_unset.c\
 		src/parser_remove_qoutes.c src/write_expansion.c src/close_fds.c\
-		src/parser_scmds_expand.c
+		src/parser_scmds_expand.c src/builtin_cd_utils2.c
 
 OBJDIR = ./obj
 OBJS = $(patsubst src/%.c,$(OBJDIR)/%.o,$(SRCS))

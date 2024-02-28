@@ -195,6 +195,7 @@ int		export_error_check(t_compound *cmds, char *new_var);
 char	*save_key(char *cmd1);
 char	*save_value(char *cmd1);
 void	free_export(char *key, char *value);
+void	check_pwd_display(t_env *node);
 
 //TRANSFORM LL TO DPTR FOR EXECV
 int		ft_transfer_ll_to_env_ptr(t_compound *cmds);

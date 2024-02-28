@@ -69,15 +69,10 @@ void	builtin_export_print(t_env *next_print)
 
 void	check_pwd_display(t_env *node)
 {
-	char	pwd[500];
 	char	*value;
 
-	value = getcwd(pwd, 500);
-	if (node->env_display == 2)
-	{
-		if (node->value)
-			free(node->value);
-		node->value = ft_strdup(value);
-	}
-	node->env_display = TRUE;
+	if (!node->value)
+		node->env_display = FALSE;
+	else if (node->value)
+		node->env_display = TRUE;
 }

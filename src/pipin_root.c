@@ -36,7 +36,7 @@ static void	child_process(t_compound *cmds, int *fd, int i, int initial_stdin)
 			dup2(fd[1], STDOUT_FILENO);
 		close_fds(cmds, fd);
 		if (is_built_in(cmds->scmd[i].cmd[0]))
-			(if_builtin_execute(cmds, &cmds->scmd[i], -1), clean_ch(cmds, fd));
+			(if_builtin_execute(cmds, &cmds->scmd[i], -1, fd), clean_ch(cmds, fd));
 		path = path_finder(cmds, i);
 		if (!path)
 		{
@@ -120,7 +120,7 @@ int	piping_root(t_compound *cmds)
 			dup2(cmds->scmd[0].out_fd, STDOUT_FILENO);
 			close(cmds->scmd[0].out_fd);
 		}
-		if_builtin_execute(cmds, &cmds->scmd[0], initial_stdout);
+		if_builtin_execute(cmds, &cmds->scmd[0], initial_stdout, NULL);
 		dup2(initial_stdout, STDOUT_FILENO);
 		close(initial_stdout);
 	}

@@ -21,6 +21,8 @@ int	main(int ac, char **av, char **envp)
 	if (init_env_llist(&cmds, envp) == FALSE)
 		return (FALSE);
 	run_minishell(&cmds);
+	if (cmds.pwd)
+		(free(cmds.pwd), cmds.pwd = NULL);
 	cleanup_envp_ll(cmds.env_ll);
 	free_double_ptr(cmds.envp);
 	return (WEXITSTATUS(cmds.exit_status));

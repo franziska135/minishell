@@ -19,15 +19,19 @@ void	set_flag_pwd(t_compound *cmds)
 	char	*storage;
 
 	node = find_node(cmds, "PWD");
+	storage = getcwd(pwd, 500);
+	if (!storage)
+		return ;
 	if (node)
 	{
-		storage = getcwd(pwd, 500);
-		if (!storage)
-			return ;
 		if (node->value)
 			free(node->value);
 		node->value = ft_strdup(storage);
-		if (node->env_display == 3)
-			node->env_display = 2;
+		// if (node->env_display == 3)
+		// 	node->env_display = 2;
 	}
+	if (cmds->pwd)
+		free(cmds->pwd);
+	cmds->pwd = ft_strdup(storage);
 }
+

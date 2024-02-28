@@ -45,17 +45,13 @@ int	builtin_cd_home(t_compound *cmds)
 {
 	t_env	*node;
 	char	pwd[500];
-	char	*storage;
 
 	node = find_node(cmds, "HOME");
 	if (node != NULL && node->value != NULL)
 	{
-		storage = getcwd(pwd, 500);
-		if (!storage)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)
 			return (print_error("cd: ", node->value, strerror(errno)), FALSE);
-		if (update_oldpwd(cmds, storage) == FALSE)
+		if (update_oldpwd(cmds, cmds->pwd) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
@@ -89,17 +85,13 @@ int	builtin_cd_back(t_compound *cmds)
 {
 	char	pwd[100];
 	t_env	*node;
-	char	*storage;
 
 	node = find_node(cmds, "OLDPWD");
 	if (node != NULL && node->value != NULL)
 	{
-		storage = getcwd(pwd, 500);
-		if (!storage)
-			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (chdir(node->value) == -1)
 			return (print_error("cd: ", node->value, strerror(errno)), FALSE);
-		if (update_oldpwd(cmds, storage) == FALSE)
+		if (update_oldpwd(cmds, cmds->pwd) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
@@ -115,17 +107,11 @@ int	builtin_cd_back(t_compound *cmds)
 
 int	builtin_cd_path(t_compound *cmds, t_simple *scmd)
 {
-	t_env	*node;
 	char	pwd[500];
-	char	*tmp;
-	char	*storage;
-
-	storage = getcwd(pwd, 500);
-	if (!storage)
-		return (print_error(NULL, NULL, strerror(errno)), FALSE);
+	
 	if (chdir(scmd->cmd[1]) == -1)
 		return (print_error("cd: ", scmd->cmd[1], strerror(errno)), FALSE);
-	if (update_oldpwd(cmds, storage) == FALSE)
+	if (update_oldpwd(cmds, cmds->pwd) == FALSE)
 		return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	if (update_pwd(cmds, getcwd(pwd, 500)) == FALSE)
 		return (print_error(NULL, NULL, strerror(errno)), FALSE);

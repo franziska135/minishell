@@ -77,7 +77,7 @@ int	builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2])
 	if (fd != NULL)
 	{
 		close (fd[0]);
-		close (fd[0]);
+		close (fd[1]);
 	}
-	exit(status);ma
+	exit(status);
 }

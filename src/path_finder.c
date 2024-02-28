@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
 static char	*path_access(t_compound *cmds, char *path, char *cmd)
 {

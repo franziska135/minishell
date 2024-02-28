@@ -8,7 +8,9 @@
 
 --//check the buffer size of pwd[]
 
-exit codes on signal
+-- exit codes on signal
+
+-- exit | exit must close *fd
 
 ---------	MSTEST		------------
 

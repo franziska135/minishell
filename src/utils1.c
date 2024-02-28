@@ -30,3 +30,21 @@ void	finish_hd(char *gnl, int fd[2])
 	}
 	close (fd[1]);
 }
+
+int	parent_fail(t_compound *cmds, int fd[2], int in_std)
+{
+	struct_free(*cmds);
+	dup2(in_std, STDIN_FILENO);
+	close(in_std);
+	close(fd[0]);
+	close(fd[1]);
+	return (0);
+}
+
+void	fork_fail(t_compound *cmds, int *fd, int initial_stdin)
+{
+	close_fds(cmds, fd);
+	close(fd[0]);
+	close(fd[1]);
+	close(initial_stdin);
+}

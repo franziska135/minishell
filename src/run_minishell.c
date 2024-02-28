@@ -55,15 +55,7 @@ int	run_minishell(t_compound	*cmds)
 	while (1)
 	{
 		interactive_mode(cmds);
-		if (isatty(fileno(stdin)))
-			str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m \xf0\x9f\x90\x8b \x1b[0m ");
-		else
-		{
-			char	*line;
-			line = get_next_line(fileno(stdin));
-			str = ft_strtrim(line, "\n");
-			free(line);
-		}
+		str = readline("\x1b[32mf\x1b[35mz\x1b[32msh\x1b[34m 🐋 \x1b[0m ");
 		if (str == NULL)
 			break ;
 		if (!all_space(str))

@@ -53,13 +53,13 @@ int	update_oldpwd(t_compound *cmds, char *storage)
 	if (!node)
 		return (TRUE);
 	node = find_node(cmds, "PWD");
-	if (node && node->env_display > 1)
+	if (!node->value || node->env_display == 3)
+		update_env_ll_oldpwd(cmds);
+	else if (node && node->env_display < 3)
 	{
 		if (update_env_ll(cmds, "OLDPWD", storage) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 	}
-	else if (!node->value || node->env_display == 3)
-		update_env_ll_oldpwd(cmds);
 	else if (node->value != NULL || node->env_display < 1)
 	{
 		dup_pwd = ft_strdup(node->value);

@@ -27,8 +27,8 @@ void	set_flag_pwd(t_compound *cmds)
 		if (node->value)
 			free(node->value);
 		node->value = ft_strdup(storage);
-		// if (node->env_display == 3)
-		// 	node->env_display = 2;
+		if (node->env_display = 3)
+			node->env_display = 2;
 	}
 	if (cmds->pwd)
 		free(cmds->pwd);

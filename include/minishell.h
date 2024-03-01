@@ -77,7 +77,6 @@ typedef struct s_compound_command
 	t_env		*env_ll;
 	int			exit_status;
 	char		*pwd;
-	int			path;
 }	t_compound;
 
 // HISTORY

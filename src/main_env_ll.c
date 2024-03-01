@@ -33,13 +33,6 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	initiate_static_env_variables(cmds);
 	storage = getcwd(pwd, 500);
 	cmds->pwd = ft_strdup(storage);
-	cmds->path = FALSE;
-	printf("you will never be able to use getenv\n");
-	if (find_node(cmds, "PATH") == NULL)
-	{
-		printf("congrats you can use getenv until path is unset\n");
-		cmds->path = TRUE;
-	}
 	return (1);
 }
 

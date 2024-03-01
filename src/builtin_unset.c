@@ -28,14 +28,6 @@ int	pwd_path_unset(t_compound *cmds, char *needle)
 		node->value = NULL;
 		return (TRUE);
 	}
-	else if (ft_strncmp(needle, "PATH", 5) == 0)
-	{
-		if (cmds->path == TRUE)
-		{
-		cmds->path = FALSE;
-		printf("no it's no getenv any more\n");
-		}
-	}
 	return (FALSE);
 }
 

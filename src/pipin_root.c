@@ -66,7 +66,10 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 		if (pid[i] == -1)
 			return (fork_fail(cmds, fd, std_in), 0);
 		if (pid[i] == 0)
+		{
+			write (1, "check", 5);
 			child_process(cmds, fd, i, std_in);
+		}
 		close(fd[1]);
 		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
 			dup2(fd[0], STDIN_FILENO);
@@ -86,10 +89,9 @@ static int	piping(t_compound *cmds)
 	int		initial_stdin;
 
 	initial_stdin = dup(STDIN_FILENO);
-	signal_inhibition();
 	if (!parent_process(cmds, fd, pid, initial_stdin))
 		return (struct_free(*cmds), 0);
-	non_interactive_mode(cmds);
+	//non_interactive_mode(cmds);
 	dup2(initial_stdin, STDIN_FILENO);
 	close(initial_stdin);
 	close(fd[0]);

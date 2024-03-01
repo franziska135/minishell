@@ -45,8 +45,14 @@ void	signal_hd(t_compound *cmds)
 	signal(SIGINT, &ctrlc_hd);
 }
 
+void	deactivate_c(int sig)
+{
+	if (sig == SIGINT)
+	write (2, "check", 5);
+}
+
 void	signal_inhibition(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, &deactivate_c);
 }

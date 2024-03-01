@@ -16,6 +16,7 @@ static void	cl_ch(t_compound *cmds, int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
+	close_fds(cmds);
 	struct_free(*cmds);
 	dpointer_free(cmds->envp);
 	cleanup_envp_ll(cmds->env_ll);

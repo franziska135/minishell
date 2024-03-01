@@ -64,7 +64,7 @@ int	write_expansion(t_compound *cmds, char *token, int fd[2][2], int flag)
 		env = find_node(cmds, key);
 		ret = ft_strlen(key);
 		free(key);
-		if (env && env->value)
+		if (env && env->value && env->env_display < 2)
 			return (expand_env(env, fd, flag), ret);
 	}
 	else if (token[0] == '?')

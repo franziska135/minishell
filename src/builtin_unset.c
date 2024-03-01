@@ -44,7 +44,7 @@ int	builtin_unset_loop(t_compound *cmds, t_env *hay, t_env *tmp, char *needle)
 	}
 	while (hay)
 	{
-		if (ft_strncmp(hay->key, needle, ft_strlen(hay->key)) == 0)
+		if (ft_strncmp(hay->key, needle, ft_strlen(needle) + 1) == 0)
 		{
 			tmp->next = hay->next;
 			hay->next = NULL;

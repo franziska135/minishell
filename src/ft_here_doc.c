@@ -50,8 +50,9 @@ static int	write_hd_expansion(t_compound *cmds, char *str, int fd)
 		env = find_node(cmds, key);
 		ret = ft_strlen(key);
 		free(key);
-		if (env && env->value)
+		if (env && env->value && env->env_display < 2)
 		{
+			// ft_putnbr_fd(env->env_display, 2);
 			write(fd, env->value, ft_strlen(env->value));
 			return (ret);
 		}

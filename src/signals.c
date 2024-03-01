@@ -59,7 +59,7 @@ void	deactivate_slash(int sig)
 
 void	signal_inhibition(t_compound *cmds)
 {
-	if (ft_strncmp(cmds->scmd->cmd[0], "./minishell", 12) == 0)
+	if (cmds->scmd->cmd && ft_strncmp(cmds->scmd->cmd[0], "./minishell", 12) == 0)
 	{
 		if (g_signal == 2)
 			set_status(cmds, 130);

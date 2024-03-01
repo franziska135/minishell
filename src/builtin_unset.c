@@ -29,7 +29,7 @@ int	pwd_path_unset(t_compound *cmds, char *needle)
 		return (TRUE);
 	}
 	else if (ft_strncmp(needle, "PWD", 4) == 0)
-		cmds->envp = FALSE;
+		cmds->path = FALSE;
 	return (FALSE);
 }
 

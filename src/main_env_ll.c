@@ -33,9 +33,9 @@ int	init_env_llist(t_compound *cmds, char **envp)
 	initiate_static_env_variables(cmds);
 	storage = getcwd(pwd, 500);
 	cmds->pwd = ft_strdup(storage);
-	cmds->envp = FALSE;
+	cmds->path = FALSE;
 	if (find_node(cmds, "PATH") == NULL)
-		cmds->envp = TRUE;
+		cmds->path = TRUE;
 	return (1);
 }
 

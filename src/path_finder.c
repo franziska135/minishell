@@ -63,7 +63,8 @@ char	*path_finder(t_compound *cmds, int pipe)
 		print_error(NULL, "''", "command not found");
 		return (NULL);
 	}
-	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK))
+	if (!access(cmds->scmd[pipe].cmd[0], F_OK | X_OK)
+		&& isit_path(cmds->scmd[pipe].cmd[0]))
 		return (cmds->scmd[pipe].cmd[0]);
 	if (isit_path(cmds->scmd[pipe].cmd[0]))
 	{
@@ -73,5 +74,7 @@ char	*path_finder(t_compound *cmds, int pipe)
 	env = find_node(cmds, "PATH");
 	if (env && env->value)
 		return (path_access(env->value, cmds->scmd[pipe].cmd[0]));
+	else
+		print_error(NULL, cmds->scmd[pipe].cmd[0], "No such file or directory");
 	return (NULL);
 }

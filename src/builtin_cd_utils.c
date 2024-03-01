@@ -66,6 +66,8 @@ int	update_oldpwd(t_compound *cmds, char *storage)
 	else if (node->value != NULL || node->env_display < 1)
 	{
 		dup_pwd = ft_strdup(node->value);
+		if (!dup_pwd)
+			return (print_error(NULL, NULL, strerror(errno)), FALSE);
 		if (update_env_ll(cmds, "OLDPWD", dup_pwd) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), free(dup_pwd), 0);
 		free(dup_pwd);

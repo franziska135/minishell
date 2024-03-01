@@ -22,6 +22,12 @@ void	builtin_pwd(t_compound *cmds)
 		write (1, "\n", 1);
 		set_status(cmds, 0);
 	}
+	else if (errno == 2 && cmds->pwd)
+	{
+		write(1, cmds->pwd, ft_strlen(cmds->pwd));
+		write (1, "\n", 1);
+		set_status(cmds, 0);
+	}
 	else
 	{
 		print_error(NULL, "pwd", strerror(errno));

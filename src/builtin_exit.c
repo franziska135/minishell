@@ -69,6 +69,8 @@ int	builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2])
 	if (too_many_arg(cmds, scmd) == FALSE)
 		return (cmds->exit_status);
 	status = exit_error_check(cmds, scmd);
+	if (cmds->pwd)
+		(free(cmds->pwd), cmds->pwd = NULL);
 	cleanup_envp_ll(cmds->env_ll);
 	free_double_ptr(cmds->envp);
 	struct_free(*cmds);

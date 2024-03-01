@@ -16,6 +16,8 @@
 int	init_env_llist(t_compound *cmds, char **envp)
 {
 	t_env	*new_node;
+	char	pwd[500];
+	char	*storage;
 	int		i;
 
 	cmds->envp = NULL;
@@ -29,6 +31,8 @@ int	init_env_llist(t_compound *cmds, char **envp)
 		i++;
 	}
 	initiate_static_env_variables(cmds);
+	storage = getcwd(pwd, 500);
+	cmds->pwd = ft_strdup(storage);
 	return (1);
 }
 

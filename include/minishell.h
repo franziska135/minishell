@@ -224,6 +224,6 @@ void	ctrlc_non_interactive(int signum);
 void	ctrlc_hd(int sig);
 void	signal_hd(t_compound *cmds);
 void	backslash_hd(int sig);
-void	signal_inhibition(void);
+void	signal_inhibition(t_compound *cmds);
 
 #endif

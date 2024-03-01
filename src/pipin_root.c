@@ -62,12 +62,13 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 			return (close_fds(cmds), close(std_in), 0);
 		if (cmds->scmd[i].in_fd > 2)
 			(dup2(cmds->scmd[i].in_fd, 0), close(cmds->scmd[i].in_fd));
+		signal_inhibition(cmds);
 		pid[i] = fork();
 		if (pid[i] == -1)
 			return (fork_fail(cmds, fd, std_in), 0);
 		if (pid[i] == 0)
 		{
-			write (1, "check", 5);
+			non_interactive_mode(cmds);
 			child_process(cmds, fd, i, std_in);
 		}
 		close(fd[1]);
@@ -78,6 +79,7 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 			close(cmds->scmd[i].out_fd);
 		i++;
 	}
+	// non_interactive_mode(cmds);
 	return (1);
 }
 
@@ -91,7 +93,6 @@ static int	piping(t_compound *cmds)
 	initial_stdin = dup(STDIN_FILENO);
 	if (!parent_process(cmds, fd, pid, initial_stdin))
 		return (struct_free(*cmds), 0);
-	//non_interactive_mode(cmds);
 	dup2(initial_stdin, STDIN_FILENO);
 	close(initial_stdin);
 	close(fd[0]);

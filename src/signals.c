@@ -48,11 +48,25 @@ void	signal_hd(t_compound *cmds)
 void	deactivate_c(int sig)
 {
 	if (sig == SIGINT)
-	write (2, "check", 5);
+	write (2, "cntrlc", 7);
 }
 
-void	signal_inhibition(void)
+void	deactivate_slash(int sig)
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, &deactivate_c);
+	if (sig == SIGQUIT)
+		write (1, "slash", 6);
+}
+
+void	signal_inhibition(t_compound *cmds)
+{
+	if (ft_strncmp(cmds->scmd->cmd[0], "./minishell", 12) == 0)
+	{
+		if (g_signal == 2)
+			set_status(cmds, 130);
+		else if (g_signal == 3)
+			set_status(cmds, 131);
+		g_signal = 0;
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+	}
 }

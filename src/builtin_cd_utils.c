@@ -33,7 +33,7 @@ int	go_back_home(t_simple *scmd)
 	return (FALSE);
 }
 
-void	update_env_ll_oldpwd(t_compound *cmds)
+void	update_env_ll_oldpwd(t_compound *cmds, t_env *pwd_node)
 {
 	t_env	*node;
 
@@ -41,7 +41,10 @@ void	update_env_ll_oldpwd(t_compound *cmds)
 	if (node->value)
 		free(node->value);
 	node->value = NULL;
-	node->env_display = FALSE;
+	if (pwd_node->env_display == TRUE)
+		node->env_display = TRUE;
+	else
+		node->env_display = FALSE;
 }
 
 int	update_oldpwd(t_compound *cmds, char *storage)
@@ -54,8 +57,8 @@ int	update_oldpwd(t_compound *cmds, char *storage)
 		return (TRUE);
 	node = find_node(cmds, "PWD");
 	if (!node->value || node->env_display == 3)
-		update_env_ll_oldpwd(cmds);
-	else if (node && node->env_display < 3)
+		update_env_ll_oldpwd(cmds, node);
+	else if (node && node->env_display == 2)
 	{
 		if (update_env_ll(cmds, "OLDPWD", storage) == FALSE)
 			return (print_error(NULL, NULL, strerror(errno)), FALSE);

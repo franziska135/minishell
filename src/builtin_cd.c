@@ -71,7 +71,7 @@ int	builtin_cd_dotdot(t_compound *cmds)
 
 	storage = getcwd(pwd, 500);
 	if (!storage)
-		return (print_error(NULL, NULL, strerror(errno)), FALSE);
+		return (print_error("cd: ", "..", strerror(errno)), FALSE);
 	if (chdir("..") == -1)
 		return (print_error("cd: ", "..: ", strerror(errno)), FALSE);
 	if (update_oldpwd(cmds, storage) == FALSE)

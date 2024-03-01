@@ -25,11 +25,11 @@ static void	cl_ch(t_compound *cmds, int *fd)
 	exit(cmds->exit_status);
 }
 
-static void	child_process(t_compound *cmds, int *fd, size_t i, int initial_stdin)
+static void	child_process(t_compound *cmds, int *fd, size_t i, int init_std)
 {
 	char	*path;
 
-	close(initial_stdin);
+	close(init_std);
 	if (cmds->scmd[i].in_fd != -1 && cmds->scmd[i].out_fd != -1
 		&& cmds->scmd[i].cmd)
 	{
@@ -70,10 +70,7 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 		if (pid[i] == -1)
 			return (fork_fail(cmds, fd, std_in), 0);
 		if (pid[i] == 0)
-		{
-			non_interactive_mode(cmds);
 			child_process(cmds, fd, i, std_in);
-		}
 		close(fd[1]);
 		if (i < (cmds->nbr_scmd - 1) && cmds->scmd[i + 1].in_fd == 0)
 			dup2(fd[0], STDIN_FILENO);

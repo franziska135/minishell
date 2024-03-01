@@ -34,4 +34,3 @@ void	set_flag_pwd(t_compound *cmds)
 		free(cmds->pwd);
 	cmds->pwd = ft_strdup(storage);
 }
-

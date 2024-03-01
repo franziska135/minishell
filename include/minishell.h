@@ -48,7 +48,7 @@
 # define ANSI_COLOR_CYAN    "\x1b[36m"
 # define ANSI_COLOR_RESET   "\x1b[0m"
 
-extern int g_signal;
+extern int	g_signal;
 
 //command table
 typedef struct s_simple_command
@@ -112,7 +112,6 @@ void	redir_out(t_compound *cmds, char *file, int pipe, size_t *i);
 void	redir_in(t_compound *cmds, char *file, int pipe, size_t *i);
 void	redir_append(t_compound *cmds, char *file, int pipe, size_t *i);
 
-
 //  EXPAND
 // char	*token_expand(t_compound *cmds, char *token);
 char	**expand_redir(t_compound *cmds, char *token);
@@ -155,9 +154,8 @@ void	ft_add_last_node(t_env **lst, t_env *new);
 int		ft_init_ll_loop(t_compound *cmds, char **envp, t_env *new_node, int i);
 size_t	iterate_ultil_equal(const char *envp_i);
 
-
 //BUILTIN
-int		if_builtin_execute(t_compound *cmds, t_simple *scmd, int fdout, int fd[2]);
+int		if_builtin_execute(t_compound *cmds, t_simple *scmd, int t, int fd[2]);
 void	builtin_pwd(t_compound *cmds);
 int		builtin_cd(t_simple *simple_command, t_compound *cmds);
 int		update_env_ll(t_compound *cmds, char *variable, char *new_value);
@@ -168,7 +166,7 @@ int		check_for_n(t_simple *s_cmd);
 int		check_for_only_n(char *str);
 void	builtin_echo_write(t_compound *cmds, t_simple *s_cmd, int i);
 int		builtin_unset(t_compound *cmds, t_simple *scmd);
-int		builtin_unset_loop(t_compound *cmds, t_env *haystack, t_env *tmp, char *needle);
+int		builtin_unset_loop(t_compound *cmds, t_env *h, t_env *tmp, char *n);
 int		builtin_export(t_compound *cmds, t_simple *scmd);
 int		builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2]);
 int		too_many_arg(t_simple *scmd);

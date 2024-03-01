@@ -47,7 +47,8 @@ void	signal_hd(t_compound *cmds)
 
 void	signal_inhibition(t_compound *cmds)
 {
-	if (cmds->scmd->cmd && ft_strncmp(cmds->scmd->cmd[0], "./minishell", 12) == 0)
+	if (cmds->scmd->cmd
+		&& ft_strncmp(cmds->scmd->cmd[0], "./minishell", 12) == 0)
 	{
 		if (g_signal == 2)
 			set_status(cmds, 130);

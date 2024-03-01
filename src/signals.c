@@ -44,3 +44,9 @@ void	signal_hd(t_compound *cmds)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &ctrlc_hd);
 }
+
+void	signal_inhibition(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
+}

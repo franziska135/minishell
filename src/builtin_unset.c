@@ -21,7 +21,7 @@ int	pwd_unset(t_compound *cmds, char *needle)
 		node = find_node(cmds, needle);
 		if (!node)
 			return (FALSE);
-		node->env_display = 3;
+		node->env_display = 2;
 		if (node->value)
 			free(node->value);
 		node->value = NULL;

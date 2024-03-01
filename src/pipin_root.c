@@ -86,8 +86,10 @@ static int	piping(t_compound *cmds)
 	int		initial_stdin;
 
 	initial_stdin = dup(STDIN_FILENO);
+	signal_inhibition();
 	if (!parent_process(cmds, fd, pid, initial_stdin))
 		return (struct_free(*cmds), 0);
+	non_interactive_mode(cmds);
 	dup2(initial_stdin, STDIN_FILENO);
 	close(initial_stdin);
 	close(fd[0]);

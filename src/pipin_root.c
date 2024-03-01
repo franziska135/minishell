@@ -17,6 +17,8 @@ static void	cl_ch(t_compound *cmds, int *fd)
 	close(fd[0]);
 	close(fd[1]);
 	close_fds(cmds);
+	if (cmds->pwd)
+		(free(cmds->pwd), cmds->pwd = NULL);
 	struct_free(*cmds);
 	dpointer_free(cmds->envp);
 	cleanup_envp_ll(cmds->env_ll);
@@ -80,7 +82,6 @@ static int	parent_process(t_compound *cmds, int *fd, int *pid, int std_in)
 			close(cmds->scmd[i].out_fd);
 		i++;
 	}
-	// non_interactive_mode(cmds);
 	return (1);
 }
 

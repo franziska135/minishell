@@ -90,14 +90,16 @@ int	ft_here_doc(char *delimiter, t_compound *cmds, int expand)
 
 	if (pipe(fd) == -1)
 		return (-1);
-	gnl = readline("> ");
+	// gnl = readline("> ");
+	gnl = get_next_line(fd[1]);
 	if (!gnl && errno != ENOMEM)
 		print_eof_hd(delimiter);
 	while (gnl && ft_strncmp(delimiter, gnl, ft_strlen(gnl) + 1) != 0
 		&& g_signal == 0)
 	{
 		(expand_hd(gnl, cmds, fd[1], expand), free(gnl));
-		gnl = readline("> ");
+		// gnl = readline("> ");
+		gnl = get_next_line(fd[1]);	
 		if (!gnl && errno != ENOMEM)
 		{
 			print_eof_hd(delimiter);

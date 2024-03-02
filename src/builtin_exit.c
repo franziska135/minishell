@@ -42,9 +42,6 @@ int	normalize_exit_code(int number)
 
 int	exit_error_check(t_compound *cmds, t_simple *scmd)
 {
-	int	i;
-
-	i = 0;
 	if (!scmd->cmd[1])
 		return (set_status(cmds, 0), 0);
 	if (scmd->cmd[1][0] == '\0')

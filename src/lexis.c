@@ -81,9 +81,7 @@ static char	**tokenizer(char *str)
 char	**lexis(char *str)
 {
 	char	**tokens;
-	size_t	nbr_token;
 
-	nbr_token = token_counter(str);
 	tokens = tokenizer(str);
 	free (str);
 	if (!tokens)

@@ -51,9 +51,7 @@ int	valid_var_check(char *new_var)
 int	export_error_check(t_compound *cmds, char *new_var)
 {
 	int	flag;
-	int	i;
 
-	i = 0;
 	flag = TRUE;
 	if (new_var[0] == '-' && new_var[1])
 	{

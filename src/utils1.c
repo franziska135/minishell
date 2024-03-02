@@ -14,7 +14,7 @@
 
 void	print_eof_hd(char *delim)
 {
-	write (2, "fzsh: warning: here-document at ", 34);
+	write (2, "fzsh: warning: here-document at ", 33);
 	write (2, "line 1 delimited by end-of-file (wanted `", 42);
 	write (2, delim, ft_strlen(delim));
 	write (2, "')\n", 4);

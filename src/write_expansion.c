@@ -28,9 +28,7 @@ static void	expand_env(t_env *env, int fd[2][2], int flag)
 static void	expand_exit_status(t_compound *cmds, int fd, int fd_flag, int flag)
 {
 	int	nbr;
-	int	i;
 
-	i = 0;
 	nbr = WEXITSTATUS(cmds->exit_status);
 	if (WIFEXITED(cmds->exit_status))
 	{

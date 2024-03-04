@@ -15,8 +15,6 @@
 int	is_digit(t_simple *scmd)
 {
 	int			i;
-	long int	max_long;
-	char		*number;
 
 	i = 0;
 	if (scmd->cmd[1][0] == '-' || scmd->cmd[1][0] == '+')
@@ -27,11 +25,37 @@ int	is_digit(t_simple *scmd)
 			return (FALSE);
 		i++;
 	}
+	return (TRUE);
+}
+
+int	long_max(t_simple *scmd)
+{
+	long int	max_long;
+	char		*number;
+	char		*doublicate;
+	int			i;
+	int			j;
+
 	max_long = ft_atoi(scmd->cmd[1]);
 	number = ft_itoa(max_long);
-	if (ft_strncmp(scmd->cmd[1], number, 21) != 0)
-		return (free(number), FALSE);
+	i = 0;
+	j = 0;
+	doublicate = ft_strdup(scmd->cmd[1]);
+	if (doublicate)
+	{
+		if (doublicate[i] == '+')
+			i++;
+		while (doublicate[i] && doublicate[i] == '0')
+			i++;
+		while (doublicate[i + j] != '\0' || number[j] != '\0')
+		{
+			if (doublicate[i + j] != number[j])
+				return (free(doublicate), free(number), FALSE);
+			j++;
+		}
+	}
 	free(number);
+	free(doublicate);
 	return (TRUE);
 }
 
@@ -49,7 +73,7 @@ int	exit_error_check(t_compound *cmds, t_simple *scmd)
 		set_status(cmds, 2);
 		return (print_error("exit: ", "", "numeric argument required"), 2);
 	}
-	else if (is_digit(scmd) == FALSE)
+	else if (is_digit(scmd) == FALSE || long_max(scmd) == FALSE)
 	{
 		print_error("exit: ", scmd->cmd[1], "numeric argument required");
 		return (set_status(cmds, 2), 2);
@@ -71,7 +95,8 @@ int	builtin_exit(t_compound *cmds, t_simple *scmd, int fdout, int fd[2])
 	int	status;
 
 	write (1, "exit\n", 6);
-	if (too_many_arg(scmd) == FALSE && is_digit(scmd) == TRUE)
+	if (too_many_arg(scmd) == FALSE && is_digit(scmd) == TRUE
+		&& long_max (scmd) == TRUE)
 	{
 		print_error("exit: ", NULL, "too many arguments");
 		return (set_status(cmds, 1), cmds->exit_status);

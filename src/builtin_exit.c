@@ -32,34 +32,30 @@ int	is_digit(t_simple *scmd)
 
 int	long_max(t_simple *scmd)
 {
-	long int	max_long;
 	char		*number;
 	char		*doublicate;
 	int			i;
 	int			j;
 
-	max_long = ft_atoi(scmd->cmd[1]);
-	number = ft_itoa(max_long);
+	number = ft_itoa(ft_atoi(scmd->cmd[1]));
 	i = 0;
 	j = 0;
 	doublicate = ft_strdup(scmd->cmd[1]);
-	if (doublicate)
-	{
-		if (doublicate[i] == '+')
-			i++;
-		while (doublicate[i] && doublicate[i] == '0')
-			i++;
-		if (doublicate[i] == '\0')
+	if (doublicate && doublicate[i] == '+')
+		i++;
+	while (doublicate && doublicate[i] && doublicate[i] == '0')
+		i++;
+	if (doublicate && doublicate[i] == '\0')
 		return (free(doublicate), free(number), TRUE);
-		while (doublicate[i + j] != '\0' || number[j] != '\0')
-		{
-			if (doublicate[i + j] != number[j])
-				return (free(doublicate), free(number), FALSE);
-			j++;
-		}
+	while ((doublicate && doublicate[i + j] != '\0' )|| number[j] != '\0')
+	{
+		if (doublicate[i + j] != number[j])
+			return (free(doublicate), free(number), FALSE);
+		j++;
 	}
 	free(number);
-	free(doublicate);
+	if (doublicate)
+		free(doublicate);
 	return (TRUE);
 }
 

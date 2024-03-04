@@ -19,6 +19,8 @@ int	is_digit(t_simple *scmd)
 	i = 0;
 	if (scmd->cmd[1][0] == '-' || scmd->cmd[1][0] == '+')
 		i++;
+	if (scmd->cmd[1][i] == '\0')
+	return (FALSE);
 	while (scmd->cmd[1][i])
 	{
 		if (ft_isdigit(scmd->cmd[1][i]) == FALSE)
@@ -47,6 +49,8 @@ int	long_max(t_simple *scmd)
 			i++;
 		while (doublicate[i] && doublicate[i] == '0')
 			i++;
+		if (doublicate[i] == '\0')
+		return (free(doublicate), free(number), TRUE);
 		while (doublicate[i + j] != '\0' || number[j] != '\0')
 		{
 			if (doublicate[i + j] != number[j])

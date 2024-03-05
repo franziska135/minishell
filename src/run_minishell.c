@@ -61,6 +61,10 @@ int	run_minishell(t_compound	*cmds)
 			add_history(str);
 			run_procces(cmds, str);
 		}
+		if (g_signal == 2)
+			set_status(cmds, 130);
+		else if (g_signal == 3)
+			set_status(cmds, 131);
 	}
 	return (1);
 }

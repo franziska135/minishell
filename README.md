@@ -1,6 +1,6 @@
 # Minishell
 
-The "Minishell" project aims to create a simple shell, similar to bash, that can parse and execute commands, handle basic input/output redirections, implement environment variables, and manage signal handling. This project is implemented as part of the 42 school curriculum by a team of students.
+The "Minishell" project aims to create a simple shell, similar to bash, that can parse and execute commands, handle basic input/output redirections, implement environment variables, and manage signal handling. This project is implemented as part of the 42 school curriculum by Franziska Marggraf and Mohamad Zolfaghari.
 
 ## Warning for 42 Students
 
@@ -45,7 +45,8 @@ make
 
 Run Minishell by executing:
 
-```./minishell
+```bash
+./minishell
 ```
 
 Once running, Minishell will display a command prompt similar to bash where you can type commands for execution.
